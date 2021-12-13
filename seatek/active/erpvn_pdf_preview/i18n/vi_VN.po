@@ -1,0 +1,103 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* erpvn_pdf_preview
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-05 15:26+0000\n"
+"PO-Revision-Date: 2019-08-05 15:26+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_dialog.xml:31
+#, python-format
+msgid "&times;"
+msgstr "&times;"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:69
+#, python-format
+msgid "Download"
+msgstr "Tải"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:62
+#, python-format
+msgid "Extension:"
+msgstr "Mở rộng:"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:54
+#, python-format
+msgid "Filename:"
+msgstr "Tên file:"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:43
+#, python-format
+msgid "Odoo App Store"
+msgstr "Kho ứng dụng"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_dialog.xml:36
+#, python-format
+msgid "Ok"
+msgstr "Đồng ý"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/js/preview_dialog.js:40
+#, python-format
+msgid "Preview"
+msgstr "Xem trước"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:41
+#, python-format
+msgid "This file type is currently not supported. By installing further extension via the"
+msgstr "Định dạng file này không hỗ trợ. Cài đặt mở rộng với"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:58
+#, python-format
+msgid "Type:"
+msgstr "Loại:"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/js/preview_generator.js:52
+#: code:addons/erpvn_pdf_preview/static/src/js/preview_generator.js:53
+#: code:addons/erpvn_pdf_preview/static/src/js/preview_generator.js:54
+#, python-format
+msgid "Unknown"
+msgstr "Không biết"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:37
+#, python-format
+msgid "Unsupported File Extension"
+msgstr "Không hỗ trợ tập tin mở rộng"
+
+#. module: erpvn_pdf_preview
+#. openerp-web
+#: code:addons/erpvn_pdf_preview/static/src/xml/preview_content.xml:43
+#, python-format
+msgid "it is possible to improve the Preview."
+msgstr "Cải thiện bản xem trước"
+

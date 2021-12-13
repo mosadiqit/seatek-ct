@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="TGL.selection">        
+        <select class="o_input tgl_search_header_select select2" t-att-data-name="name">
+            <option value="">Tất cả</option>
+            <option t-foreach="fields" t-as="field" t-att-value="field[0]">
+                <t t-esc="field[1]"/>
+            </option> 
+        </select>
+    </t>
+
+    <t t-name="QTH.selection">        
+        <div t-attf-class="dropdown qth_search_selection" t-att-data-name="name">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border: 1px solid #ccc; border-radius: 3px; padding: 2px 4px; color: #1f1f1f;">
+                <!-- Selection <t t-esc="name"/> -->
+                Chọn
+            </button>
+            <div class="dropdown-menu o_selection_menu" aria-labelledby="dropdownMenuButton">
+                <div class="o_menu_item o_menu_item_all" >
+                    <a class="dropdown-item" role="menuitem" t-att-data-name="name" data-key="">
+                        Tất cả
+                    </a>
+                </div>
+                <div t-foreach="fields" t-as="field" class="o_menu_item">
+                    <a class="dropdown-item" role="menuitem" t-att-data-name="name" t-att-data-key="field[0]">
+                        <t t-esc="field[1]"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </t>
+
+
+</templates>

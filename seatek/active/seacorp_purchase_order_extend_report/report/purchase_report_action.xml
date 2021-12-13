@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <report
+            string="In phiếu mua hàng"
+            id="action_purchase_report_dannygreen"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="seacorp_purchase_order_extend_report.report_dannygreenorder"
+            file="seacorp_purchase_order_extend_report.report_dannygreenorder"
+            print_report_name="'Purchase Report of DannyGreen - %s' % (object.name)"
+        />
+    </data>
+</odoo>

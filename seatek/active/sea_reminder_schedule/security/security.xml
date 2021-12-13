@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="module_sea_reminder_schedule" model="ir.module.category">
+        <field name="name">Lists Reminder</field>
+        <field name="sequence">1000</field>
+    </record>
+
+    <record id="group_sea_reminder_schedule_manager" model="res.groups">
+        <field name="name">Lists Reminder Manager</field>
+        <field name="category_id" ref="sea_reminder_schedule.module_sea_reminder_schedule"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+  <record id="purchase_res_config_inherited_view" model="ir.ui.view">
+	 <field name="name">purchase.res.config.inherited.view</field>
+	 <field name="model">res.config.settings</field>
+	 <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+	 <field name="arch" type="xml">
+       <xpath expr="//div[@data-key='purchase']//h2[2]" position="before">
+            <div attrs="{'invisible':[('po_order_approval','=',False)]}">
+                <h2>Purchase Order Second Approval</h2>
+                <div class="row mt16 o_settings_container" name="purchase_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="po_tripple_verify"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="po_tripple_verify"/>
+                            <div class="text-muted">
+                                Managers must approve orders
+                            </div>
+                            <div class="content-group" attrs="{'invisible': [('po_tripple_verify', '=', False)]}">
+                                <div class="row mt16">
+                                    <label for="po_tripple_validation_amount" class="col-lg-4 o_light_label"/>
+                                    <field name="po_tripple_validation_amount" attrs="{'required':[('po_tripple_verify','=',True)]}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+	</field>
+ </record>
+</odoo>

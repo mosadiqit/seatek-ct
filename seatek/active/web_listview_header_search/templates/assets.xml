@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" name="web_listview_header_search" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/web_listview_header_search/static/src/css/daterangepicker.css" />
+            <link rel="stylesheet" href="/web_listview_header_search/static/src/css/tgl_date_range_picker.css" />
+
+            <script type="text/javascript" src="/web_listview_header_search/static/src/js/daterangepicker.js"></script>
+            <script type="text/javascript" src="/web_listview_header_search/static/src/js/listview.js"></script>
+        </xpath>
+    </template>
+    <record model="ir.ui.view" id="assets_backend">
+        <field name="priority">21</field>
+    </record>
+</odoo>

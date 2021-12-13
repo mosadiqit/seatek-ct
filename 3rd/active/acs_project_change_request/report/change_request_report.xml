@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_change_request_report_document">
+        <t t-call="report.external_layout">
+            <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+            <div class="page">
+                <div class="oe_structure"/>
+
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="text-align:center">
+                            <strong style="font-size: 20px;">
+                                <span>Change Request: </span>
+                                <span t-field="doc.number"/>
+                            </strong>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="row">
+                    <div class="col-xs-1">
+                        <strong>To:</strong>
+                    </div>
+                    <div class="col-xs-4">
+                        <div t-field="doc.partner_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                    </div>
+                    <div class="col-xs-5 col-xs-offset-1">
+                        <strong>Date: </strong> <span t-field="doc.date"/>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered">
+                    <tr>
+                        <td width="50px"><strong>Subject:</strong></td>
+                        <td><span t-raw="doc.name"/></td>
+                    </tr>
+                </table>
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><span t-raw="doc.description"/></td>
+                    </tr>
+                </table>
+
+                Should you have any questions please contact us at your convenience.<br/>
+                <br/>
+                Best regards,<br/>
+                <div class="row" name="total">
+                    <div class="col-xs-4">
+                        <strong>Proposed by:</strong><br/>
+                        <u><strong><span t-field="doc.user_id"/></strong></u><br/>
+                        <!-- <span t-field="doc.user_id"/><br/> -->
+                        <span t-field="doc.user_id.company_id.name"/><br/>
+                    </div>
+                    <div class="col-xs-4 pull-right">
+                        <span style="margin-left:-15px;" class="col-xs-6 pull-left"><strong>Accepted by:</strong></span>
+                        <span class="col-xs-6"><strong>Date:</strong></span><br/>
+                        <span/><br/>
+                        <span/><br/>
+                        <div style="border-top: 1px solid black;">Print Name and Sign</div><br/>
+                    </div>
+                </div>
+                
+                <div class="oe_structure"/>
+                <p style="page-break-before:always;"> </p>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_change_request_report">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="acs_project_change_request.report_change_request_report_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <report 
+        id="change_request_report"
+        string="Change Request"
+        model="acs.change.request"
+        report_type="qweb-pdf"
+        file="acs_project_change_request.report_change_request_report" 
+        name="acs_project_change_request.report_change_request_report" 
+    />
+
+</odoo>

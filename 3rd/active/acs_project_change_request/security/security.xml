@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="change_request_category">
+            <field name="name">Change Request Management</field>
+            <field name="description">Manage Change Requests.</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_change_request_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="change_request_category"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_change_request_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="change_request_category"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="implied_ids" eval="[(4, ref('acs_project_change_request.group_change_request_user'))]"/>
+        </record>
+
+        <!-- Rules -->
+        <record id="model_change_request_personal_rule" model="ir.rule">
+            <field name="name">Own Change Request</field>
+            <field name="model_id" ref="model_acs_change_request"/>
+            <field name="domain_force">['|',('user_id','=',user.id), ('user_id','=',False)]</field>
+            <field name="groups" eval="[(4, ref('acs_project_change_request.group_change_request_user'))]"/>
+        </record>
+
+        <record id="model_change_request_see_all" model="ir.rule">
+            <field name="name">All Change Requests</field>
+            <field ref="model_acs_change_request" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('acs_project_change_request.group_change_request_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

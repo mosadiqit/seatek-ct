@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sea_report_xls_pos_session_xls,sea_report_xls.pos_session_xls,model_sea_report_xls_pos_session_xls,point_of_sale.group_pos_user,1,0,0,0
+access_sea_report_xls_sale_order_xls,sea_report_xls.sale_order_xls,model_sea_report_xls_sale_order_xls,sales_team.group_sale_salesman,1,0,0,0
+access_sea_report_xls_stock_report_xls,sea_report_xls.stock_report_xls,model_sea_report_xls_stock_report_xls,stock.group_stock_user,1,0,0,0

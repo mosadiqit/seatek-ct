@@ -1,0 +1,2 @@
+Change:
+06/15/2021 : avtive 3rd/active/to_multi_company_stock_location_account

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_dannygreenorder_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="seacorp_purchase_order_extend_report.external_layout_header"/>
+            </t>
+        </t>
+
+    </template>
+    <template id="external_layout_header">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <div class="header">
+            <div class="row">
+                <div class="col-3 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width: 80%;"
+                         alt="Logo"/>
+                </div>
+                <div class="col-9 text-right">
+                    <div style="margin-top:22px; margin-left: 100px; font-size: 26px; color: darkgray; text-transform: uppercase; font-weight: bold;"
+                         t-field="company.report_header" name="moto"/>
+                    <div name="company_address" style="color: dimgray;">
+                        <div t-field="company.partner_id"
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                    </div>
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid lavender;"/>
+            <style>
+                .content_container{
+                height: 1000px;
+                }
+            </style>
+            <div class="content_container">
+                <div class="row" style="color: dimgray; margin-top: 8px;">
+                    <div class="col-6">
+                        <t t-call="seacorp_purchase_order_extend_report.shipping_address"/>
+                    </div>
+                    <div class="col-6 text-right">
+                        <div t-field="o.partner_id"
+                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        <p t-if="o.partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>:
+                            <span t-field="o.partner_id.vat"/>
+                        </p>
+                    </div>
+                </div>
+
+                <div style="font-size: larger; color: #404040">
+                    <h2 t-if="o.state == 'draft'">Yêu cầu báo giá #
+                        <span t-field="o.name"/>
+                    </h2>
+                    <h2 t-if="o.state in ['sent', 'to approve']">Đơn đặt hàng #
+                        <span t-field="o.name"/>
+                    </h2>
+                    <h2 t-if="o.state in ['purchase', 'done']">Xác nhận đơn đặt hàng #
+                        <span t-field="o.name"/>
+                    </h2>
+                    <h2 t-if="o.state == 'cancel'">Hủy đơn đặt hàng #
+                        <span t-field="o.name"/>
+                    </h2>
+                </div>
+                <div id="informations" class="row"
+                     style="margin-top: 14px; margin-bottom: 10px; font-size: small; color: #404040">
+                    <div t-if="o.name" class="col-3 bm-2">
+                        <strong>Mã đơn của chúng tôi:</strong>
+                        <p t-field="o.name" class="m-0"/>
+                    </div>
+                    <div t-if="o.partner_ref" class="col-3 bm-2">
+                        <strong>Your Order Reference:</strong>
+                        <p t-field="o.partner_ref" class="m-0"/>
+                    </div>
+                    <div t-if="o.date_order" class="col-3 bm-2">
+                        <strong>Ngày đặt hàng:</strong>
+                        <p t-field="o.date_order" class="m-0"/>
+                    </div>
+                </div>
+                <style>
+                    .custom-table-line{
+                    width: 100%;
+                    font-size: small;
+                    border-collapse: collapse;
+                    border: 1px solid #202020;
+                    }
+                    .custom-table-line tr {
+                    border-bottom: 1px solid #202020;
+                    }
+                    .custom-table-line td, .custom-table-line th {
+                    border-right: 1px solid #202020;
+                    padding: 2px;
+                    vertical-align: middle;
+                    text-align: center;
+                    }
+
+                </style>
+
+                <table class="custom-table-line">
+                    <thead>
+                        <tr style="border: 1px solid #202020;">
+                            <th class="text-left">
+                                <strong>Mô tả</strong>
+                            </th>
+                            <th>
+                                <strong>Thuế</strong>
+                            </th>
+                            <th class="text-center">
+                                <strong>Ngày YC</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Số lượng</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Đơn giá</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Số tiền(VND)</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.order_line" t-as="line">
+                            <td class="text-left">
+                                <span t-field="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="line.date_planned"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_qty"/>
+                                <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_subtotal"
+                                      t-options='{"widget": "integer"}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="total" class="row justify-content-end">
+                    <div class="col-4" style="margin-top: 5px;">
+                        <table class="table table-sm" style="border: 2px solid #505050;">
+                            <tr class="border-black">
+                                <td>
+                                    <strong>Thành tiền</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"
+                                          t-options='{"widget": "integer"}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Thuế</td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_tax"
+                                          t-options='{"widget": "integer"}'/>
+                                </td>
+                            </tr>
+                            <tr class="border-black o_total">
+                                <td>
+                                    <strong>Tổng</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total"
+                                          t-options='{"widget": "integer"}'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 50px; color: dimgray;">
+                    <div class="row">
+                        <div class="col-6" style="margin-left: 100px;">
+                            <h6 class="font-weight-bold">
+                                Ngày......Tháng......Năm 20....<br/>Bên nhận hàng
+                            </h6>
+                        </div>
+                        <div class="col-6" style="margin-left: 100px;">
+                            <h6 class="font-weight-bold">
+                                Ngày......Tháng......Năm 20....<br/>Bên giao hàng
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: small;">
+                <t t-call="seacorp_purchase_order_extend_report.footer_templates"/>
+            </div>
+        </div>
+    </template>
+    <template id="shipping_address" inherit_id="purchase.report_purchaseorder_document" primary="True">
+        <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+            <strong>Địa chỉ giao hàng:</strong>
+            <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                <span t-field="o.picking_type_id.warehouse_id.name"/>
+                <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                     t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'/>
+            </div>
+        </xpath>
+    </template>
+    <template id="footer_templates" inherit_id="web.external_layout_standard" primary="True">
+        <xpath expr="//div[@class='header']" position="replace">
+
+        </xpath>
+    </template>
+
+    <template id="report_dannygreenorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="seacorp_purchase_order_extend_report.report_dannygreenorder_document"
+                   t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

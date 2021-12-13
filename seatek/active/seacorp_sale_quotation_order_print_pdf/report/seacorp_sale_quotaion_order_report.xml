@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--seacorp_sale_quotation_order_print_pdf-->
+    <data>
+        <report
+                id="seacorp_sale_quotation_order_action_report"
+                string="Quotation / Order"
+                model="sale.order"
+                report_type="qweb-pdf"
+                file="sale.report_saleorder"
+                name="seacorp_sale_quotation_order_print_pdf.seacorp_report_sale_quotation_order"
+                print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
+        <record id="seatek_report_sale_quotation" model="report.paperformat">
+            <field name="name">Seacorp sale quotation paper</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('seacorp_sale_quotation_order_print_pdf.seacorp_sale_quotation_order_action_report'))]"/>
+        </record>
+    </data>
+
+    <template id="seacorp_report_sale_quotation_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="seacorp_sale_quotation_order_print_pdf.seacorp_report_sale_quotation_order_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="seacorp_report_sale_quotation_order_document">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-call="{{company.sale_quotation_order.key}}">
+                <t t-raw="0"/>
+            </t>
+            <!--<t t-if="company.sale_delivery_note" t-call="{{company.sale_delivery_note.key}}">
+                <t t-raw="0"/>
+            </t>
+            <t t-else="else">No selected template</t>-->
+        </div>
+    </template>
+
+    <!--<template id="seatek_sale_report_external_layout">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            &lt;!&ndash; Multicompany &ndash;&gt;
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <t t-call="seatek_sale_report.seatek_sale_report_external_layout_standard">
+            <t t-raw="0"/>
+        </t>
+
+    </template>
+
+    <template id="seatek_sale_report_external_layout_standard">
+        &lt;!&ndash;<div class="header">
+            <div class="row" style="margin-bottom: 0px">
+                <div class="col-3 mb4" style="margin-top: 8px">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 100px;"
+                         alt="Logo"/>
+                </div>
+                &lt;!&ndash;<div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>&ndash;&gt;
+                <div class="col-9 text-right" style="margin-right: 0px">
+                    <h2 class="text-right" style="color: blue;">
+                        <b>SALE QUTATION</b>
+                    </h2>
+                    <div class="col-5" style="float: right;">
+                        <div class="row">
+                            <div class="col-4 text-right">No:</div>
+                            <div class="col-8">
+                                <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                                    <span t-if="doc.state not in ['draft','sent']">Order #</span>
+                                    <span t-if="doc.state in ['draft','sent']">Quotation #</span>
+                                </t>
+                                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                                    <span>Pro-Forma Invoice #</span>
+                                </t>
+                                <span t-field="doc.name"/>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-right">Date:</div>
+                            <div class="col-8" t-field="doc.date_order" t-options='{"format": "dd/MMM/yy"}'/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+                </div>
+            </div>
+        </div>&ndash;&gt;
+
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            &lt;!&ndash;<t t-if="address">
+                <div class="address row">
+                    <t t-if="information_block">
+                        <t t-set="colclass" t-value="'col-5 offset-1'"/>
+                        <div name="information_block" class="col-6">
+                            <t t-raw="information_block"/>
+                        </div>
+                    </t>
+                    <div name="address" t-att-class="colclass">
+                        <t t-raw="address"/>
+                    </div>
+                </div>
+            </t>&ndash;&gt;
+            <t t-raw="0"/>
+        </div>
+
+        &lt;!&ndash;<div class="footer o_standard_footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <li t-if="company.phone" class="list-inline-item">Phone Tú:
+                        <span t-field="company.phone"/>
+                    </li>
+                    <li t-if="company.email" class="list-inline-item">Email:
+                        <span t-field="company.email"/>
+                    </li>
+                    <li t-if="company.website" class="list-inline-item">Web:
+                        <span t-field="company.website"/>
+                    </li>
+                    <li t-if="company.vat" class="list-inline-item"><t
+                            t-esc="company.country_id.vat_label or 'Tax ID'"/>:
+                        <span t-field="company.vat"/>
+                    </li>
+                </ul>
+
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    /
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>&ndash;&gt;
+    </template>-->
+</odoo>

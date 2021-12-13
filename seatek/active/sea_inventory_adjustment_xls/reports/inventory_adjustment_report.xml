@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <report
+                id="inventory_adjustment_report_xls"
+                model="stock.inventory"
+                string="Inventory Adjustment (Excel)"
+                report_type="xlsx"
+                name="sea_inventory_adjustment_xls.inventory_adjustment_xls"
+                file="inventory_adjustment"
+                attachment_use="False"
+        />
+    </data>
+</odoo>

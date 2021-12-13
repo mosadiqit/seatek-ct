@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="inventory_adjustment_report_template">
+        <t t-call="web.html_container">
+            <style>
+                p{margin: 0px;}
+                *{font-family: Times New Roman;}
+            </style>
+                <div style="width:25%; float:left">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+                    style="width: 230px;"
+                    alt="Logo"/>
+                </div>
+                <div style="width: 75%; float: left; margin-bottom: 10px">
+                    <div class="text-center">
+                        <h1>
+                            <b>
+                                <t t-esc="company.name"/>
+                            </b>
+                        </h1>
+                        <strong>
+                            <p style="margin: 0">Mã số thuế:
+                                <span t-field="company.vat"/>
+                            </p>
+                        </strong>
+                        <p style="margin: 0">
+                            <t t-if="company.street">
+                                <span t-field="company.street"/>,
+                            </t>
+                            <t t-if="company.street2">
+                                <span t-field="company.street2"/>,
+                            </t>
+                            <t t-if="company.city">
+                                <span t-field="company.city"/>,
+                            </t>
+                            <t t-if="company.zip">
+                                <span t-field="company.zip"/>,
+                            </t>
+                            <t t-if="company.country_id">
+                                <span t-field="company.country_id.name"/>                            </t>
+                        </p>
+                        <p style="margin: 0">
+                            Phone Number:
+                            <span t-field="company.phone"/>
+                        </p>
+                    </div>
+                </div>
+                <div style="clear:both"/>
+                <div style="height: 6px; width: 100%; border-top: 4px double black; margin: 0 auto"/>
+                <div>
+                    <h4 class="text-center" style="margin: 15px">
+                        <b>INVENTORY ADJUSTMENT</b>
+                    </h4>
+                </div>
+                <div style="text-align: right; margin-right: 10px">
+                    <p style="margin-top:4px">Reference:
+                        <span t-field="doc.name" style="font-weight:bold"/>
+                    </p>
+                </div>
+                <div style="clear:both"/>
+                <style>
+                    .custom-table-line{
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid black;
+                    }
+                    .custom-table-line tr {
+                    border-bottom: 1px solid black;
+                    }
+                    .custom-table-line td, .custom-table-line th {
+                    border-right: 1px solid black;
+                    padding: 3px;
+                    vertical-align: middle;
+                    text-align: center;
+                    }
+                </style>
+                <table class="custom-table-line">
+                    <thead>
+                        <tr style="border-bottom: 0px solid black;">
+                            <td rowspan="2" class="text-center" style="width:150px">
+                                <b>Date</b>
+                            </td>
+                            <td colspan="2" class="text-center">
+                                <b>Product Info</b>
+                            </td>
+                            <td colspan="2" class="text-center">
+                                <b>Theoretical</b>
+                            </td>
+                            <td colspan="2" class="text-center">
+                                <b>Real</b>
+                            </td>
+                            <td colspan="2" class="text-center">
+                                <b>Difference</b>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 0px solid black;">
+                            <td class="text-center" style="width:100px">
+                                Name
+                            </td>
+                            <td class="text-center" style="width:44px">
+                                Unit Price
+                            </td>
+                            <td class="text-center">
+                                Qty
+                            </td>
+                            <td class="text-center">
+                                Inventory Cost
+                            </td>
+                            <td class="text-center">
+                                Qty
+                            </td>
+                            <td class="text-center">
+                                Inventory Cost
+                            </td>
+                            <td class="text-center">
+                                Qty Difference
+                            </td>
+                            <td class="text-center">
+                                Amount Difference
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="line_no" t-value="0"/>
+                        <t t-foreach="doc.line_ids" t-as="line">
+                            <tr>
+                                <td>
+                                    <span t-field="doc.date"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.product_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.product_id.standard_price"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.theoretical_qty"/>
+                                </td>
+                                <td>
+                                    <span t-esc="'{:0,.0f}'.format(round(abs(line.product_id.standard_price*line.theoretical_qty)))"/>
+                                </td>
+                                <td>
+                                    <span t-if="doc.state=='done'">
+                                        <span t-field="line.product_qty"/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span t-if="doc.state=='done'">
+                                        <span t-esc="'{:0,.0f}'.format(round(abs(line.product_id.standard_price*line.product_qty)))"/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span t-if="doc.state=='done'">
+                                        <span t-esc="round(abs(line.theoretical_qty - line.product_qty))"/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span t-if="doc.state=='done'">
+                                        <span t-esc="'{:0,.0f}'.format(round(abs(line.theoretical_qty - line.product_qty)*line.product_id.standard_price))"/>
+                                    </span>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <style>
+                    .center-table{
+                    margin-left: auto;
+                    margin-right: auto;
+                    }
+                </style>
+                <table class="center-table" style="width: 100%; margin-top: 18px;">
+                    <tr>
+                        <td style="text-align:center; width:50%;">
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('Ngày %d tháng %m năm %Y')"/>
+                            <br/>
+                            <strong>Trưởng phòng</strong>
+                            <br/>
+                            <i>(Ký họ, tên)</i>
+                        </td>
+                        <td style="text-align:center; width:50%">
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('Ngày %d tháng %m năm %Y')"/>
+                            <br/>
+                            <strong>Người lập</strong>
+                            <br/>
+                            <i>(Ký họ, tên)</i>
+                        </td>
+                    </tr>
+                </table>
+        </t>
+    </template>
+</odoo>

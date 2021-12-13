@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="seacorp_stock_action_sale_delivery_report"
+                string="Seacorp Delivery Note"
+                model="stock.picking"
+                report_type="qweb-pdf"
+                file="seacorp_sale_delivery_note_print_pdf.report_delivery_note"
+                name="seacorp_sale_delivery_note_print_pdf.report_delivery_note"
+                print_report_name="'Delivery Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+        <record id="seacorp_sale_delivery_note_print_pdf_paper" model="report.paperformat">
+            <field name="name">Seacorp sale delivery note paper</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids"
+                   eval="[(4, ref('seacorp_sale_delivery_note_print_pdf.seacorp_stock_action_sale_delivery_report'))]"/>
+        </record>
+    </data>
+
+    <template id="report_delivery_note">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="seacorp_sale_delivery_note_print_pdf.report_delivery_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_delivery_document">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-call="{{company.sale_delivery_note.key}}">
+                <t t-raw="0"/>
+            </t>
+            <!--<t t-if="company.sale_delivery_note" t-call="{{company.sale_delivery_note.key}}">
+                <t t-raw="0"/>
+            </t>
+            <t t-else="else">No selected template</t>-->
+        </div>
+    </template>
+
+    <!--<template id="seatek_report_sale_delivery_note_document">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                &lt;!&ndash; Multicompany &ndash;&gt;
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <div class="row">
+                <div class="col-3 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 86px;"
+                         alt="Logo"/>
+                </div>
+                &lt;!&ndash;<div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>&ndash;&gt;
+                <div class="col-9 text-right">
+                    <h5 class="text-right" style="color: #000066; margin-right: 24px">
+                        <b>DELIVERY NOTE</b>
+                    </h5>
+                    <div class="col-5" style="float: right;">
+                        <div class="row">
+                            <div class="col-4 text-right">No:</div>
+                            <div class="col-8">
+                                <span t-field="doc.name"/>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-right">Date:</div>
+                            <div class="col-8" t-field="doc.scheduled_date" t-options='{"format": "dd/MMM/yy"}'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            &lt;!&ndash;<t t-set="address">
+                <div t-field="doc.partner_id"
+                     t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'Tax ID'"/>:
+                    <span t-field="doc.partner_id.vat"/>
+                </p>
+            </t>
+            <t t-if="doc.partner_shipping_id == doc.partner_invoice_id
+                             and doc.partner_invoice_id != doc.partner_id
+                             or doc.partner_shipping_id != doc.partner_invoice_id">
+                <t t-set="information_block">
+                    <strong t-if="doc.partner_shipping_id == doc.partner_invoice_id">Invoicing and shipping address:
+                    </strong>
+                    <strong t-if="doc.partner_shipping_id != doc.partner_invoice_id">Invoicing address:</strong>
+                    <div t-field="doc.partner_invoice_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                        <strong>Shipping address:</strong>
+                        <div t-field="doc.partner_shipping_id"
+                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    </t>
+
+                </t>
+            </t>&ndash;&gt;
+            <link rel="stylesheet" href="seatek_sale_order_delivery_note/static/src/css/font.css"/>
+            <style type="text/css">
+                html *{
+                font-family: "Times" !important;
+                }
+                table, ul, p, div{
+                font-size: 13px;
+                }
+                .custom-table-address, .custom-table-line{
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #cccccc;
+                }
+                tr {
+                border-bottom: 1px solid #cccccc;
+                }
+                .custom-table-address tr th {
+                width: 72px;
+                }
+
+                .custom-table-address tr th:nth-child(3) {
+                width: 56px;
+                text-align: right;
+                }
+
+                .custom-table-address td:nth-child(4){
+                width: 256px;
+                }
+                tr:last-child {
+                border-bottom: 0px;
+                }
+                td, th {
+                border-right: 1px solid #cccccc;
+                padding: 3px;
+                vertical-align: middle;
+                }
+                tr td:last-child, th:last-child {
+                border-right: 0px;
+                }
+                .custom-table-line th{
+                text-align:center;
+                vertical-align: middle;
+                }
+                .custom-table-line thead tr:first-child th:first-child{
+                width: 58px;
+                }
+            </style>
+            <t t-set="sale" t-value="doc.sale_id"/>
+            <table class="custom-table-address">
+                <tr>
+                    <th>Deliver to:</th>
+                    <td colspan="3">
+                        <b>
+                            <t t-if="sale.partner_id.is_company == True">
+                                <span t-field="sale.partner_id.name"/>
+                            </t>
+                            <t t-else="else">
+                                <span t-field="sale.partner_id.parent_id.name"/>
+                            </t>
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Add:</th>
+                    <td colspan="3">
+                        <b>
+                            <span t-field="sale.partner_id.street"/>
+                            -
+                            <span t-field="sale.partner_id.city"/>
+                            -
+                            <span t-field="sale.partner_id.country_id.name"/>
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tel:</th>
+                    <td>
+                        <t t-if="sale.partner_id.type == company">
+                            <span t-field="sale.partner_id.phone"/>
+                        </t>
+                        <t t-else="">
+                            <span t-field="sale.partner_id.parent_id.phone"/>
+                        </t>
+                    </td>
+                    <th>Fax:</th>
+                    <td/>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>
+                        <span t-field="sale.customer_partner_id.email"/>
+                    </td>
+                    <th>Attn:</th>
+                    <td>
+                        <span t-field="sale.customer_partner_id.name"/>
+                        /
+                        <span t-field="sale.customer_partner_id.phone"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="vertical-align: middle;">Vessel:</th>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <span t-field="sale.partner_id.name"/>
+                    </td>
+                    <th>Vessel<br/>PIC:
+                    </th>
+                    <td>
+                        <span t-field="sale.customer_partner_id.name"/>
+                        /
+                        <span t-field="sale.customer_partner_id.phone"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table class="custom-table-address">
+                <tr>
+                    <th>Invoice to:</th>
+                    <td colspan="3" style="border-right: 1px solid #cccccc;">
+                        <b>
+                            <span t-field="sale.partner_invoice_id.name"/>
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Add:</th>
+                    <td colspan="3" style="border-right: 1px solid #cccccc;">
+                        <b>
+                            <span t-field="sale.partner_invoice_id.street"/>
+                            -
+                            <span t-field="sale.partner_invoice_id.city"/>
+                            -
+                            <span t-field="sale.partner_invoice_id.country_id.name"/>
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tax code:</th>
+                    <td style="border-right: 1px solid #cccccc;">
+                        &lt;!&ndash;<span t-field="sale.user_id.company_id.phone"/>&ndash;&gt;
+                    </td>
+                    &lt;!&ndash;<th>
+                        <span>Fax:</span>
+                    </th>&ndash;&gt;
+                </tr>
+            </table>
+            <br/>
+            <p>
+                <u>
+                    <b>Good's general description:</b>
+                </u>
+            </p>
+
+            <div class="page">
+                <table class="custom-table-line">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="text-center" style="width:72px">Line's No</th>
+                            <th colspan="2">Items</th>
+                            <th rowspan="2" style="width:56px">Unit</th>
+                            <th rowspan="2" style="width:102px">Qty</th>
+                            <th rowspan="2" style="width:154px">Remarks</th>
+                        </tr>
+                        <tr style="border-bottom: 0px solid #cccccc;">
+                            <th class="text-center">Code</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="move_no" t-value="0"/>
+                        <t t-foreach="doc.move_ids_without_package" t-as="move">
+                            <t t-set="move_no" t-value="move_no + 1"/>
+                            <tr style="text-align: right">
+                                <td class="text-center">
+                                    <span t-esc="move_no"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="move.product_id.default_code"/>
+                                </td>
+                                <td class="text-left">
+                                    <span t-field="move.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="move.product_uom" groups="uom.group_uom"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="move.quantity_done"/>
+                                </td>
+                                <td>
+                                    <span t-field="move.remarks"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/>
+                <table style="width: 100%; border-collapse: collapse; border: 1px solid #cccccc; vertical-align: middle; text-align: center">
+                    <tr>
+                        <th style="border-right: none; width: 33.33%">Store</th>
+                        <th style="border-right: none; width: 33.33%">Sale</th>
+                        <th style="width: 33.33%">Delivery</th>
+                        <th style="min-width: 312px">
+                            <b>
+                                <u>RECEIVER (Người nhận hàng)</u>
+                            </b>
+                        </th>
+                    </tr>
+                    <tr style="height: 200px; ">
+                        <td colspan="3"></td>
+                        <td style="vertical-align: top">
+                            <i>Chúng tôi xác nhận đã nhận đủ hàng theo đúng chất lượng và số lượng như yêu cầu (we
+                                confirmed that we received the goods with exact quality and quantity as required)
+                            </i>
+                        </td>
+                    </tr>
+                </table>
+                <div class="oe_structure"/>
+            </div>
+        </div>
+    </template>-->
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="date_order"/>
+            </field>
+            <field name="partner_id" position="before">
+                <field name="warehouse_id" groups="stock.group_stock_multi_locations"/>
+                <field name="payment_term_id"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="client_order_ref"/>
+            </field>
+            <field name="user_id" position="after">
+                <field name="team_id"/>
+            </field>
+            <xpath expr="//field[@name='expected_date']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <field name="expected_date" position="after">
+                <field name="effective_date"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="sea_view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="activities_my" position="before">
+                <filter string="Commitment Date" name="filter_commitment_date" date="commitment_date"/>
+                <separator/>
+                <filter string="Effective Date" name="filter_effective_date" date="effective_date"/>
+                <separator/>
+            </filter>
+            <filter name="order_month" position="after">
+                <filter string="Commitment Date" name="commitment_month" domain="[]"
+                        context="{'group_by':'commitment_date'}"/>
+                <filter string="Effective Date" name="effective_month" domain="[]"
+                        context="{'group_by':'effective_date'}"/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

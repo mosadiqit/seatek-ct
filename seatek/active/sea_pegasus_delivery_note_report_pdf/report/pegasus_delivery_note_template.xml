@@ -1,0 +1,390 @@
+<odoo>
+    <template id="pegasus_delivery_note_template">
+        <div>
+            <div class="row">
+                <div class="col-3 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 86px;"
+                         alt="Logo"/>
+                </div>
+                <div class="col-9 text-right">
+                    <div class="text-right" style="margin-right: 24px; font-size: 16px;">PM-QT-12.02 (04-01/12/2019)
+                    </div>
+                    <h5 class="text-right" style="margin-right: 40px; margin-top: 20px;">
+                        <strong style="font-size: 25px">DELIVERY NOTE</strong>
+                    </h5>
+                </div>
+            </div>
+            <br/>
+            <table class="custom-table-line">
+                <tr>
+                    <th>Dispatched Date</th>
+                    <th style="width: 130px;">Mode of Delivery</th>
+                    <th>Total of pages</th>
+                    <th style="width: 380px">Deliver Note No.</th>
+                </tr>
+                <tr>
+                    <th>
+                        <span t-field="doc.date_done" t-options='{"format": "dd/MMM/yy"}'/>
+                    </th>
+                    <th/>
+                    <th/>
+                    <th>
+                        <t t-if="doc.partner_id.sea_business_code">
+                            <t t-esc="doc.origin + '.'+ doc.partner_id.sea_business_code"/>
+                        </t>
+                        <t t-else="">
+                            <t t-esc="doc.origin"/>
+                        </t>
+                        <span>/<t t-esc="doc.scheduled_date" t-options='{"widget":"date","format":"yyyy"}'/>/PGH-PMD
+                        </span>
+                    </th>
+                </tr>
+            </table>
+            <br/>
+            <table class="custom-table-line">
+                <tr>
+                    <th>
+                        <u>Invoice To:</u>
+                    </th>
+                    <td>
+                        <b>
+                            <!--<t t-foreach="request.env['sale.order'].search([('name', '=', o.origin)])"
+                               t-as="obj">
+                                <span t-esc="obj.partner_invoice_id.name"/>
+                            </t>-->
+                            <t t-if="doc.partner_id.is_company == True">
+                                <span t-field="doc.partner_id.name"/>
+                            </t>
+                            <t t-else="else">
+                                <span t-field="doc.partner_id.parent_id.name"/>
+                            </t>
+                        </b>
+                    </td>
+                    <th style="width: 105px;">
+                        <u>Deliver To:</u>
+                    </th>
+                    <td style="width: 275px;">
+                        <b>
+                            <!--<t t-foreach="request.env['sale.order'].search([('name', '=', o.origin)])"
+                               t-as="obj">
+                                <span t-esc="obj.partner_shipping_id.name"/>
+                            </t>-->
+                            <t t-if="doc.partner_id.is_company == True">
+                                <span t-field="doc.partner_id.name"/>
+                            </t>
+                            <t t-else="">
+                                <span t-field="doc.partner_id.parent_id.name"/>
+                            </t>
+                        </b>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>Add:</th>
+                    <td>
+                        <t t-foreach="request.env['sale.order'].search([('name', '=', doc.origin)])"
+                           t-as="obj">
+                            <span>
+                                <span t-field="obj.partner_invoice_id.street"/>
+                                ,
+                            </span>
+                            <t t-if="obj.partner_invoice_id.state_id.name">
+                                <span>
+                                    <span t-field="obj.partner_invoice_id.state_id.name"/>
+                                    ,
+                                </span>
+                            </t>
+                            <span t-field="obj.partner_invoice_id.country_id.name"/>.
+                        </t>
+                        <!--<span><span t-field="doc.partner_id.street"/>,
+                        </span>
+                        <t t-if="doc.partner_id.state_id.name">
+                            <span><span t-field="doc.partner_id.state_id.name"/>,
+                            </span>
+                        </t>
+                        <span t-field="doc.partner_id.country_id.name"/>.-->
+                    </td>
+                    <th>Add:</th>
+                    <td>
+                        <t t-foreach="request.env['sale.order'].search([('name', '=', doc.origin)])"
+                           t-as="obj">
+                            <t t-if="obj.sea_temp_delivery_address">
+                                <t t-esc="obj.sea_temp_delivery_address"/>
+                            </t>
+                            <t t-else="">
+                                <span>
+                                    <span t-field="obj.partner_shipping_id.street"/>
+                                    ,
+                                </span>
+                                <t t-if="obj.partner_shipping_id.state_id.name">
+                                    <span>
+                                        <span t-field="obj.partner_shipping_id.state_id.name"/>
+                                        ,
+                                    </span>
+                                </t>
+                                <span t-field="obj.partner_shipping_id.country_id.name"/>.
+                            </t>
+                        </t>
+                        <!--<span><span t-field="doc.partner_id.street"/>,
+                        </span>
+                        <t t-if="doc.partner_id.state_id.name">
+                            <span><span t-field="doc.partner_id.state_id.name"/>,
+                            </span>
+                        </t>
+                        <span t-field="doc.partner_id.country_id.name"/>.-->
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tax code:</th>
+                    <td>
+                        <span t-field="doc.partner_id.vat"/>
+                    </td>
+                    <th>Attn:</th>
+                    <td>
+                        <t t-foreach="request.env['sale.order'].search([('name', '=', doc.origin)])"
+                           t-as="o">
+                            <t t-if="o.sea_temp_contact">
+                                <t t-esc="o.sea_temp_contact"/>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="request.env['res.partner'].search([('parent_id', '=', doc.partner_id.id)])"
+                                   t-as="obj">
+                                    <t t-if="not obj.custom_type_id.name and obj.parent_id and obj.type == 'contact'">
+                                        <t t-esc="str(obj.name) + ' / ' + str(obj.mobile)"/>
+                                    </t>
+                                </t>
+                            </t>
+                        </t>
+                    </td>
+                </tr>
+            </table>
+
+            <style type="text/css">
+                html *{
+                font-family: "Times" !important;
+                }
+                table, ul, p, div{
+                font-size: 13px;
+                }
+                .custom-table-address, .custom-table-line, .custom-table-delivery{
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid black;
+                }
+                tr {
+                border-bottom: 1px solid black;
+                }
+                .custom-table-delivery tr th:first-child{
+                width: 100px;
+                }
+                .custom-table-address tr th:first-child {
+                width: 100px;
+                }
+                tr:last-child {
+                border-bottom: 0px;
+                }
+                td, th {
+                border-right: 1px solid black;
+                padding: 3px;
+                vertical-align: middle;
+                }
+                tr td:last-child, th:last-child {
+                border-right: 0px;
+                }
+                .custom-table-line th{
+                text-align:center;
+                vertical-align: middle;
+                }
+                .custom-table-line tr:first-child th:first-child{
+                width: 100px;
+                }
+
+                .custom-table-line thead tr:nth-child(2) th:first-child{
+                width: 100px;
+                }
+
+            </style>
+            <t t-set="sale" t-value="doc.sale_id"/>
+            <div style="border: 1px solid; height: 30px; margin-top: 10px; margin-bottom: 10px; line-height: 30px;">
+                <span>
+                    <b>
+                        <u style="margin-left: 5px;">Good's general description:</u>
+                    </b>
+                    <i style="margin-left: 5px;">Nautical Charts &amp; Publications</i>
+                </span>
+            </div>
+            <div class="page">
+                <table class="custom-table-line" style="border: 0px;">
+                    <thead>
+                        <tr style="background: #CCFFFF; border: 1px solid">
+                            <th colspan="3">Customer’s reference:</th>
+                            <th rowspan="2" colspan="3">Pegasus's Order Ref. No.</th>
+                        </tr>
+                        <tr style="background: #CCFFFF; border: 1px solid">
+                            <th>Order No.</th>
+                            <th style="width: 130px;">Order Date</th>
+                            <th style="border: 1px solid;">Ship’s name</th>
+                        </tr>
+                        <tr style="border: 1px solid;">
+                            <th>
+                                <t t-foreach="request.env['sale.order'].search([('name', '=', doc.origin)])"
+                                   t-as="obj">
+                                    <span t-esc="obj.sea_customer_po_no"/>
+                                </t>
+                            </th>
+                            <th>
+                                <t t-foreach="request.env['sale.order'].search([('name', '=', doc.origin)])"
+                                   t-as="obj">
+                                    <span t-esc="obj.date_order" t-options='{"widget": "date","format": "dd/MMM"}'/>
+                                </t>
+                            </th>
+                            <th>
+                                <t t-foreach="request.env['sale.order'].search([('name', '=', doc.origin)])"
+                                   t-as="obj">
+                                    <t t-if="obj.sea_ship_partner_id.name">
+                                        <span t-esc="obj.sea_ship_partner_id.name"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-if="doc.partner_id.is_company == True">
+                                            <span t-field="doc.partner_id.name"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-field="doc.partner_id.parent_id.name"/>
+                                        </t>
+                                    </t>
+                                </t>
+                            </th>
+                            <th colspan="3">
+                                <span t-esc="doc.origin"/>
+                            </th>
+                        </tr>
+                        <tr style="border: 0px;">
+                            <th colspan="6" style="height: 20px;"/>
+                        </tr>
+                        <tr style="background: #CCFFFF; border: 1px solid">
+                            <th rowspan="2">Line's No</th>
+                            <th colspan="2">Items</th>
+                            <th rowspan="2" style="width:105px">Unit</th>
+                            <th rowspan="2" style="width:110px">Qty</th>
+                            <th rowspan="2" style="width:165px">Remarks</th>
+                        </tr>
+                        <tr style="border: 1px solid; background: #CCFFFF;">
+                            <th class="text-center">Code</th>
+                            <th style="border: 1px solid;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border: 1px solid">
+                        <t t-set="move_no" t-value="0"/>
+                        <t t-foreach="doc.move_ids_without_package" t-as="move">
+                            <t t-set="move_no" t-value="move_no + 1"/>
+                            <tr style="text-align: right">
+                                <td class="text-center">
+                                    <span t-esc="move_no"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="move.product_id.default_code"/>
+                                </td>
+                                <td class="text-left">
+                                    <t t-if="move.product_id.type == 'service' and move.product_id.categ_id.name == 'Admiralty Vertor Chart Service'">
+                                        <t t-esc="move.product_id.sea_product_variant_name"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="move.product_id.name"/>
+                                    </t>
+                                </td>
+                                <!--<td class="text-left">
+                                    <span t-field="move.name"/>
+                                </td>-->
+                                <td class="text-center">
+                                    <t t-if="move.product_uom">
+                                        <t t-set="unit" t-value="'Pc'"/>
+                                        <t t-esc="unit"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="move.quantity_done" t-options="{'widget': 'integer'}"/>
+                                </td>
+                                <td>
+                                    <span t-field="move.remarks"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/>
+                <!--<table style="width: 100%; border-collapse: collapse; border: 1px solid #cccccc; vertical-align: middle; text-align: center">
+                    <tr>
+                        <th style="border-right: none; width: 33.33%">Store</th>
+                        <th style="border-right: none; width: 33.33%">Sale</th>
+                        <th style="width: 33.33%">Delivery</th>
+                        <th style="min-width: 312px">
+                            <b>
+                                <u>RECEIVER (Người nhận hàng)</u>
+                            </b>
+                        </th>
+                    </tr>
+                    <tr style="height: 200px; ">
+                        <td colspan="3"></td>
+                        <td style="vertical-align: top">
+                            <i>Chúng tôi xác nhận đã nhận đủ hàng theo đúng chất lượng và số lượng như yêu cầu (we
+                                confirmed that we received the goods with exact quality and quantity as required)
+                            </i>
+                        </td>
+                    </tr>
+                </table>-->
+
+
+                <!--<div style="font-size: small;">
+                    <t t-call="sea_pegasus_delivery_note_report_pdf.footer_templates"/>
+                </div>-->
+                <div class="footer o_standard_footer" style="text-align: center">
+                    <table style="width: 100%; text-align: center">
+                        <tr style="text-align: center">PEGASUS Vietnam -159 Tran Trong Cung, TTD Ward, Dist.7, HCMC-T: 08.37734974 - F: 08.37734972</tr>
+                        <tr>
+                            <td style="width: 25%">Store/ Acc.</td>
+                            <td style="width: 25%">Delivery</td>
+                            <td style="width: 25%">Sale</td>
+                            <td style="width: 25%">Receiver</td>
+                        </tr>
+                    </table>
+                    <!--<div class="text-center" style="border-top: 1px solid black;">
+                        <ul class="list-inline mb4">
+                            <li t-if="company.phone" class="list-inline-item">Phone:
+                                <span t-field="company.phone"/>
+                            </li>
+                            <li t-if="company.email" class="list-inline-item">Email:
+                                <span t-field="company.email"/>
+                            </li>
+                            <li t-if="company.website" class="list-inline-item">Web:
+                                <span t-field="company.website"/>
+                            </li>
+                            <li t-if="company.vat" class="list-inline-item"><t
+                                    t-esc="(company.country_id.vat_label or 'Tax ID').replace(' ','\N{NO-BREAK SPACE}')"/>
+                                :
+                                <span t-esc="company.vat.replace(' ','\N{NO-BREAK SPACE}')"/>
+                            </li>
+                        </ul>
+
+                        <div name="financial_infos">
+                            <span t-field="company.report_footer"/>
+                        </div>
+
+                    </div>-->
+                </div>
+                <div class="oe_structure"/>
+            </div>
+        </div>
+        <!--<div class="footer text-center">
+            Page:
+            <span class="page"/>
+            of
+            <span class="topage"/>
+        </div>-->
+    </template>
+    <template id="footer_templates" inherit_id="web.external_layout_standard" primary="True">
+        <xpath expr="//div[@class='header']" position="replace">
+
+        </xpath>
+    </template>
+</odoo>
+

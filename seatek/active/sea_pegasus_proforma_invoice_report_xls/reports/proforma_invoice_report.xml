@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="sea_pegasus_proforma_invoice_report_xls"
+            model="sale.order"
+            string="Pegasus PRO-FORMA Invoice - Excel"
+            report_type="xlsx"
+            name="sea_pegasus_proforma_invoice_xls.proforma_invoice_xls"
+            file="sea_pegasus_proforma_invoice_xls.proforma_invoice_xls"
+            attachment_use="False"
+            print_report_name="(object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Proforma Invoice - %s' % (object.name))"
+        />
+    </data>
+</odoo>

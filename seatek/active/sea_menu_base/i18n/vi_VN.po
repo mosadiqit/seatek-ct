@@ -1,0 +1,116 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sea_menu_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-09 06:29+0000\n"
+"PO-Revision-Date: 2020-04-09 06:29+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__company_id
+msgid "Company"
+msgstr "Công ty"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__create_uid
+msgid "Created by"
+msgstr "Được tạo bởi"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__create_date
+msgid "Created on"
+msgstr "Thời điểm tạo"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: sea_menu_base
+#: model:ir.ui.menu,name:sea_menu_base.menu_item_finance
+msgid "Finance"
+msgstr "Tài chính"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__id
+msgid "ID"
+msgstr "ID"
+
+#. module: sea_menu_base
+#: model:ir.ui.menu,name:sea_menu_base.menu_item_stock
+msgid "Inventory"
+msgstr "Kho"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash____last_update
+msgid "Last Modified on"
+msgstr "Sửa lần cuối vào"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối vào"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,field_description:sea_menu_base.field_sea_menu_base_dash__logo
+msgid "Logo"
+msgstr "Biểu tượng"
+
+#. module: sea_menu_base
+#: model:ir.actions.act_window,name:sea_menu_base.sea_menu_action
+#: model:ir.ui.menu,name:sea_menu_base.sea_menu_reports
+#: model_terms:ir.ui.view,arch_db:sea_menu_base.sea_menu_base_default_form
+msgid "OpenSea"
+msgstr "OpenSea"
+
+#. module: sea_menu_base
+#: model:ir.model,name:sea_menu_base.model_sea_menu_base_dash
+msgid "Opensea Menu"
+msgstr "Danh mục OpenSea"
+
+#. module: sea_menu_base
+#: model:ir.ui.menu,name:sea_menu_base.menu_item_pos
+msgid "Point of Sale"
+msgstr "Điểm bán lẻ"
+
+#. module: sea_menu_base
+#: model:ir.ui.menu,name:sea_menu_base.menu_item_mrp
+msgid "Production"
+msgstr "Sản xuất"
+
+#. module: sea_menu_base
+#: model:ir.ui.menu,name:sea_menu_base.menu_item_purchase
+msgid "Purchase"
+msgstr "Mua hàng"
+
+#. module: sea_menu_base
+#: model:ir.ui.menu,name:sea_menu_base.menu_item_sale
+msgid "Sale"
+msgstr "Bán hàng"
+
+#. module: sea_menu_base
+#: model_terms:ir.actions.act_window,help:sea_menu_base.sea_menu_action
+msgid "Select the menu you want to receive the report\n"
+"                    <br>"
+msgstr "Hãy chọn danh mục nào mà bạn muốn lấy Báo cáo.\n"
+"                    <br>"
+
+#. module: sea_menu_base
+#: model:ir.model.fields,help:sea_menu_base.field_sea_menu_base_dash__logo
+msgid "This field holds the image used as avatar for this contact, limited to 1024x1024px"
+msgstr "Trường này lưu hình dùng làm hình đại diện của liên hệ, giới hạn là  1024x1024px"
+

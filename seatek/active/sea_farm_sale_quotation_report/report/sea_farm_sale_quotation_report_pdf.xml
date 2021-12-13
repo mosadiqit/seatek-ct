@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="sea_farm_sale_quotation_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="sea_farm_sale_quotation_report.sea_farm_sale_quotation_header_layout">
+                    <div style="clear: both;"/>
+                    <div style="margin-top: 20px;">
+                        <h4 class="text-center">
+                            <strong>BẢNG BÁO GIÁ</strong>
+                        </h4>
+                    </div>
+                    <table class="equalDivide" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td width="50%">
+                                <div>Ngày:
+                                    <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div></div>
+                            </td>
+                            <td width="50%">
+                                <div>
+                                    <t t-if="o.name">
+                                        Số: BG
+                                        <t t-esc="o.name[2:]"/>
+                                    </t>
+                                    <!--<t t-esc="o.date_order" t-options='{"widget":"date","format":"MM"}'/>
+                                    <t t-esc="o.date_order" t-options='{"widget":"date","format":"yyyy"}'/>- -->
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="clear: both;"/>
+                    <div style="margin-top: 15px;">
+                        <span>Đơn vị tiếp nhận:
+                            <span t-field="o.partner_id.name"/>
+                        </span>
+                    </div>
+                    <div>
+                        <span>Địa chỉ:
+                            <span>
+                                <t t-if="o.partner_id.street">
+                                    <span t-field="o.partner_id.street"/>,
+                                </t>
+                            </span>
+                            <t t-if="o.partner_id.state_id.name">
+                                <span>
+                                    <span t-field="o.partner_id.state_id.name"/>,
+                                </span>
+                            </t>
+                            <t t-if="o.partner_id.country_id.name">
+                                <span t-field="o.partner_id.country_id.name"/>.
+                            </t>
+                        </span>
+                    </div>
+                    <div>
+                        <span>Mã số thuế:
+                            <span t-field="o.partner_id.vat"/>
+                        </span>
+                    </div>
+                    <div>
+                        <div class="float-left" style="width: 50%">
+                            <div>Người nhận:
+                                <t t-foreach="request.env['res.partner'].search([('parent_id', '=', o.partner_id.id)])"
+                                   t-as="obj">
+                                    <t t-if="obj.parent_id and obj.type == 'contact'">
+                                        <span t-esc="obj.name"/>
+                                    </t>
+                                </t>
+                            </div>
+                            <div>Số điện thoại:
+                                <t t-foreach="request.env['res.partner'].search([('parent_id', '=', o.partner_id.id)])"
+                                   t-as="obj">
+                                    <t t-if="obj.parent_id and obj.type == 'contact'">
+                                        <span t-esc="obj.phone"/>
+                                    </t>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="float-left" style="width: 50%; margin-bottom: 15px;">
+                            <div>
+                                <span>Người gửi:
+                                    <t t-if="o.sea_temp_contact">
+                                        <t t-esc="o.sea_temp_contact"/>
+                                    </t>
+                                </span>
+                            </div>
+                            <div>
+                                <span>Điện thoại:
+                                    <t t-if="o.sea_customer_inquiry_no">
+                                        <t t-esc="o.sea_customer_inquiry_no"/>
+                                    </t>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-call="sea_farm_sale_quotation_report.sea_farm_sale_quotation_table_layout"/>
+                    <div>
+                        <div>
+                            <u>
+                                <strong>Ghi chú</strong>
+                            </u>
+                        </div>
+                        <div style="margin-left: 20px">
+                            <li>Bảng báo giá có hiệu lực trong vòng 10 ngày.</li>
+                            <li>
+                                Địa điểm giao hàng:
+                                <t t-if="o.sea_temp_delivery_address">
+                                    <t t-esc="o.sea_temp_delivery_address"/>
+                                </t>
+                            </li>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="text-center" width="100%">
+                        <tr style="vertical-align: top; height: 180px">
+                            <td width="50%">
+                                <div>
+                                    <strong>XÁC NHẬN MUA HÀNG</strong>
+                                </div>
+                            </td>
+                            <td width="50%">
+                                <div>
+                                    <strong>BÊN CHÀO GIÁ</strong>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

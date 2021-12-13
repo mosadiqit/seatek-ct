@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- actions -->
+    <record id="ticket_action_from_dashboard" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">acs.support.ticket</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{
+            'default_team_id': active_id,
+        }</field>
+        <field name="domain">[('team_id', '=', active_id)]</field>
+    </record>
+
+    <record id="sheduled_ticket_action" model="ir.actions.act_window">
+        <field name="name">Sheduled Tickets</field>
+        <field name="res_model">acs.support.ticket</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{
+            'default_team_id': active_id,
+        }</field>
+        <field name="domain">[('team_id', '=', active_id),('schedule_date','!=',False)]</field>
+    </record>
+
+    <!-- Team -->
+
+    <record id="support_team_form_view" model="ir.ui.view">
+        <field name="name">support.team.form</field>
+        <field name="model">support.team</field>
+        <field name="arch" type="xml">
+            <form string="Support Team">
+                <sheet>  
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(rating_rating_action_view_team_rating_ticket)d"
+                            attrs="{'invisible': [('percentage_satisfaction_ticket', '=', -1)]}"
+                            class="oe_stat_button oe_percent"
+                            type="action"
+                            icon="fa-smile-o">
+                            <field string="% On Tickets" name="percentage_satisfaction_ticket" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"
+                               string="Support Team"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <div name="options_active"/>
+                        <group>
+                            <group>
+                                <field name="sequence"/>
+                            </group>
+                            <group/>
+                        </group>
+                    </div>
+                    <notebook>
+                        <page name="members" string="Team Members">
+                            <field name="member_ids"
+                                   widget="many2many_kanban">
+                                <kanban quick_create="false" create="true"
+                                        delete="true">
+                                    <field name="id"/>
+                                    <field name="image_small"/>
+                                    <field name="name"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click"
+                                                 style="position: relative">
+                                                <a t-if="!read_only_mode"
+                                                   type="delete"
+                                                   class="fa fa-times pull-right"/>
+                                                <div class="oe_module_vignette">
+                                                    <img t-att-src="kanban_image('res.users', 'image_small', record.id.value)"
+                                                         class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                                    <div class="oe_module_desc">
+                                                        <field name="name"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="support_team_tree_view" model="ir.ui.view">
+        <field name="name">support.team.tree</field>
+        <field name="model">support.team</field>
+        <field name="arch" type="xml">
+            <tree string="Support Team">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="support_team_kanban" model="ir.ui.view">
+        <field name="name">support.team.kanban</field>
+        <field name="model">support.team</field> <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard o_support_team_kanban" create="0">
+                <field name="name"/>
+                <field name="color"/>
+                <field name="todo_ticket_ids"/>
+                <field name="todo_ticket_count"/>
+                <field name="todo_ticket_count_date"/>
+                <field name="todo_ticket_count_high_priority"/>
+                <field name="todo_ticket_count_block"/>
+                <field name="todo_ticket_count_unscheduled"/>
+                <field name="percentage_satisfaction_team" invisible="1"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click o_has_icon">
+                            <div t-attf-class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <a name="%(ticket_action_from_dashboard)d" type="action">
+                                            <field name="name"/>
+                                        </a></div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" /></a>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_left">
+                                        <button class="btn btn-primary" name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_todo': 1}">
+                                            <t t-esc="record.todo_ticket_count.value"/> To Do
+                                        </button>
+                                        <div class="mt8 text-primary" title="Percentage of happy ratings over the past 30 days. Get rating details from the More menu.">
+                                            <b>
+                                                <t t-if="record.percentage_satisfaction_team.value == -1">
+                                                    <i class="fa fa-smile-o"/> No rating yet
+                                                </t>
+                                                <t t-if="record.percentage_satisfaction_team.value != -1">
+                                                    <a name="action_view_all_rating" type="object" context="{'search_default_rating_last_30_days':1}">
+                                                        <i class="fa fa-smile-o"/> <t t-esc="record.percentage_satisfaction_team.value"/>%
+                                                    </a>
+                                                </t>
+                                            </b>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 o_kanban_primary_right">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <a name="%(sheduled_ticket_action)d" type="action">
+                                                    Scheduled
+                                                </a>
+                                            </div>
+                                            <div class="col-3">
+                                                <t t-esc="record.todo_ticket_count_date.value"/>
+                                            </div>
+                                            <div class="col-9">
+                                                <a name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_top_priority': 1}">
+                                                    Top Priorities
+                                                </a>
+                                            </div>
+                                            <div class="col-3">
+                                                <t t-esc="record.todo_ticket_count_high_priority.value"/>
+                                            </div>
+                                            <div class="col-9">
+                                                <a name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_kanban_state_block': 1}">
+                                                    Blocked
+                                                </a>
+                                            </div>
+                                            <div class="col-3">
+                                                <t t-esc="record.todo_ticket_count_block.value"/>
+                                            </div>
+                                            <div class="col-9">
+                                                <a name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_unscheduled': 1}">
+                                                    Unscheduled
+                                                </a>
+                                            </div>
+                                            <div class="col-3">
+                                                <t t-esc="record.todo_ticket_count_unscheduled.value"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <div class="row">
+                                    <div class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                        <div role="menuitem">
+                                            <a type="edit">Edit</a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a name="%(ticket_action_from_dashboard)d" type="action">
+                                                All
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_todo': 1}">
+                                                To Do
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_progress': 1}">
+                                                In Progress
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a name="%(ticket_action_from_dashboard)d" type="action" context="{'search_default_done': 1}">
+                                                Done
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a name="action_view_all_rating" type="object">
+                                                Customer Ratings
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                    <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                                        <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="support_team_dashboard" model="ir.actions.act_window">
+        <field name="name">Supports Team</field>
+        <field name="res_model">support.team</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+
+    <record id="action_support_team" model="ir.actions.act_window">
+        <field name="name">Supports Team</field>
+        <field name="res_model">support.team</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

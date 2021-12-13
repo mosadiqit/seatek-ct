@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="sea_pegasus_sale_quotation_report_xls"
+                model="sale.order"
+                string="Pegasus Sale Quotation - Excel"
+                report_type="xlsx"
+                name="sea_pegasus_sale_quotation.sale_quotation_xls"
+                file="sea_pegasus_sale_quotation.sale_quotation_xls"
+                attachment_use="False"
+                print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name) or
+                'Sale Quotation - %s' % (object.name))"
+        />
+    </data>
+</odoo>

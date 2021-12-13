@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="sc_stock_sale_delivery_templates">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="sea_stock_pdf_reports.sc_stock_sale_header_layout">
+                    <div style="clear: both;"/>
+                    <h4 class="text-center">
+                        <strong>PHIẾU XUẤT KHO KIÊM GIAO NHẬN HÀNG HÓA</strong>
+                    </h4>
+                    <t t-set="sale" t-value="o.sale_id"/>
+                    <div style="position: relative;">
+                        <div style="position: absolute; text-align:center; width:100%">
+                            <span t-esc="sale.get_commitment_date()"/>
+                        </div>
+                        <div style="position: absolute; right: 0px;">
+                            <div>
+                                <strong>Số:
+                                    <span t-field="o.name"/>
+                                </strong>
+                            </div>
+                            <t t-if="sale">
+                                <div>
+                                    <strong>Đơn hàng:
+                                        <span t-field="sale.name"/>
+                                    </strong>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div style="clear: both;"/>
+                    <t t-set="sale" t-value="o.sale_id"/>
+                    <t t-if="sale">
+                        <div style="margin-top:56px;">
+                            <strong>Bên nhận:
+                                <span t-field="sale.partner_shipping_id"/>
+                            </strong>
+                        </div>
+                        <div>
+                            <strong>
+                                Địa chỉ:
+                                <t t-if="sale.partner_shipping_id.street">
+                                    <span t-field="sale.partner_shipping_id.street"/>,
+                                </t>
+                                <t t-if="sale.partner_shipping_id.street2">
+                                    <span t-field="sale.partner_shipping_id.street2"/>,
+                                </t>
+                                <t t-if="sale.partner_shipping_id.city">
+                                    <span t-field="sale.partner_shipping_id.city"/>
+                                </t>
+                            </strong>
+                        </div>
+                        <div>
+                            <div style="width:60%; float:left">
+                                <p style="margin: 0"><strong>Kho xuất: <span t-field="sale.warehouse_id.name"/></strong></p>
+                            </div>
+                            <div style="width:40%; float:left" class="text-right">
+                                <p style="margin: 0"><strong>Thanh toán: <span t-field="sale.payment_term_id"/></strong></p>
+                            </div>
+                        </div>
+                        <div style="clear: both;"/>
+                        <style>
+                            .custom-table-line{
+                            width: 100%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            }
+                            .custom-table-line tr {
+                            border-bottom: 1px solid black;
+                            }
+                            .custom-table-line td, .custom-table-line th {
+                            border-right: 1px solid black;
+                            padding: 2px;
+                            vertical-align: middle;
+                            text-align: center;
+                            }
+                        </style>
+
+                        <!--<table style="width:100%; border-collapse: collapse; margin-top:12px">
+                            <tr>
+                                <td style="vertical-align: middle; width:180px">Yêu cầu từ khách hàng:</td>
+                                <td style="vertical-align: middle;">Xuất hóa đơn</td>
+                                <td style="vertical-align: middle; width:180px">
+                                    <div style="width:24px; height:24px; border:1px solid black;"/>
+                                </td>
+                                <td style="vertical-align: middle;">Không Xuất hóa đơn</td>
+                                <td style="vertical-align: middle; width:180px">
+                                    <div style="width:24px; height:24px; border:1px solid black;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;">Hình thức thanh toán:</td>
+                                <td style="vertical-align: middle;">Công nợ</td>
+                                <td style="vertical-align: middle;">
+                                    <div style="width:24px; height:24px; border:1px solid black;"/>
+                                </td>
+                                <td style="vertical-align: middle;">Tiền mặt</td>
+                                <td style="vertical-align: middle;">
+                                    <div style="width:24px; height:24px; border:1px solid black;"/>
+                                </td>
+                            </tr>
+                        </table>-->
+                        <div class="page">
+                            <table class="custom-table-line">
+                                <thead>
+                                    <tr style="border-bottom: 0px solid black;">
+                                        <th class="text-center" style="width:44px">STT</th>
+                                        <th style="width:256px">Hàng hóa</th>
+                                        <th>ĐVT</th>
+                                        <!--<th colspan="2" class="text-center">Số lượng</th>-->
+                                        <th class="text-center">SL</th>
+                                        <th class="text-center">Số Trái</th>
+                                        <th>Đơn giá</th>
+                                        <th style="width:64px">CK</th>
+                                        <th>Thành tiền</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                    <!--<tr style="border-bottom: 0px solid black;">
+                                        &lt;!&ndash;<t t-if="o.invoice_line_ids">
+                                            <th class="text-center">Số <span t-field="o.invoice_line_ids[0].uom_id"/></th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center">Số KG</th>
+                                        </t>&ndash;&gt;
+                                        <th class="text-center">Số KG</th>
+                                        <th class="text-center">Số Trái</th>
+                                    </tr>-->
+                                    <tr style="border-bottom: 0px solid black;">
+                                        <th class="text-center">A</th>
+                                        <th class="text-center">B</th>
+                                        <th class="text-center">C</th>
+                                        <th class="text-center">1</th>
+                                        <th class="text-center">2</th>
+                                        <th class="text-center">3</th>
+                                        <th class="text-center">4</th>
+                                        <th class="text-center">5</th>
+                                        <th class="text-center">6</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="line_no" t-value="0"/>
+                                    <t t-set="total" t-value="0"/>
+                                    <t t-foreach="sale.order_line" t-as="line">
+                                        <t t-if="line.display_type == false">
+                                            <t t-set="line_no" t-value="line_no + 1"/>
+                                            <tr style="text-align: right">
+                                            <td class="text-center">
+                                                <span t-esc="line_no"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="line.product_id.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.product_uom" groups="uom.group_uom"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <!--                                            <span t-field="line.quantity"/>-->
+                                                <span t-esc="o.formatNum(line.qty_delivered)"/>
+                                            </td>
+                                            <td><span t-field="line.remarks"/></td>
+                                            <td>
+                                                <t t-if="line.price_unit > 0">
+                                                    <span t-esc="o.formatNum(line.price_unit)"/>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <!--<span t-field="line.discount"/> -->
+                                                <span t-esc="o.formatNum(line.discount)"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.sea_price_total_qty_delivered"/>
+                                            </td>
+                                            <td/>
+                                        </tr>
+                                        </t>
+                                    </t>
+                                    <tr>
+                                        <td colspan="7">
+                                            <strong>Giảm giá</strong>
+                                        </td>
+                                        <td>
+                                           <!-- <span t-field="sale.total_discount"/>-->
+                                            0
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7">
+                                            <strong>Cộng</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="sale.total_amount_qty_delivery"/>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <strong>
+                                    <span>Tổng tiền bằng chữ:</span>
+                                    <span t-esc="sale.readNum(sale.total_amount_qty_delivery)"/>
+                                    đồng
+                                </strong>
+                            </div>
+                            <div>
+                                <div style="width:50%; float:left">
+                                    <p style="margin: 0">Ngày đặt hàng: <span t-esc='o.get_effective_date()'/></p>
+                                </div>
+                                    <div style="width:50%; float:left" class="text-right">
+                                    <p style="margin: 0">In: <span t-esc='datetime.datetime.now().strftime("Ngày %d tháng %m năm %Y")'/></p>
+                                </div>
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse; margin-top:4px">
+                                <tr>
+                                    <td style="width:23%">
+                                        <strong>Người nhận hàng</strong>
+                                    </td>
+                                    <td style="text-align:center; width:20%">
+                                        <strong>NV giao hàng</strong>
+                                    </td>
+                                    <td style="text-align:center; width:22%">
+                                        <strong>Phòng GN &amp; Kho</strong>
+                                    </td>
+                                    <td style="text-align:center; width:15%">
+                                        <strong>Kế toán</strong>
+                                    </td>
+                                    <td style="text-align:right; width:20%">
+                                        <strong>Người lập phiếu</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

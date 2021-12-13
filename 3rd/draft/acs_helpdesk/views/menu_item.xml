@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="acs_helpdesk_main_menu" name="Support" sequence="7" groups="acs_helpdesk.group_support_user" web_icon="acs_helpdesk,static/description/icon.png"/>
+
+    <menuitem id="support_team_menu" action="support_team_dashboard" parent="acs_helpdesk_main_menu" sequence="1" name="Dashboard"/>
+
+    <menuitem id="acs_helpdesk_ticket_menu" name="Tickets" parent="acs_helpdesk_main_menu" sequence="80"/>
+
+    <menuitem id="action_acs_helpdesk_ticket" name="Tickets" parent="acs_helpdesk_ticket_menu" action="acs_support_ticket_action" sequence="10"/>
+
+    <menuitem id="acs_helpdesk_ticket_invoice_menu" name="Invoicing" parent="acs_helpdesk_main_menu" sequence="90" groups="account.group_account_invoice"/>
+
+    <menuitem id="action_acs_helpdesk_ticket_invoice" name="Tickets" parent="acs_helpdesk_ticket_invoice_menu" action="acs_support_ticket_invoice_action" sequence="10"/>
+
+    <!-- Reporting -->
+    <menuitem id="menu_helpdek_report" name="Reporting" parent="acs_helpdesk_main_menu" sequence="95" groups="acs_helpdesk.group_support_manager"/>
+
+    <menuitem id="rating_rating_menu" action="rating_rating_action_team_report" parent="menu_helpdek_report"/>
+
+    <menuitem id="menu_helpdesk_config" name="Configuration" parent="acs_helpdesk_main_menu" sequence="100" groups="acs_helpdesk.group_support_manager"/>
+
+    <menuitem action="helpdesk_tags_action" id="menu_helpdesk_tags_act" parent="menu_helpdesk_config" groups="base.group_no_one"/>
+
+    <menuitem id="support_stage_menu" action="support_stage_action"
+        parent="menu_helpdesk_config"/>
+
+    <menuitem id="conf_support_team_menu" action="action_support_team" parent="menu_helpdesk_config"/>
+
+    <menuitem id="website_support_ticket_categories_menu" name="Categories" parent="menu_helpdesk_config" action="website_support_ticket_categories_action"/>
+
+</odoo>

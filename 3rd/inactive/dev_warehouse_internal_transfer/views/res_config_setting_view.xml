@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_dev_res_config_transit_location_form" model="ir.ui.view">
+        <field name="name">view.dev.res.config.transit.location.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='stock']" position="inside">
+            	<h2>Transit location</h2>
+			    <div class="row mt16 o_settings_container" id="trnasit_location">
+			        <div class="col-12 o_setting_box">
+					    <group>
+					    	<group>
+					    		 <field name="transit_location_id" style="width:80%%" readonly="0"/>
+					    	</group>
+					    </group>
+			        </div>
+		    	</div>
+            </xpath>
+		</field>
+	</record>        
+</odoo>  

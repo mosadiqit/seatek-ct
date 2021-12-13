@@ -1,0 +1,205 @@
+<odoo>
+    <data>
+        <!-- <template id="listing"> -->
+        <!--   <ul> -->
+        <!--     <li t-foreach="objects" t-as="object"> -->
+        <!--       <a t-attf-href="#{ root }/objects/#{ object.id }"> -->
+        <!--         <t t-esc="object.display_name"/> -->
+        <!--       </a> -->
+        <!--     </li> -->
+        <!--   </ul> -->
+        <!-- </template> -->
+        <!-- <template id="object"> -->
+        <!--   <h1><t t-esc="object.display_name"/></h1> -->
+        <!--   <dl> -->
+        <!--     <t t-foreach="object._fields" t-as="field"> -->
+        <!--       <dt><t t-esc="field"/></dt> -->
+        <!--       <dd><t t-esc="object[field]"/></dd> -->
+        <!--     </t> -->
+        <!--   </dl> -->
+        <!-- </template> -->
+    </data>
+
+    <template id="payment_request_templates">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="sc_purchase_payment_request.payment_request_layout">
+                    <t t-set="company" t-value="o.purchase_id.company_id"/>
+                    <div style="width:25%; float:left; margin-bottom:10px;">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+                             style="max-height: 100px;"
+                             alt="Logo"/>
+                    </div>
+                    <div style="width:55%; float:left;">
+                        <h5>
+                            <b>
+                                <t t-esc="company.name"/>
+                            </b>
+                        </h5>
+                        <p style="margin-top: 6px">
+                            <t t-if="company.street">
+                                <span t-field="company.street"/>,
+                            </t>
+                            <t t-if="company.street2">
+                                <span t-field="company.street2"/>
+                            </t>
+                            <t t-if="company.city">
+                                ,
+                                <span t-field="company.city"/>
+                            </t>
+                        </p>
+                        <p style="margin-top: 0px; line-height: 0.5">
+                            <strong>MST:<span t-field="company.vat"/></strong>
+                        </p>
+                    </div>
+                    <div style="width:20%; float:left; border: 1px black solid; padding-left: 8px; padding-top: 4px; padding-bottom:4px">
+                            <p style="font-size: 14px;">Ngày ban hành:</p>
+                            <p style="font-size: 14px;">Ngày thi hành:</p>
+                            <p style="font-size: 14px;">Số / Ngày sửa đổi:</p>
+                        </div>
+                    <div style="clear:both;"/>
+                    <div style="height:6px; width: 100%; border-top: 4px double black; margin-bottom:12px"/>
+                    <style>
+                        p{
+                            margin: 0px;
+                            padding:0px;
+                        }
+                        .underline{
+                            padding-bottom: 1px;
+                            border-bottom: 1px solid black;
+                        }
+                    </style>
+                    <div class="text-center"><h3><strong>ĐỀ NGHỊ THANH TOÁN</strong></h3></div>
+                    <table style="margin-top: 24px; width: 100%">
+                        <tr>
+                            <td width="160px"><strong>Tôi tên</strong></td><td width="24px" style="text-align:center"><span>: </span></td><td><span t-field="user.name"/></td>
+                        </tr>
+                        <tr>
+                            <td width="160px"><strong>Bộ phận công tác </strong></td><td width="24px" style="text-align:center"><span>: </span></td><td> </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <div>
+                        <p style="width: 100%">Đề nghị Công ty thanh toán cho : <span t-field="o.purchase_id.partner_id" style="width: 100%"/></p>
+                    </div>
+                    <div>
+                        <p><strong style="font-size: 18px"><u>NỘI DUNG THANH TOÁN:</u>  </strong><span t-field="o.content"/></p>
+                    </div>
+                    <br/>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="width:50%"><p>Số Hợp Đồng:</p></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width:50%"><p>Đơn đặt hàng:  <span t-field="o.purchase_id.name"/></p></td>
+                            <td><p>Số Hóa Đơn: <span t-esc="o.purchase_id.partner_ref"/> </p></td>
+                        </tr>
+                    </table>
+                    <div>
+                        <p><b><i>Tổng số tiền t.toán (theo hóa đơn):  </i></b><b><span t-esc="'{0:,.0f}'.format(o.purchase_id.amount_total)"/> VND</b></p>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <t t-value="0" t-set="stt"/>
+                        <t t-foreach="o.invoice_ids_paid" t-as="i">
+                            <t t-value="stt + 1" t-set="stt"/>
+                            <tr>
+                                <td style="width:130px"><i>Đã tạm ứng lần <span t-esc="stt"/>: </i></td>
+                                <td><span t-field="i.amount_total_signed"/></td>
+                                <td style="200px">Số: <span t-field="i.number"/></td>
+                                <td style="150px">Ngày: <!--<span t-field="i.date"/>--><span t-esc="o.format_date(i.date)"/> </td>
+                            </tr>
+                        </t>
+                        <!--<tr>
+                            <td style="width:50%"><i>Đã tạm ứng lần 1</i>   :</td>
+                            <td>Ngày: </td>
+                        </tr>-->
+                    </table>
+                    <br/>
+                    <div>
+                        <p style="font-size: 18px"><b>Số tiền đề nghị t.toán:  </b><span t-esc="'{0:,.0f}'.format(o.amount_total_to_pay)"/> VND</p>
+                        <p><i>(Bằng chữ)  <span t-esc="o.readNum(o.amount_total_to_pay)"/> đồng./. </i></p>
+                    </div>
+                    <br/>
+                    <div>
+                        <p style="font-size: 18px"><strong><u>THỜI HẠN THANH TOÁN:</u></strong>
+                            <!--<span t-field="o.time_for_Payment"/>-->
+                            <!--<span t-esc="o.get_time_of_payment()"/>-->
+                            <span t-esc="o.format_date(o.time_for_Payment)"/>
+                        </p>
+                    </div>
+                    <br/>
+                    <div>
+                        <div style="display:inline-block; font-size: 18px; margin-right: 24px; width: 280px"><strong><u>HÌNH THỨC THANH TOÁN:</u></strong></div>
+                            <div class="text-center" style="display:inline-block">
+                                <div class="text-center" style="width:26px; height:26px; border:1px solid black; display:inline-block">
+                                <t t-if="o.mode_of_payment == 'cash'">
+                                    X
+                                </t>
+                                <t t-if="o.mode_of_payment == 'transfer'">
+                                    &#160;
+                                </t>
+                            </div> Tiền mặt
+                        </div>
+                        <div class="text-center" style="display:inline-block">
+                            <div class="text-center" style="width:26px; height:26px; border:1px solid black; display:inline-block; margin-left: 32px">
+                            <t t-if="o.mode_of_payment == 'transfer'">
+                                X
+                            </t>
+                            <t t-if="o.mode_of_payment == 'cash'">
+                                &#160;
+                            </t>
+                        </div> Chuyển khoản
+                        </div>
+                    </div>
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 120px">-&#160;&#160;&#160;&#160;&#160;Chủ TK</td>
+                            <td> : <span t-field="o.bank_acc_holder"/> </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 120px">
+                                -&#160;&#160;&#160;&#160;&#160;Địa chỉ
+                            </td>
+                            <td> : <span t-field="o.bank_acc_holder_address"/> </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 120px">
+                                -&#160;&#160;&#160;&#160;&#160;Số TK
+                            </td>
+                            <td> : <span t-field="o.bank_acc_number"/> </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 120px">
+                                -&#160;&#160;&#160;&#160;&#160;Tên NH
+                            </td>
+                            <td> : <span t-field="o.bank_name"/></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">
+                                -&#160;&#160;&#160;&#160;&#160;Địa chỉ NH
+                            </td>
+                            <td> : <span t-field="o.bank_address"/></td>
+                        </tr>
+                    </table>
+                    <div class="text-right">
+                        <i>
+                            <span t-esc="datetime.datetime.now().strftime('Tp.HCM, ngày %d tháng %m năm %Y')" />
+                        </i>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 24px">
+                        <tr>
+                            <td style="width: 50%; height: 100px" class="text-center"><strong><u>Người đề nghị</u></strong></td>
+                            <td style="width: 50%" class="text-center"><strong><u>Người phụ trách đơn vị</u></strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%; height: 100px" class="text-center"><strong><u>Kế toán trưởng</u></strong></td>
+                            <td style="width: 50%" class="text-center"><strong><u>Duyệt thanh toán</u></strong></td>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

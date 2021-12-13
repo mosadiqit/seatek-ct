@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="dannygreen_stock_paper" model="report.paperformat">
+        <field name="name">DannyGreen stock paper</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">16</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+        <!--<field name="report_ids"
+               eval="[(4, ref('dannygreen_stock_report.dannygreen_stock_action_export_inventory_report'))]"/>-->
+    </record>
+
+    <!--print_report_name="'OUT - %s - %s' % (object.partner_id.name or '', object.name)"-->
+    <report
+            id="dannygreen_stock_action_out_inventory_report"
+            string="Phiếu xuất kho ký gửi"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            file="dannygreen_stock_print_pdf.dannygreen_stock_out_inventory_template"
+            name="dannygreen_stock_print_pdf.dannygreen_stock_out_inventory_template"
+            print_report_name="'Phieu-xuat-kho-ky-gui-hang-hoa'"
+            paperformat="dannygreen_stock_print_pdf.dannygreen_stock_paper"
+            menu="False"/>
+    <report
+            id="dannygreen_stock_action_in_inventory_report"
+            string="Phiếu thu hồi ký gửi hàng hóa"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            file="dannygreen_stock_print_pdf.dannygreen_stock_in_inventory_template"
+            name="dannygreen_stock_print_pdf.dannygreen_stock_in_inventory_template"
+            print_report_name="'Phieu-thu-hoi-ky-gui-hang-hoa'"
+            paperformat="dannygreen_stock_print_pdf.dannygreen_stock_paper"
+            menu="False"/>
+
+    <!--<record id="dannygreen_stock_report.dannygreen_stock_action_out_inventory_report" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="your_module_name.dannygreen_stock_paper" />
+    </record>
+    <record id="dannygreen_stock_report.dannygreen_stock_action_in_inventory_report" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="your_module_name.dannygreen_stock_paper" />
+    </record>-->
+
+    <template id="dannygreen_stock_layout">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <div class="col-2" style="position:absolute">
+                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width:80%"
+                     alt="Logo"/>
+            </div>
+            <div class="row">
+                <div class="text-center" style="width:100%">
+                    <h5 style="margin-bottom:0px">
+                        <b>
+                            <t t-esc="company.name"/>
+                        </b>
+                    </h5>
+                    <p style="margin: 0">
+                        <b>
+                            <t t-if="company.street">
+                                <span t-field="company.street"/>,
+                            </t>
+                            <t t-if="company.street2">
+                                <span t-field="company.street2"/>,
+                            </t>
+                            <t t-if="company.city">
+                                <span t-field="company.city"/>
+                            </t>
+                        </b>
+                    </p>
+
+                    <p style="margin: 0">
+                        <b>
+                            MST:
+                            <span t-field="company.vat"/>
+                        </b>
+                    </p>
+                </div>
+                <div style="clear:both"/>
+            </div>
+            <div style="background-color:black; height:1px; margin-bottom: 4px; margin-top: 4px"/>
+
+            <t t-raw="0"/>
+        </div>
+    </template>
+
+</odoo>

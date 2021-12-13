@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_location_security_users_form" model="ir.ui.view">
+            <field name="name">location_security.users.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <notebook>
+                    <page string="Seatek Restrictions">
+                        <group name="messaging" position="before">
+                            <group colspan="4" string="Operation Type Restrictions" attrs="{'invisible': [('login','=', 'admin')]}">
+                                <field name="is_restrict_warehouse_operation" attrs="{'invisible': [('login','=', 'admin')]}"/>
+                                <field name="default_picking_type_ids" widget="many2many_tags" attrs="{'invisible': [('is_restrict_warehouse_operation','!=', True)]}"/>
+                            </group>
+                            <group colspan="4" string="Locations" attrs="{'invisible': [('login','=', 'admin')]}">
+                                <field name="restrict_locations" attrs="{'invisible': [('login','=', 'admin')]}"/>
+                                <field name="stock_location_ids" attrs="{'invisible': [('restrict_locations','!=', True)]}"/>
+                            </group>
+                            <group colspan="4" string="Warehouse" attrs="{'invisible': [('login','=', 'admin')]}">
+                                <field name="restrict_warehouse" attrs="{'invisible': [('login','=', 'admin')]}"/>
+                                <field name="warehouse_ids" attrs="{'invisible': [('restrict_warehouse','!=', True)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</openerp>

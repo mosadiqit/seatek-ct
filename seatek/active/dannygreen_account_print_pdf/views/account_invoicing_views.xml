@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_account_invoicing_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field eval="12" name="priority"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="is_dannygreen_print" invisible="1" />
+		        <button name="dannygreen_report_selection" string="DannyGreen Print" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('is_dannygreen_print', '=', False)]}"/>
+		    </xpath>
+        </field>
+    </record>
+</odoo>

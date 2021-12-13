@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_goods_receive_rep_temp">  
+		<t t-call="dev_warehouse_internal_transfer.dev_internal_external_layout">
+			<t t-foreach="docs" t-as="o">
+				<div class="page" style="font-size:15px;">
+				    <style>
+                        .main_table{
+                            width:100%;
+                            font-size:13px;
+                        }
+                        .main_table th{
+                            padding:5px;
+                            background:#e3e4e5;
+                            border-bottom:1px solid black;
+                        }
+                        .main_table td{
+                            padding:5px;
+                        }
+                    </style>
+				    <div class="row">
+				        <div class="col-12 text-center" style="font-size:13px" >
+				           <b style="font-size:18px"> Goods Received</b><br/>
+				            <b><span t-esc="o.warehouse_id.name"/></b><br/>
+				            ( Date : <span t-field="o.from_date" t-options ='{"format": "dd-MM-yyyy"}' /> To <span t-field="o.to_date" t-options ='{"format": "dd-MM-yyyy"}' /> )
+				        </div>
+				    </div>
+				    <div class="row mt16 mb16">
+                        <div class="col-12">
+                            <table class="main_table" style="font-size:12px">
+                                <thead>
+                                    <tr>
+                                        <th width="65%">Product</th>
+                                        <th class="text-right" width="20%">Quantity</th>
+                                        <th class="text-center" width="15%">UOM</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                    <t t-foreach="get_lines(o)" t-as="lines" >
+                                        <tr style="page-break-inside: avoid">
+                                            <td><span t-esc="lines.get('product')"/></td>
+                                            <t t-set='qty' t-value="0"/>
+                                            <t t-set='uom' t-value="False"/>
+                                            <t t-foreach="lines.get('values')" t-as="val">
+                                                <t t-set="qty" t-value="qty + val.get('qty')"/>
+                                                <t t-set="uom" t-value="val.get('uom_id')"/>
+                                            </t>
+                                            <td class="text-right"><span t-esc="'%.2f'%(qty)"/></td>
+                                            <td class="text-center"> <span t-esc="uom"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+				</div>
+			</t>
+		</t>
+	</template>
+	
+	<template id="goods_receive_rep_temp">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dev_warehouse_internal_transfer.report_goods_receive_rep_temp" />
+            </t>
+        </t>
+    </template>
+</odoo>
+

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="dannygreen_stock_out_inventory_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dannygreen_stock_print_pdf.dannygreen_stock_layout">
+                    <h4 class="text-center">
+                        <b>PHIẾU XUẤT KHO KÝ GỬI HÀNG HÓA</b>
+                    </h4>
+                    <t t-set="sale" t-value="o.sale_id"/>
+                    <div>
+                        <div style="float:left; text-align:center; width:100%">
+                            <span t-esc="o.format_date()"/>
+                        </div>
+                        <span style="position: absolute; right:12px;">
+                            <strong>Số:
+                                <span t-field="sale.name"/>
+                            </strong>
+                        </span>
+                    </div>
+                    <div style="clear: both;"/>
+                    <div class="row" style="margin-top:8px;">
+                        <div class="col-6">
+                            <strong>Kho xuất:
+                                <span t-field="o.location_id"/>
+                            </strong>
+                        </div>
+                        <div class="col-6 text-right">
+                            <strong>Kho nhập:
+                                <span t-field="o.partner_id"/>
+                            </strong>
+                        </div>
+                    </div>
+                    <div style="clear: both;"/>
+
+                    <div>
+                        <strong>
+                            Địa chỉ:
+                            <t t-if="sale.partner_shipping_id.street">
+                                <span t-field="sale.partner_shipping_id.street"/>,
+                            </t>
+                            <t t-if="sale.partner_shipping_id.street2">
+                                <span t-field="sale.partner_shipping_id.street2"/>,
+                            </t>
+                            <t t-if="sale.partner_shipping_id.city">
+                                <span t-field="sale.partner_shipping_id.city"/>
+                            </t>
+                        </strong>
+                    </div>
+                    <style>
+                        .custom-table-line{
+                        width: 100%;
+                        border-collapse: collapse;
+                        border: 1px solid #cccccc;
+                        }
+                        .custom-table-line tr {
+                        border-bottom: 1px solid #cccccc;
+                        }
+                        .custom-table-line td, .custom-table-line th {
+                        border-right: 1px solid #cccccc;
+                        padding: 3px;
+                        vertical-align: middle;
+                        text-align: center;
+                        }
+                    </style>
+
+                    <table style="width:100%; border-collapse: collapse; margin-top:8px">
+                        <tr>
+                            <td style="vertical-align: middle; width:180px">Yêu cầu từ khách hàng:</td>
+                            <td style="vertical-align: middle;">Xuất hóa đơn</td>
+                            <td style="vertical-align: middle; width:180px">
+                                <div style="width:24px; height:24px; border:1px solid black;"/>
+                            </td>
+                            <td style="vertical-align: middle;">Không Xuất hóa đơn</td>
+                            <td style="vertical-align: middle; width:180px">
+                                <div style="width:24px; height:24px; border:1px solid black;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle;">Hình thức thanh toán:</td>
+                            <td style="vertical-align: middle;">Công nợ</td>
+                            <td style="vertical-align: middle;">
+                                <div style="width:24px; height:24px; border:1px solid black;"/>
+                            </td>
+                            <td style="vertical-align: middle;">Tiền mặt</td>
+                            <td style="vertical-align: middle;">
+                                <div style="width:24px; height:24px; border:1px solid black;"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="page">
+                        <table class="custom-table-line" style="margin-top:8px">
+                            <thead>
+                                <tr style="border-bottom: 0px solid #cccccc;">
+                                    <th class="text-center" style="width:44px">STT</th>
+                                    <th style="width:256px">Hàng hóa</th>
+                                    <th>ĐVT</th>
+                                    <th class="text-center">SL
+                                        <!--<span t-field="o.move_ids_without_package[0].product_uom"/>-->
+                                    </th>
+                                    <th class="text-center">Số Trái</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thành tiền</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                                <tr style="border-bottom: 0px solid #cccccc;">
+
+                                </tr>
+                                <tr style="border-bottom: 0px solid #cccccc;">
+                                    <th class="text-center">A</th>
+                                    <th class="text-center">B</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">1</th>
+                                    <th class="text-center">2</th>
+                                    <th class="text-center">3</th>
+                                    <th class="text-center">4</th>
+                                    <th class="text-center">5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="line_no" t-value="0"/>
+                                <t t-set="total" t-value="0"/>
+                                <t t-foreach="o.move_ids_without_package" t-as="move">
+                                    <t t-set="line_no" t-value="line_no + 1"/>
+                                        <tr style="text-align: right">
+                                            <td class="text-center">
+                                                <span t-esc="line_no"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="move.product_id.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="move.product_uom" groups="uom.group_uom"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <!--                                            <span t-field="move.quantity_done" />-->
+                                                <span t-esc="o.formatNum(move.quantity_done)"/>
+                                            </td>
+                                            <!--<t t-set="price" t-value="move.price_unit * move.quantity_done"/>-->
+                                            <!--<t t-set="total" t-value="total + move.price_subtotal"/>-->
+                                            <td><span t-esc="move.remarks"/></td>
+                                            <td>
+                                                <!--                                            <span t-field="move.price_unit"/>-->
+                                                <span t-esc="o.formatNum(move.sale_price_unit)"/>
+                                            </td>
+                                            <td>
+                                                <!--<span t-esc="price"/>-->
+                                                <!--                                            <span t-field="move.price_subtotal"/>-->
+                                                <span t-esc="o.formatNum(move.price_total)"/>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="6">
+                                        <strong>Giảm giá</strong>
+                                    </td>
+                                    <td>0</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <strong>Cộng</strong>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.formatNum(o.amount_total)"/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top:20px">
+                            <strong>
+                                <span>Tổng tiền bằng chữ:</span>
+                                <span t-esc="o.readNum(o.amount_total)"/>
+                                đồng
+                            </strong>
+                        </div>
+                        <div class="text-right" style="margin-top:20px">
+                            <strong>
+                                <span t-esc="o.format_date()"/>
+                            </strong>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="text-align:center">
+                                    <strong>Người nhận hàng</strong>
+                                </td>
+                                <td style="text-align:center">
+                                    <strong>NV hàng</strong>
+                                </td>
+                                <td style="text-align:center">
+                                    <strong>Phòng GN &amp; Kho</strong>
+                                </td>
+                                <td style="text-align:center">
+                                    <strong>Kế toán</strong>
+                                </td>
+                                <td style="text-align:center">
+                                    <strong>Người lập phiếu</strong>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

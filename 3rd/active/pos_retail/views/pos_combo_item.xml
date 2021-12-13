@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="pos_combo_item_form" model="ir.ui.view">
+            <field name="name">pos.combo.item.form</field>
+            <field name="model">pos.combo.item</field>
+            <field name="arch" type="xml">
+                <form string="Item of Combo">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="required"/>
+                            </group>
+                            <group>
+                                <field name="quantity"/>
+                                <field name="product_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="pos_combo_item_tree" model="ir.ui.view">
+            <field name="name">pos.combo.item.tree</field>
+            <field name="model">pos.combo.item</field>
+            <field name="arch" type="xml">
+                <tree string="Item of Combos">
+                    <field name="name"/>
+                    <field name="required"/>
+                    <field name="quantity"/>
+                    <field name="product_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="pos_combo_item_search" model="ir.ui.view">
+            <field name="name">pos.combo.item.search</field>
+            <field name="model">pos.combo.item</field>
+            <field name="arch" type="xml">
+                <search string="Item of Combos">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="pos_combo_item_action">
+            <field name="name">Item of Combos</field>
+            <field name="res_model">pos.combo.item</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_pos_combo_item"
+                  action="pos_combo_item_action"
+                  parent="menu_master_data"
+                  sequence="4"
+        />
+
+    </data>
+</odoo>

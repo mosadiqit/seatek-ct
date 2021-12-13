@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_employee_members_view" model="ir.ui.view">
+        <field name="name">hr.employee.family.tree</field>
+        <field name="model">hr.employee.family</field>
+        <field name="arch" type="xml">
+            <tree string="Family and Contacts">
+                <field name="employee_id"/>
+                <field name="member_name" string="Name"/>
+                <field name="relation" string="Relation"/>
+                <field name="member_birthday"/>
+                <field name="emergency"/>
+                <field name="member_contact"/>
+                <field name="member_address"/>
+                <field name="member_phone"/>
+                <field name="member_independent"/>
+                <field name="member_taxcode"/>
+                <field name="member_note"/>
+            </tree>
+        </field>
+    </record>
+    <record id="hr_employee_members_form" model="ir.ui.view">
+        <field name="name">Employee Family</field>
+        <field name="model">hr.employee.family</field>
+        <field name="arch" type="xml">
+            <form string="Employee Family">
+                <sheet>
+                    <group name="main" col="2">
+                        <field name="member_name"/>
+                        <field name="employee_id"/>
+                        <field name="member_gender"/>
+                        <field name="member_birthday"/>
+                    </group>
+                    <group name="relation" col="4">
+                        <field name="relation"/>
+                        <field name="emergency"/>
+                        <field name="member_phone"/>
+                        <field name="member_contact"/>
+                        <field name="member_address"/>
+                    </group>
+                    <group name="independent" col="2">
+                        <field name="member_independent" string="Income Idependence?"/>
+                        <field name="member_taxcode"/>
+                    </group>
+
+                    <group string="Notes">
+                        <field name="member_note" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+      </field>
+    </record>
+
+    <record id="view_employee_family_search" model="ir.ui.view">
+        <field name="name">hr.employee.family.form</field>
+        <field name="model">hr.employee.family</field>
+        <field name="arch" type="xml">
+            <search string="Search Employee Contacts">
+                <field name="member_name" filter_domain="[('member_name', 'ilike', self)]"/>
+                <field name="employee_id" filter_domain="[('employee_id', 'ilike', self)]"/>
+                <group expand="0" name="group_by" string="Group By">
+                    <filter name="employee_id" string="Employee"  context="{'group_by' : 'employee_id'}" />
+                    <filter name="relation" string="Relation"  context="{'group_by' : 'relation'}" />
+                    <filter name="emergency" string="Emergency"  context="{'group_by' : 'emergency'}" />
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="open_view_hr_employee_form" model="ir.actions.act_window">
+        <field name="name">Employee Contacts</field>
+        <field name="res_model">hr.employee.family</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem
+            id="menu_open_view_employee_family_form"
+            name="Family and Contacts"
+            action="open_view_hr_employee_form"
+            parent="menu_hr_management"
+            sequence="4"
+            groups="hr.group_hr_manager,hr.group_hr_user"/>
+    />
+</odoo>

@@ -1,0 +1,26 @@
+<odoo>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+    <data>
+        <record id="rule_own_tag_warehouse_user" model="ir.rule">
+            <field name="name">View Own Tags Warehouse</field>
+            <field ref="model_stock_warehouse" name="model_id"/>
+            <field name="domain_force">['|',('tag_id','in',user.tag_ids.ids),('tag_id','=',False)]</field>
+            <field name="groups" eval="[(4, ref('stock.group_stock_user')),(4, ref('stock.group_stock_manager'))]"/>
+        </record>
+        
+        <record id="rule_own_tag_product_user" model="ir.rule">
+            <field name="name">View Own Tags Products</field>
+            <field ref="product.model_product_template" name="model_id"/>
+            <field name="domain_force">['|',('pro_tag_ids','in',user.tag_ids.ids),('pro_tag_ids','=',False)]</field>
+            <field name="groups" eval="[(4, ref('stock.group_stock_user')),(4, ref('stock.group_stock_manager'))]"/>
+        </record>
+        
+        
+    </data>
+</odoo>
+
+

@@ -1,0 +1,38 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sc_stock_report_pdf
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-30 08:22+0000\n"
+"PO-Revision-Date: 2019-12-30 08:22+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sc_stock_report_pdf
+#: model_terms:ir.ui.view,arch_db:sc_stock_report_pdf.sc_in_out_report_templates
+msgid "RECEIPT NOTE"
+msgstr "PHIẾU NHẬP KHO"
+
+#. module: sc_stock_report_pdf
+#: model_terms:ir.ui.view,arch_db:sc_stock_report_pdf.sc_in_out_report_templates
+msgid "DELIVERY NOTE"
+msgstr "PHIẾU XUẤT KHO"
+
+#. module: sc_stock_report_pdf
+#: model_terms:ir.ui.view,arch_db:sc_stock_report_pdf.sc_in_out_report_templates
+msgid "INTERNAL TRANSFER"
+msgstr "PHIẾU CHUYỂN KHO NỘI BỘ"
+
+#. module: sc_stock_report_pdf
+#: model_terms:ir.ui.view,arch_db:sc_stock_report_pdf.sc_in_out_report_templates
+msgid "<span>AAAAAAAAA</span>"
+msgstr "<span>bbbbbbbb</span>"
+
+

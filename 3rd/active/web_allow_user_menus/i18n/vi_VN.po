@@ -1,0 +1,42 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* web_allow_user_menus
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-07 04:01+0000\n"
+"PO-Revision-Date: 2020-02-07 04:01+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: web_allow_user_menus
+#: model_terms:ir.ui.view,arch_db:web_allow_user_menus.view_users_form
+msgid "Access User Menus"
+msgstr "Menus"
+
+#. module: web_allow_user_menus
+#: model:ir.model.fields,field_description:web_allow_user_menus.field_res_users__sub_menu_id
+msgid "Add Submenu"
+msgstr "Thêm menu con"
+
+#. module: web_allow_user_menus
+#: model:ir.model,name:web_allow_user_menus.model_ir_ui_menu
+msgid "Menu"
+msgstr "Menu được truy cập"
+
+#. module: web_allow_user_menus
+#: model:ir.model.fields,field_description:web_allow_user_menus.field_res_users__menu_ids
+msgid "Menus"
+msgstr "Menu được truy cập"
+
+#. module: web_allow_user_menus
+#: model:ir.model,name:web_allow_user_menus.model_res_users
+msgid "Users"
+msgstr "Người dùng"
+

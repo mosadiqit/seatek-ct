@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+    <!--<record id="act_seatek_inventory_report" model="ir.actions.server">
+        <field name="name">Seatek extension inventory export</field>
+        <field name="model_id" ref="model_product_product"/>
+        <field name="src_model">product.product</field>
+        <field name="state">code</field>
+        <field name="code">action=self.test(context=context)</field>
+        <field name="key2">client_action_multi</field>
+    </record>-->
+
+    <record id="sea_view_stock_quantity_report" model="ir.ui.view">
+        <field name="name">Seacorp Stock In/Out By Location</field>
+        <field name="model">stock.quantity.history</field>
+        <field name="arch" type="xml">
+            <form string="Choose your date">
+                <group>
+                    <group>
+                        <!--<field name="compute_at_date" widget="radio"/>-->
+                        <field name="from_date"/>
+                        <field name="date"/>
+                        <field name="location_ids" widget="many2many_tags"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="open_table_from_to_date" string="Retrieve the Inventory Quantities" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="sea_stock_quantity_report_action" model="ir.actions.act_window">
+        <field name="name">Seacorp Stock In/Out By Location</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.quantity.history</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="sea_view_stock_quantity_report"/>
+    </record>
+    <menuitem id="menu_sea_stock_inout_by_location" name="Stock In/Out By Location"
+              parent="stock.menu_warehouse_report"
+              action="sea_stock_quantity_report_action"/>
+
+</odoo>

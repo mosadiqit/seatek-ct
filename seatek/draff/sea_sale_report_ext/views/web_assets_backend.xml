@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="sea_sale_report_ext_js" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="sea_sale_report_ext/static/src/js/update_report.js" type="text/javascript"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

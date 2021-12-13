@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="sale_order_templates">
+        <t t-call="web.html_container">
+            <style>
+                p{
+                margin: 0px;
+                }
+            </style>
+            <div style="width:100%; height:100%; border: 1px solid black; padding: 10px">
+                <div style="width:25%; float:left">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+                         style="max-height: 120px;"
+                         alt="Logo"/>
+                </div>
+                <div style="width:75%; float:left; margin-bottom: 10px">
+                    <div class="text-center">
+                        <h3>
+                            <b>
+                                <t t-esc="company.name"/>
+                            </b>
+                        </h3>
+                        <strong>
+                            <p style="margin: 0">Mã số thuế:
+                                <span t-field="company.vat"/>
+                            </p>
+                        </strong>
+                        <p style="margin: 0">
+                            <t t-if="company.street">
+                                <span t-field="company.street"/>,
+                            </t>
+                            <t t-if="company.street2">
+                                <span t-field="company.street2"/>
+                            </t>
+                            <t t-if="company.city">
+                                ,
+                                <span t-field="company.city"/>
+                            </t>
+                        </p>
+                        <p style="margin: 0">
+                            Điện thoại:
+                            <span t-field="company.phone"/>
+                        </p>
+                    </div>
+                </div>
+                <div style="clear:both;"/>
+                <div style="height:6px; width: 100%; border-top: 4px double black; margin:0 auto"/>
+
+                <div>
+                    <h5 class="text-center" style="margin: 10px;">
+                        <b>ĐƠN ĐẶT HÀNG / ORDER</b>
+                    </h5>
+                </div>
+                <div style="text-align: right; margin-right: 10px">
+                    <p style="margin-top:4px">Số / No:
+                        <span t-field="doc.name"/>
+                    </p>
+                </div>
+                <div style="clear:both"/>
+                <div>
+                    <p>
+                        <b>TÊN KHÁCH HÀNG</b>
+                        (Customer's name):
+                        <span t-field="doc.partner_id.name"/>
+                    </p>
+                    <p style="margin-top: 4px">
+                        <b>ĐỊA CHỈ</b>
+                        (Address):
+                        <!--<t t-if="doc.partner_id.street">
+                            <span t-field="doc.partner_id.street"/>,
+                        </t>
+                        <t t-if="doc.partner_id.street2">
+                            <span t-field="doc.partner_id.street2"/>
+                        </t>
+                        <t t-if="doc.partner_id.city">
+                            ,
+                            <span t-field="doc.partner_id.city"/>
+                        </t>-->
+                        <span t-esc="doc.get_address_format(doc.partner_id)"/>
+                    </p>
+                    <p style="margin-top: 4px">
+                        <b>MST</b>
+                        (Tax code):
+                        <span t-field="doc.partner_id.vat"/>
+                    </p>
+                </div>
+                <table style="width:100%; border-collapse: collapse; margin-top:6px">
+                    <tr>
+                        <td style="vertical-align: middle; width:300px; padding-bottom: 10px">
+                            <b>Hình thức khách hàng:</b>
+                            <br/>(Distribution method)
+                        </td>
+                        <td style="vertical-align: middle;">Ký gửi<br/>(Consignment)
+                        </td>
+                        <td style="vertical-align: middle; width:100px; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                        <td style="vertical-align: middle;">Đại lý<br/>(Wholesale)
+                        </td>
+                        <td style="vertical-align: middle; width:100px; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                        <td style="vertical-align: middle;">Bán lẻ<br/>(Retail)
+                        </td>
+                        <td style="vertical-align: middle; width:50px; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                    </tr>
+                    <!--<tr style="padding-bottom: 10px">
+                        <td style="vertical-align: middle; padding-bottom: 10px">
+                            <b>Hình thức thanh toán:</b>
+                            <br/>(Payment method)
+                        </td>
+                        <td style="vertical-align: middle;">Công nợ<br/>(Liabilities)
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                        <td style="vertical-align: middle;">Tiền mặt<br/>(Cash)
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <b>Yêu cầu từ khách hàng:</b>
+                            <br/>(Requirement from customer)
+                        </td>
+                        <td style="vertical-align: middle;">Hóa đơn VAT<br/>(Invoice)
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                        <td style="vertical-align: middle;">HĐ bán lẻ<br/>(Receipt)
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 10px">
+                            <div style="width:24px; height:24px; border:1px solid black;"/>
+                        </td>
+                    </tr>
+                </table>
+                <div style="margin-top: 10px">
+                    <p><b>Hình thức thanh toán</b> (Payment method): <span t-field="doc.payment_term_id"/></p>
+                </div>
+                <style>
+                    .custom-table-line{
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid black;
+                    }
+                    .custom-table-line tr {
+                    border-bottom: 1px solid black;
+                    }
+                    .custom-table-line td, .custom-table-line th {
+                    border-right: 1px solid black;
+                    padding: 3px;
+                    vertical-align: middle;
+                    text-align: center;
+                    }
+                </style>
+                <p style="margin-top: 4px">
+                    <b>ĐẶT HÀNG</b>
+                    (Order):
+                </p>
+                <table class="custom-table-line">
+                    <thead>
+                        <tr style="border-bottom: 0px solid black;">
+                            <td rowspan="2" class="text-center" style="width:44px">
+                                <b>STT</b>
+                                <br/>No
+                            </td>
+                            <td rowspan="2" style="width:300px">
+                                <b>Mặt hàng</b>
+                                <br/>Product Name
+                            </td>
+                            <td colspan="2" class="text-center">
+                                <b>Số lượng</b>
+                                (Quantity)
+                            </td>
+                            <td rowspan="2">
+                                <b>Đơn giá</b>
+                                <br/>Price
+                            </td>
+                            <td rowspan="2" style="width:64px">
+                                <b>CK</b>
+                                (%)
+                            </td>
+                            <td rowspan="2">
+                                <b>Thành tiền</b>
+                                <br/>Amount
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 0px solid black;">
+                            <td class="text-center" style="width: 100px">
+                                <b>Trái</b>
+                                (Unit)
+                            </td>
+                            <td class="text-center">
+                                <b>Kg</b>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="line_no" t-value="0"/>
+                        <t t-foreach="doc.order_line" t-as="line">
+                            <t t-if="not line.display_type">
+                                <t t-set="line_no" t-value="line_no + 1"/>
+                                <tr>
+                                    <td>
+                                        <span t-esc="line_no"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.product_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.remarks"/>
+                                    </td>
+                                    <td>
+                                        <!--<span t-field="line.product_uom_qty"/>-->
+                                        <span t-esc="'{0:,.4g}'.format(line.product_uom_qty)"/>
+                                    </td>
+                                    <td>
+                                        <!--<span t-field="line.price_unit"/>-->
+                                        <span t-esc="'{0:,.0f}'.format(line.price_unit)"/>
+                                    </td>
+                                    <td>
+                                        <!--<span t-field="line.discount"/>-->
+                                        <span t-esc="'{0:,.3g}'.format(line.discount)"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <!--<tr style="height: 30px">
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                        </tr>-->
+                        <tr>
+                            <td colspan="6" class="text-right">
+                                <b>CỘNG TIỀN HÀNG</b>
+                                / Value of goods
+                            </td>
+                            <td>
+                                <span t-field="doc.amount_untaxed"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-left">
+                                <b>THUẾ SUẤT</b>
+                                (VAT Rate):
+                            </td>
+                            <td colspan="4">
+                                <b>TIỀN THUẾ GTGT</b>
+                                / VAT amount:
+                            </td>
+                            <td>
+                                <span t-field="doc.amount_tax"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-right">
+                                <b>TỔNG CỘNG (GIÁ TRỊ ĐƠN HÀNG)</b>
+                                / Total (Order value)
+                            </td>
+                            <td>
+                                <span t-field="doc.amount_total"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top:10px">
+                    <p>
+                        <b>NƠI NHẬN HÀNG</b>
+                        (Ship to):
+                        <t t-if="doc.partner_shipping_id.parent_id">
+                            <span t-field="doc.partner_shipping_id.name"/>
+                        </t>
+                        <t t-if="not doc.partner_shipping_id.parent_id">
+                            <span t-field="doc.partner_shipping_id.name"/>
+                        </t>
+                    </p>
+                    <p style="margin-top: 4px">
+                        <b>ĐỊA CHỈ GIAO HÀNG</b>
+                        (Address):
+                        <!--<t t-if="doc.partner_shipping_id.street">
+                            <span t-field="doc.partner_shipping_id.street"/>
+                        </t>
+                        <t t-if="doc.partner_shipping_id.street2">
+                            ,<span t-field="doc.partner_shipping_id.street2"/>
+                        </t>
+                        <t t-if="doc.partner_shipping_id.city">
+                            ,
+                            <span t-field="doc.partner_shipping_id.city"/>
+                        </t>-->
+                        <span t-esc="doc.get_address_format(doc.partner_shipping_id)"/>
+                    </p>
+                    <p style="margin-top: 4px">
+                        <b>THỜI GIAN</b>
+                        (Time):
+                        <t t-if="doc.commitment_date">
+                            <span t-esc="context_timestamp(doc.commitment_date).strftime('%d/%m/%Y %H:%M:%S')"/>
+                        </t>
+                    </p>
+                    <p style="margin-top: 4px">
+                        <b>PHƯƠNG TIỆN VẬN CHUYỂN</b>
+                        (Delivery means):
+                    </p>
+                </div>
+                <div class="text-right" style="margin-top: 6px">
+                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('Ngày %d tháng %m năm %Y')"/>
+                </div>
+                <table style="width: 100%; height: 200px; border-collapse: collapse; margin-top:8px; border: 1px solid black">
+                    <tr style="height: 20px">
+                        <td style="border-right: 1px solid black"/>
+                        <td colspan="2" style="text-align:center; width:50%">
+                            <strong>Phòng đặt hàng</strong>
+                            / (Order from)
+                        </td>
+                        <td style="border-left: 1px solid black"/>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; width:25%; border-right: 1px solid black">
+                            <strong>Xác nhận KH</strong>
+                            <br/>
+                            (Customer Approval)
+                            <br/>
+                            <i>(Ký, họ tên)</i>
+                        </td>
+                        <td class="text-center">
+                            <strong>Phụ Trách Đơn Vị</strong>
+                            <br/>(Head of Dept.)
+                            <br/>
+                            <i>(Ký, họ tên)</i>
+                        </td>
+                        <td class="text-center">
+                            <strong>Đại Diện Bán Hàng</strong>
+                            <br/>(Sales Executive)
+                            <br/>
+                            <i>(Ký, họ tên)</i>
+                        </td>
+                        <td style="text-align:center; width:25%; border-left: 1px solid black">
+                            <strong>P. Giao Nhận &amp; Kho</strong>
+                            <br/>(Store &amp; Delivery Dept)
+                            <br/>
+                            <i>(Ký, họ tên)</i>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

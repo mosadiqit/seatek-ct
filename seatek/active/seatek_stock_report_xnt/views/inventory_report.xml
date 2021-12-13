@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inventory_report_view_form" model="ir.ui.view">
+        <field name="name">seatek.inventory.report.form</field>
+        <field name="model">seatek.inventory.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_get_data_inventory_report_line" string="Tính giá trị" type="object" class="btn-primary"/>
+                    <button name="action_report_excel" string="Xuất bảng Excel" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="date_from" widget="date"/>
+                            <field name="date_to" widget="date"/>
+                            <field name="display_product" />
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="location_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="categ_ids" options="{'no_create': 1, 'limit':1}" widget="many2many_tags"/>
+                            <field name="product_ids" options="{'no_create': 1}" widget="many2many_tags"/>
+                            <field name="type_get_value" />
+                            <field name="value" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết xuất nhập tồn">
+                            <field name="inventory_report_line_ids" readonly="1" attrs="{'invisible': [('display_product', '=', True)]}"/>
+                            <field name="inventory_report_line_ids_hide_display_product" readonly="1" attrs="{'invisible': [('display_product', '=', False)]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="inventory_report_view_tree" model="ir.ui.view">
+        <field name="name">seatek.inventory.report.tree</field>
+        <field name="model">seatek.inventory.report</field>
+        <field name="arch" type="xml">
+            <tree string="Inventory report">
+                <field name="date_from" />
+                <field name="date_to" />
+                <field name="location_ids" widget="many2many_tags" />
+                <field name="type_get_value" />
+                <field name="value" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_inventory_report_view" model="ir.actions.act_window">
+        <field name="name">Báo các xuất nhập tồn</field>
+        <field name="res_model">seatek.inventory.report</field>
+        <field name="view_mode">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="inventory_report_view_tree"/>
+        <!-- <field name="target">new</field> -->
+    </record>
+
+
+    <record id="inventory_report_line_view_tree" model="ir.ui.view">
+        <field name="name">seatek.inventory.report.tree</field>
+        <field name="model">seatek.inventory.report.line</field>
+        <field name="arch" type="xml">
+            <tree string="Inventory report line">
+                <field name="product_id" />
+                <field name="uom_id" />
+                <field name="location_id" string="Kho"/>
+                <field name="stock_opening" string="Đầu kỳ" sum="Tổng" />
+                <field name="value_stock_opening" string="Giá trị kho đầu kì"/>
+                <field name="stock_in" string="Nhập trong kỳ" sum="Tổng"/>
+                <field name="value_stock_in" string="Giá trị nhập"/>
+                <field name="stock_out" string="Xuất trong kỳ" sum="Tổng"/>
+                <field name="value_stock_out" string="Giá trị xuất"/>
+                <field name="stock_closing" string="Cuối kỳ" sum="Tổng"/>
+                <field name="value_stock_closing" string="Giá trị kho cuối kì"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_inventory_report_line_view" model="ir.actions.act_window">
+        <field name="name">Chi tiết xuất nhập tồn</field>
+        <field name="res_model">seatek.inventory.report.line</field>
+        <field name="view_mode">form</field>
+    </record>
+
+        <record id="action_inventory_report" model="ir.actions.server">
+            <field name="name">Xuất nhập tồn SeaTek</field>
+            <field name="model_id" ref="model_seatek_inventory_report"/>
+            <field name="state">code</field>
+            <field name="code">
+action_values = env.ref('seatek_stock_report_xnt.action_inventory_report_view').read()[0]
+res_id = env['seatek.inventory.report'].search([('user_id','=',env.user.id)], limit=1)
+if not res_id:
+    res_id = env['seatek.inventory.report'].create({'user_id': env.user.id})
+res_id.write({'date_from':datetime.datetime.now(), 'date_to':datetime.datetime.now()})
+res_id.action_get_data_inventory_report_line()
+action_values.update({'res_id': res_id.id})
+action = action_values
+            </field>
+        </record>
+
+    <menuitem id="menu_inventory_report_new" name="Xuất nhập tồn - Tổng quát" parent="stock.menu_warehouse_report" sequence="150" action="action_inventory_report"/>
+    
+</odoo>

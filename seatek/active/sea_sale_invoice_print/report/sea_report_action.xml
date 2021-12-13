@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sea_sale_paper" model="report.paperformat">
+        <field name="name">DannyGreen account paper</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">16</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+        <!--<field name="report_ids"
+               eval="[(4, ref('dannygreen_stock_report.dannygreen_stock_action_export_inventory_report'))]"/>-->
+    </record>
+
+    <record id="sea_sale_paper_A5" model="report.paperformat">
+        <field name="name">DannyGreen A5</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">4</field>
+        <field name="margin_bottom">4</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+        <!--<field name="report_ids"
+               eval="[(4, ref('dannygreen_stock_report.dannygreen_stock_action_export_inventory_report'))]"/>-->
+    </record>
+
+    <record id="paperformat_80mm" model="report.paperformat">
+            <field name="name">Khổ 80mm</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">295</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">160</field>
+        </record>
+
+    <data>
+        <report
+                id="sea_sale_xuat_kho_giao_nhan"
+                string="Phiếu xuất kho kiêm giao nhận hàng hóa"
+                model="sale.order"
+                report_type="qweb-pdf"
+                name="sea_sale_invoice_print.sea_sale_delivery_templates"
+                print_report_name="'Phieu-xuat-kho-kiem-giao-nhan-hang-hoa'"
+                paperformat="sea_sale_invoice_print.sea_sale_paper_A5"
+                menu="False"/>
+        <report
+                id="sea_invoice_xuat_kho_giao_nhan"
+                string="Phiếu xuất kho kiêm giao nhận hàng hóa"
+                model="account.invoice"
+                report_type="qweb-pdf"
+                name="sea_sale_invoice_print.sea_sale_invoices_delivery_templates"
+                print_report_name="'Phieu-xuat-kho-kiem-giao-nhan-hang-hoa'"
+                paperformat="sea_sale_invoice_print.sea_sale_paper_A5"/>
+        <report
+            id="sea_report_invoices_80mm"
+            string="Phiếu thu"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            file="sea_sale_invoice_print.sea_invoices_80mm_templates"
+            name="sea_sale_invoice_print.sea_invoices_80mm_templates"
+            print_report_name="'Phieu-thu %s' % (object.number or '')"
+            paperformat="sea_sale_invoice_print.paperformat_80mm"/>
+    </data>
+
+    <template id="sea_report_header_layout">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div class="header">
+            <div class="row">
+                <div class="col-2">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width:100%" alt="Logo"/>
+                </div>
+                <div class="col-8 text-center">
+                    <span style="font-size:18px;" t-esc="company.name"/>
+                    <br/>
+                    <br/>
+                    <span t-esc="company.street"/>,
+                    <span t-esc="company.street2"/>,
+                    <span t-esc="company.city"/>
+                </div>
+                <div class="col-2 text-right">
+                    <!-- <ul class="list-inline">
+                        <li class="list-inline-item"><span class="page"/></li>
+                        <li class="list-inline-item">/</li>
+                        <li class="list-inline-item"><span class="topage"/></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+    </template>
+
+    <template id="sea_sale_header_layout">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <div class="row">
+                <div class="col-2">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width:80%"
+                         alt="Logo"/>
+                </div>
+                <div class="col-10 text-center">
+                    <h5 style="margin-bottom:0px">
+                        <b>
+                            <t t-esc="company.name"/>
+                        </b>
+                    </h5>
+                    <p style="margin: 0">
+                        <b>
+                            <t t-if="company.street">
+                                <span t-field="company.street"/>,
+                            </t>
+                            <t t-if="company.street2">
+                                <span t-field="company.street2"/>,
+                            </t>
+                            <t t-if="company.city">
+                                <span t-field="company.city"/>
+                            </t>
+                        </b>
+                    </p>
+
+                    <p style="margin: 0">
+                        <b>
+                                MST:<span t-field="company.vat"/>
+                        </b>
+                    </p>
+                </div>
+                <div style="clear:both"/>
+            </div>
+            <div style="background-color:black; height:1px; margin-bottom: 4px; margin-top: 4px"/>
+
+            <t t-raw="0"/>
+        </div>
+    </template>
+</odoo>

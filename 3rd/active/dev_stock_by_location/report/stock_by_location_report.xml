@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+	<template id="dev_print_stock_by_location_main">  
+		<t t-call="web.internal_layout">
+			<div class="page">
+				<style>
+
+				.my_table{
+				    width:100%;
+				}
+				.my_table th{
+				    padding:3px;
+				    border-bottom:1px solid black;
+				}
+				.my_table td{
+				    padding:3px;
+				}
+				</style>
+				<div class="row">
+				    <div class="col-12 text-center" style="font-size:20px">
+				        <b>Stock By Location</b>
+				    </div>
+				</div>
+				<div class="mt16 mb16"/>
+				<div class="row">
+				    <div class="col-12" style="font-size:15px">
+				        <b>Product </b>: <span t-esc="o.display_name"/> <br/>
+				        <t t-if="o.stock_start_date">
+				            <b>From Date </b> : <span t-field="o.stock_start_date" t-options ='{"format": "dd-MM-yyyy"}'/><br/>
+				        </t>
+				        <t t-if="o.stock_end_date">
+				            <b>To Date </b> : <span t-field="o.stock_end_date" t-options ='{"format": "dd-MM-yyyy"}'/> <br/>
+				        </t>
+				    </div>
+				</div>
+				<div class="mt16 mb16"/>
+				<table class="my_table" style="font-size:15px">
+	            	<thead>
+	                    <tr>
+	                        <th style="width:40%">Location</th>
+	                        <th style="width:15%" class="text-right">Available Qty</th>
+	                        <th style="width:15%" class="text-right">Forecasted Qty</th>
+	                        <th style="width:15%" class="text-right">Incoming Qty</th>
+	                        <th style="width:15%" class="text-right">Outgoing Qty</th>
+	                    </tr>
+	                </thead>
+	                <tbody class="invoice_tbody">
+	                    <t t-set="available_qty" t-value="0" />
+                        <t t-set="forecasted_qty" t-value="0" />
+                        <t t-set="incoming_qty" t-value="0" />
+                        <t t-set="outgoing_qty" t-value="0" />
+                		<tr t-foreach="o.stock_by_location_lines"  t-as="line">
+	                        <td>
+	                            <span t-field="line.location_id.display_name"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="available_qty" t-value="available_qty + line.available_qty" />
+                                <span t-esc="set_amount(line.available_qty)"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="forecasted_qty" t-value="forecasted_qty + line.forecasted_qty" />
+                                <span t-esc="set_amount(line.forecasted_qty)"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="incoming_qty" t-value="incoming_qty + line.incoming_qty" />
+                                <span t-esc="set_amount(line.incoming_qty)"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="outgoing_qty" t-value="outgoing_qty + line.outgoing_qty" />
+                                <span t-esc="set_amount(line.outgoing_qty)"/>
+	                        </td>
+	                    </tr>
+	                	<tr style="background:#e0e0e0;">
+                            <td style="border-top:1px solid black" class="text-right"><b>Sub-Total :</b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(available_qty)"/></b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(forecasted_qty)"/></b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(incoming_qty)"/></b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(outgoing_qty)"/></b></td>
+                        </tr>
+	                </tbody>
+    			</table>
+			</div>
+		</t>
+	</template>
+	
+	<template id="dev_pro_print_stock_by_location_main">  
+		<t t-call="web.internal_layout">
+			<div class="page">
+				<style>
+
+				.my_table{
+				    width:100%;
+				}
+				.my_table th{
+				    padding:3px;
+				    border-bottom:1px solid black;
+				}
+				.my_table td{
+				    padding:3px;
+				}
+				</style>
+				<div class="row">
+				    <div class="col-12 text-center" style="font-size:20px">
+				        <b>Stock By Location</b>
+				    </div>
+				</div>
+				<div class="mt16 mb16"/>
+				<div class="row">
+				    <div class="col-12" style="font-size:15px">
+				        <b>Product </b>: <span t-esc="o.display_name"/><br/>
+				        <t t-if="o.stock_start_date">
+				            <b>From Date </b>: <span t-field="o.stock_start_date" t-options ='{"format": "dd-MM-yyyy"}'/><br/>
+				        </t>
+				        <t t-if="o.stock_end_date">
+				            <b>To Date </b>: <span t-field="o.stock_end_date" t-options ='{"format": "dd-MM-yyyy"}'/> <br/>
+				        </t>
+				    </div>
+				</div>
+				<div class="mt16 mb16"/>
+				<table class="my_table" style="font-size:15px">
+	            	<thead>
+	                    <tr>
+	                        <th style="width:40%">Location</th>
+	                        <th style="width:15%" class="text-right">Available Qty</th>
+	                        <th style="width:15%" class="text-right">Forecasted Qty</th>
+	                        <th style="width:15%" class="text-right">Incoming Qty</th>
+	                        <th style="width:15%" class="text-right">Outgoing Qty</th>
+	                    </tr>
+	                </thead>
+	                <tbody class="invoice_tbody">
+	                    <t t-set="available_qty" t-value="0" />
+                        <t t-set="forecasted_qty" t-value="0" />
+                        <t t-set="incoming_qty" t-value="0" />
+                        <t t-set="outgoing_qty" t-value="0" />
+                		<tr t-foreach="o.pro_stock_by_location_lines"  t-as="line">
+	                        <td>
+	                            <span t-field="line.location_id.display_name"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="available_qty" t-value="available_qty + line.available_qty" />
+                                <span t-esc="set_amount(line.available_qty)"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="forecasted_qty" t-value="forecasted_qty + line.forecasted_qty" />
+                                <span t-esc="set_amount(line.forecasted_qty)"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="incoming_qty" t-value="incoming_qty + line.incoming_qty" />
+                                <span t-esc="set_amount(line.incoming_qty)"/>
+	                        </td>
+	                        <td class="text-right">
+	                            <t t-set="outgoing_qty" t-value="outgoing_qty + line.outgoing_qty" />
+                                <span t-esc="set_amount(line.outgoing_qty)"/>
+	                        </td>
+	                    </tr>
+	                	<tr style="background:#e0e0e0;">
+                            <td style="border-top:1px solid black" class="text-right"><strong>Sub-Total :</strong></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(available_qty)"/></b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(forecasted_qty)"/></b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(incoming_qty)"/></b></td>
+                            <td style="border-top:1px solid black" class="text-right"><b><span t-esc="set_amount(outgoing_qty)"/></b></td>
+                        </tr>
+	                </tbody>
+    			</table>
+			</div>
+		</t>
+	</template>
+	
+	
+	<template id="dev_print_stock_by_location">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+		        <t t-call="dev_stock_by_location.dev_print_stock_by_location_main" />
+		    </t>
+		</t>
+	</template>
+	
+	<template id="dev_pro_print_sto_by_loc">
+		<t t-call="web.html_container">
+		    <t t-foreach="docs" t-as="o">
+		        <t t-call="dev_stock_by_location.dev_pro_print_stock_by_location_main" />
+		    </t>
+		</t>
+	</template>
+
+
+</odoo>
+

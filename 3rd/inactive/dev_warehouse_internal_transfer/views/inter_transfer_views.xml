@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_inter_transfer_form" model="ir.ui.view">
+		<field name="name">view.inter.transfer.form</field>
+		<field name="model">dev.inter.transfer</field>
+		<field name="arch" type="xml">
+			<form string="Employee Loan Type">
+				<header>
+					<button name="action_transfer" string='Transfer' type="object" states='draft' class="btn-primary"/>
+					<button name="action_receive" string='Receive' type="object" states='transfer' class="btn-primary"/>
+					<button name="action_validate" string='Validate' type="object" states='receive' class="btn-primary"/>
+					<button name="action_cancel" string='Cancel' type="object" states='transfer,receive'/>
+					<button name="action_draft" string='Set to Draft' type="object" states='cancel'/>
+					<field name="state" widget="statusbar" statusbar_visible="draft,transfer,receiver,validate"/>
+					
+				</header>
+				<sheet>
+					<div class="oe_button_box" name="button_box" attrs="{'invisible':[('state','!=','validate')]}">
+                        <button name="action_view_moves" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                            View Moves
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="source_warehouse_id" attrs="{'readonly':[('state','!=','draft')]}" domain="[('company_id','=',company_id)]"/>
+                            <field name="dest_warehouse_id" attrs="{'readonly':[('state','!=','draft')]}" domain="[('company_id','=',company_id)]"/>
+                        </group>
+                        <group>
+                            <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                    	<page string='Transfer Products'>
+                    		<field name="line_ids" attrs="{'readonly':[('state','in',['validate','receive','cancel'])]}">
+                    			<tree editable="buttom">
+                    				<field name="product_id"/>
+                    				<field name="qoh"/>
+                    				<field name="send_qty" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    				<field name="receive_qty"/>
+                    				<field name="uom_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    				<field name="state" invisible="1"/>
+                    			</tree>
+                    		</field>
+                    	</page>
+                    	<page string='Other'>
+                    		<group>
+                    			<group>
+                    				<field name="move_ids" widget="many2many_tags" invisible="1"/>
+                    				<field name="company_id" readonly="1"/>
+                    				<field name="transfer_user_id" readonly="1"/>
+                    			</group>
+                    			<group>
+                    				<field name="user_id" readonly="1"/>
+                    				<field name="receive_user_id" readonly="1"/>
+                    			</group>
+                    		</group>
+                    	</page>
+                    </notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+    <record id="view_inter_transfer_tree" model="ir.ui.view">
+        <field name="name">view.inter.transfer.tree</field>
+        <field name="model">dev.inter.transfer</field>
+        <field name="arch" type="xml">
+            <tree string="Inter Transfer">
+                <field name="name"/>
+                <field name="source_warehouse_id"/>
+                <field name="dest_warehouse_id"/>
+                <field name="company_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_inter_transfer">
+        <field name="name">Internal Transfer</field>
+        <field name="res_model">dev.inter.transfer</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem name="Internal Transfer" id="menu_main_internal_transfer" parent="stock.menu_stock_root" sequence="2" 
+              groups="stock.group_stock_user"/>
+    
+    <menuitem name="Internal Transfer" id="menu_inter_transfer_main" parent="menu_main_internal_transfer"
+              action="action_inter_transfer" groups="stock.group_stock_user"/>
+
+</odoo>

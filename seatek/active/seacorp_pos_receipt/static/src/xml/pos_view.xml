@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pos_retail.template" xml:space="preserve">
+   <t t-extend="PosTicket">
+
+       <t t-jquery="div[class='receipt-phone']" t-operation="replace"/>
+       <t t-jquery="t[t-if='widget.pos.company_logo_base64']" t-operation="replace"/>
+       <t t-jquery="t[t-if='order.date']" t-operation="replace"/>
+
+       <!--       <t t-jquery="t[t-if='order.pos_reference']" t-operation="replace"/>-->
+
+       <t t-jquery="t[t-if='widget.pos.config.show_order_unique_barcode']" t-operation="replace"/>
+       <t t-jquery="t[t-if='receipt.employee']" t-operation="replace"/>
+       <t t-jquery="t[t-if='order.get_client()']" t-operation="replace"/>
+       <t t-jquery="t[t-if='order.location']" t-operation="replace"/>
+       <t t-jquery="table[class='receipt-change']" t-operation="replace"/>
+       <t t-jquery="t[t-if*='order.note']" t-operation="replace"/>
+       <t t-jquery="t[t-if*='receipt.header']" t-operation="replace"/>
+       <t t-jquery="t[t-esc*='receipt.footer']" t-operation="replace"><t t-raw="receipt.footer"/></t>
+
+       <t t-jquery="div[class*='pos-center-align']" t-operation="replace">
+           <t t-jquery="t[t-if*='order.formatted_validation_date']" t-operation="replace">
+               <div class="pos-center-align">
+
+                    <!-- <div style="float: left; ">
+                            <t t-if="widget.pos.company_logo_base64">
+                                <img t-att-src='widget.pos.company_logo_base64' class="shop_logo"
+                                     style="max-width: 60px !important;max-height:60px !important; float: left; background: #fff"
+                                />
+                            </t>
+                    </div> -->
+                   <div style="">
+                        <!-- <div style="width:100%;text-align:center;margin-top: -20px; font-size: 20px; padding: 10px;font-weight: 900;">
+                            <div><t t-esc="widget.pos.config.name"/></div>
+                        </div> -->
+                       <div class="receipt-header" style="margin-top: 15px; width:100%;text-align:center;font-size: 13px;">
+                            <t t-raw="receipt.header"/>
+                       </div>
+                   </div>
+               </div>
+               <div class="pos-center-align" style="margin-top: -10px; font-size: 16px; padding: 10px 0px; font-weight: 900; padding-left: 10px;">
+                   <span>HÓA ĐƠN BÁN HÀNG</span>
+               </div>
+
+           </t>
+       </t>
+
+       <t t-jquery="t[t-if*='widget.pos.get_cashier() and !receipt.employee']" t-operation="replace">
+            <table>
+                <tr style="vertical-align: top;">
+                    <td colspan="5">Ngày: <t t-esc="moment().format('L')"/></td>
+                    <td colspan="5" style="text-align: right;">
+                        <t t-if="!order.pos_reference">
+                            <div><t t-esc="order.get_order_ref()"/></div>
+                        </t>
+                        <t t-else="">
+                            <div><t t-esc="order.name"/><span style="font-size:10px"> - COPY</span></div>
+                        </t>
+
+                        <!--Code Base-->
+                        <!--<t t-if="order.is_return">
+                            <div><t t-esc="order.name"/></div>
+                        </t>
+                        <t t-elif="order.uid">
+                            <div><t t-esc="order.uid"/></div>
+                        </t>-->
+                    </td>
+                </tr>
+                <tr style="width: 100%">
+
+                    <td colspan="6">
+                        <div class="receipt-user">
+                            Thu ngân:
+                            <t t-if="widget.pos.get_cashier()">
+                                <t t-esc="widget.pos.get_cashier().name"/>
+                            </t>
+                            <t t-else="receipt.employee">
+                                <t t-esc="receipt.employee.name"/>
+                            </t>
+                        </div>
+                    </td>
+                    <td colspan="4">
+                        <t t-if="moment().format('LT')">
+                            <div style="text-align: right">In lúc: <t t-esc="moment().format('LT')"/></div>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10" style="width: 100%">
+                        <div class="receipt-client">
+                            Khách hàng: <t t-if="order.get_client()"><t t-esc="order.get_client().name"/></t>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10" style="width: 100%">
+                        <div class="receipt-client">
+                            Địa chỉ:
+                            <t t-if="order.get_client()">
+                                <t t-esc="order.get_client().street"/>
+                            </t>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+       </t>
+
+       <t t-jquery="t[t-if='widget.pos.config.category_wise_receipt']" t-operation="replace"/>
+       <t t-jquery="t[t-if='!widget.pos.config.category_wise_receipt']" t-operation="replace"/>
+
+       <t t-jquery="div[class='order-widget-title']" t-operation="replace">
+           <t t-jquery="t[t-if*='order.note']" t-operation="replace">
+               <table style="width: 100%">
+                   <colgroup>
+                       <col width='20%'/>
+                       <col width='80%'/>
+                   </colgroup>
+                   <t t-if="order.note">
+                       <table>
+                            <t t-if="order.note">
+                                <tr>
+                                    <td style="width: 20%; vertical-align: top;">Ghi chú:</td>
+                                    <td class="pos-left-align">
+                                        <t t-esc="order.note"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                   </t>
+               </table>
+           </t>
+           <table class='receipt-orderlines' style="font-size: 12px; border: 1px dotted;">
+                <colgroup>
+                    <col width='27%'/>
+                    <col width='15%'/>
+                    <col width='14%'/>
+                    <col width='14%'/>
+                    <col width='30%'/>
+                </colgroup>
+               <tr style="text-align:center; background-color:#f3ee64;">
+                    <td style="font-weight: 900; border-bottom: 1px solid;">Mặt hàng</td>
+                   <td style="font-weight: 900; border-left: 1px dotted">SL</td>
+                   <td style="font-weight: 900; border-left: 1px dotted">ĐVT</td>
+                   <td style="font-weight: 900; border-left: 1px dotted">CK</td>
+                   <td style="font-weight: 900; border-left: 1px dotted">Thành Tiền</td>
+                </tr>
+               <t t-foreach="orderlines" t-as="orderline">
+                    <t t-set='tgl_show_line' t-value="1"/>
+                   <t t-if="orderline.get_product() === widget.pos.db.get_product_by_id(widget.pos.config.shipping_product_id[0])">
+                        <t t-set='tgl_show_line' t-value="0"/>
+                    </t>
+                   <t t-foreach="widget.pos.discounts" t-as="discount">
+                        <t t-if="orderline.get_product() === widget.pos.db.product_by_id[discount.product_id[0]]">
+                            <t t-set='tgl_show_line' t-value="0"/>
+                        </t>
+                    </t>
+                   <t t-if="tgl_show_line">
+                        <tr style="border: 1px dotted rgb(0, 0, 0);">
+                            <td colspan="5">
+                                <div><t t-esc="orderline.get_product().display_name"/></div>
+                            </td>
+                        </tr>
+                       <!-- style="border: 1px dotted rgb(0, 0, 0);" -->
+                       <tr style="text-align:center;">
+                            <td class="unit_price-tt">
+                                <t t-esc="widget.format_currency(orderline.get_unit_price())"/>
+                            </td>
+                           <td class="qty-tt" style="border-left: 1px dotted">
+                                <!--t t-esc="orderline.get_quantity()"/-->
+                               <t t-esc="orderline.get_quantity_str()"/>
+
+                            </td>
+                           <td class="uom-tt" style="border: 1px dotted">
+                                <t t-esc="orderline.get_unit().name"/>
+                            </td>
+                           <td class="disc-tt">
+                                <t t-if="orderline.get_discount()">
+                                    <t t-esc="orderline.get_discount()"/>%
+                                </t>
+                            </td>
+                           <td class="subtotal-tt" style="border-left: 1px dotted">
+                                <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+            </table>
+       </t>
+
+       <t t-jquery="table[class*='receipt-total']" t-operation="replace">
+            <table style="width: 100%">
+                <colgroup>
+                    <col width='50%'/>
+                    <col width='50%'/>
+                </colgroup>
+                <!--<tr>
+                    <t t-set="count_product" t-value="0"/>
+                    <t t-foreach="orderlines" t-as="orderline">
+                        <t t-set="tgl_count" t-value="1"/>
+                        <t t-if="orderline.get_product() === widget.pos.db.get_product_by_id(widget.pos.config.shipping_product_id[0])">
+                            <t t-set="tgl_count" t-value="0"/>
+                        </t>
+                        <t t-foreach="widget.pos.discounts" t-as="discount">
+                            <t t-if="orderline.get_product() === widget.pos.db.product_by_id[discount.product_id[0]]">
+                                <t t-set="tgl_count" t-value="0"/>
+                            </t>
+                        </t>
+                        <t t-set='count_product' t-value="count_product + tgl_count * orderline.get_quantity()"/>
+                    </t>
+                    <td style="text-transform:uppercase">Tổng SL:</td>
+                    <td class="pos-right-align" style="text-align: right;">
+                        <t t-esc="count_product"/>
+                    </td>
+                </tr>-->
+                <!--<t t-if="!widget.pos.config.hide_taxes_receipt">
+                    <tr>
+                        <td style="font-weight: 900; text-transform:uppercase">Tiền hàng:</td>
+                        <td class="pos-right-align" style="text-align: right; font-weight: 900;">
+                            <t t-esc="widget.format_currency(order.get_total_without_tax() - order.get_shippng_cost() + order.tgl_get_discount_value())"/>
+                        </td>
+                    </tr>
+                </t>-->
+                <!--<t t-if="widget.pos.config.hide_taxes_receipt">
+                    <tr>
+                        <td style="font-weight: 900; text-transform:uppercase">Tiền hàng:</td>
+                        <td class="pos-right-align" style="text-align: right; font-weight: 900;">
+                            <t t-esc="widget.format_currency(order.get_total_with_tax() - order.get_shippng_cost() + order.tgl_get_discount_value())"/>
+                        </td>
+                    </tr>
+                </t>-->
+                <!-- <t t-if="order.get_total_discount() > 0">
+                    <tr>
+                        <td style="font-weight: 900; text-transform:uppercase">Giảm giá:</td>
+                        <td class="pos-right-align" style="text-align: right; font-weight: 900;">
+                            <t t-esc="widget.format_currency(order.get_total_discount())"/>
+                        </td>
+                    </tr>
+                </t> -->
+                <!--<t t-if="order.tgl_get_discount_value() > 0">
+                    <tr>
+                        <td style="font-weight: 900; text-transform:uppercase">Giảm giá <t t-esc="order.tgl_get_discount_str()"/>:</td>
+                        <td class="pos-right-align" style="text-align: right; font-weight: 900;">
+                            <t t-esc="widget.format_currency(order.tgl_get_discount_value())"/>
+                        </td>
+                    </tr>
+                </t>-->
+                <!--<t t-if="!widget.pos.config.hide_taxes_receipt">
+                    <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                        <tr>
+                            <td><t t-esc="taxdetail.name" /></td>
+                            <td class="pos-right-align" style="text-align: right">
+                                <t t-esc="widget.format_currency(taxdetail.amount)"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>-->
+
+                <!--<tr>
+                    <t t-if="order.get_shippng_cost() > 0">
+                        <td style="font-weight: 900; text-transform:uppercase">Phí VC:</td>
+                        <td class="pos-right-align" style="text-align: right; font-weight: 900;">
+                            <t t-esc="widget.format_currency(order.get_shippng_cost())"/>
+                        </td>
+                    </t>
+                </tr>-->
+                <!-- <tr>
+                    <t t-if='receipt.company.vat'>
+                        <td style="font-weight: 900; text-transform:uppercase">Thuế:</td>
+                        <td class="pos-right-align" style="text-align: right">
+                            <t t-esc='receipt.company.vat' />
+                        </td>
+                    </t>
+                </tr> -->
+
+                <tr class="emph">
+                    <!--<td style="font-weight: 900; text-transform:uppercase;border-top: solid 1px #000">-->
+                    <td style="font-weight: 900;">
+                        <b>Tổng:</b>
+                    </td>
+                    <!--<td class="pos-right-align" style="text-align: right; font-weight: 900;border-top: solid 1px #000;">-->
+                    <td class="pos-right-align" style="text-align: right; font-weight: 900;">
+                        <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                    </td>
+                </tr>
+
+            </table>
+       </t>
+    </t>
+    <t t-name="ShippingCostButton">
+        <div class="left_button" title="Add shipping cost">
+            <div class="button-icon">
+                <img class="pos_logo" src="/pos_retail/static/src/icons/internal_transfer.png"/>
+            </div>
+            <div class="button-name">
+                Shipping Cost
+            </div>
+        </div>
+    </t>
+
+    <t t-extend="Orderline">
+        <t t-jquery="t[t-if='widget.pos.config.display_tax_orderline and line.get_tax()']" t-operation="replace">
+            <div>
+                <t t-if="(widget.pos.config.display_taxes_percent_orderline and line.get_taxes_label()) or (widget.pos.config.display_tax_orderline and line.get_tax())">
+                    <i class="fa fa-arrow-up"/>
+                </t>
+                <t t-if="widget.pos.config.display_taxes_percent_orderline and line.get_taxes_label()">
+                    <span>Taxes <t t-esc="line.get_taxes_label()"/> </span>
+                </t>
+                <t t-if="widget.pos.config.display_tax_orderline and line.get_tax()">
+                    <span> <t t-esc="widget.format_currency(line.get_tax())"/></span>
+                </t>
+            </div>
+        </t>
+    </t>
+
+</templates>

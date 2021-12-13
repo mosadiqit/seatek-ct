@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+
+ 		<record id="sea_ext_sale_order_line_tree_view_inherit" model="ir.ui.view">
+			<field name="name">Sale Order Line Tree</field>
+			<field name="model">sea_sale_report_ext.report_line</field>
+			<field name="arch" type="xml">			
+				<tree string="List Analysis" create="false">
+                       <field name="order_id"/>
+					   <field name="product_id"/>
+					   <field name="name"/>
+					   <field name="product_uom"/>
+					   <field name="price_unit"/>
+					   <field name="product_uom_qty"/>
+					   <field name="qty_pick_int"/>
+					   <field name="qty_delivered"/>
+					   <field name="qty_invoiced"/>
+					   <field name="discount"/>
+					   <field name="price_reduce"/>
+					   <field name="price_tax"/>
+					   <!-- <field name="price_total"/> -->
+					   <field name="state"/>
+					   <field name="invoice_status"/>
+					   <field name="salesman_id"/>
+					   <field name="order_partner_id"/>
+                </tree>			
+			</field>
+		</record>
+
+		<record id="sea_ext_sale_order_line_pivot_view_inherit" model="ir.ui.view">
+            <field name="name">Sale Order Line Pivot</field>
+            <field name="model">sea_sale_report_ext.report_line</field>
+            <field name="arch" type="xml">
+                <pivot string="Pivot Analysis SalesOrder Line">
+					<field name="product_id" type="row"/>
+                    <field name="product_uom_qty" type="measure"/>
+					<field name="qty_pick_int" type="measure"/>
+					<field name="qty_delivered" type="measure"/>
+					<field name="qty_invoiced" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+		<record id="sea_ext_sale_order_line_graph_view_inherit" model="ir.ui.view">
+            <field name="name">Sale Order Line Graph</field>
+            <field name="model">sea_sale_report_ext.report_line</field>
+            <field name="arch" type="xml">
+                <graph string="Graph Analysis SalesOrder Line"
+                        type="bar" stacked="True">
+					<field name="product_id" type="row"/>
+                    <field name="product_uom_qty" type="measure"/>
+					<field name="qty_delivered" type="measure"/>
+					<field name="qty_invoiced" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="sea_ext_sale_order_line_search_view_inherit" model="ir.ui.view">
+            <field name="name">Sale Order Line Search</field>
+            <field name="model">sea_sale_report_ext.report_line</field>
+            <field name="arch" type="xml">
+                <search string="Search SalesOrder Line">
+                    <field name="order_id" string="Order"/>
+                    <field name="product_id"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_order_id" domain="[]" string="Order" context="{'group_by':'order_id'}"/>
+                        <filter name="group_by_product_id" domain="[]" string="Product" context="{'group_by':'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+		<record id="sea_ext_action_sale_order_lines" model="ir.actions.act_window">
+			<field name="name">SaleOrder Line</field>
+			<field name="res_model">sea_sale_report_ext.report_line</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,pivot,graph</field>
+			<!-- <field name="view_id" ref="sea_ext_sale_order_line_tree_view_inherit"/> -->
+		</record>
+	
+		<menuitem id="sea_ext_order_line"
+            name="OrderLines Report"
+            action="sea_ext_action_sale_order_lines"
+            sequence="5"
+            parent="sale.menu_sale_report"
+            groups="sales_team.group_sale_salesman_all_leads"/>
+
+	</data>
+</odoo>

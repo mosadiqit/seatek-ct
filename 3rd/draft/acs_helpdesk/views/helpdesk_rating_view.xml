@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="rating_rating_view_search_helpdesk" model="ir.ui.view">
+            <field name="name">rating.rating.search.helpdesk</field>
+            <field name="model">rating.rating</field>
+            <field name="inherit_id" ref="rating.rating_rating_view_search"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='rating_unhappy']" position="after">
+                    <separator />
+                    <filter string="Rating for ticket" name="rating_tickets" domain="[('res_model', '=', 'acs.support.ticket')]" />
+                </xpath>
+                <xpath expr="//filter[@name='resource']" position="after">
+                    <field name="parent_res_name"/>
+                    <filter string="Team" name="groupby_team" context="{'group_by': 'parent_res_name'}"/>
+                </xpath>
+                <xpath expr="/search" position="inside">
+                    <filter string="Last 30 days" name="rating_last_30_days" domain="[('create_date', '>=', (context_today()-datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="rating_rating_action_view_team_rating" model="ir.actions.act_window">
+            <field name="name">Rating</field>
+            <field name="res_model">rating.rating</field>
+            <field name="view_mode">kanban,tree,graph,pivot,form</field>
+            <field name="domain">[('consumed','=',True), ('parent_res_model','=','support.team'), ('parent_res_id','=',active_id)]</field>
+            <field name="search_view_id" ref="rating_rating_view_search_helpdesk"/>
+            <field name="help" type="html">
+                <p>
+                    There is no rating for this object at the moment.
+                </p>
+            </field>
+        </record>
+
+        <record id="rating_rating_action_view_team_rating_ticket" model="ir.actions.act_window">
+            <field name="name">Ratings on tickets</field>
+            <field name="res_model">rating.rating</field>
+            <field name="view_mode">kanban,tree,graph,pivot,form</field>
+            <field name="domain">[('consumed','=',True), ('parent_res_model','=','support.team'), ('parent_res_id','=',active_id), ('res_model','=','acs.support.ticket')]</field>
+            <field name="search_view_id" ref="rating_rating_view_search_helpdesk"/>
+            <field name="help" type="html">
+                <p>
+                    There is no rating for tickets of this team at the moment.
+                </p>
+            </field>
+        </record>
+
+        <record id="rating_rating_action_ticket" model="ir.actions.act_window">
+            <field name="name">Customer Ratings on tickets</field>
+            <field name="res_model">rating.rating</field>
+            <field name="view_mode">kanban,tree,pivot,graph,form</field>
+            <field name="domain">[('res_model', '=', 'acs.support.ticket'), ('res_id', '=', active_id), ('consumed', '=', True)]</field>
+            <field name="search_view_id" ref="rating_rating_view_search_helpdesk"/>
+            <field name="help" type="html">
+                <p>
+                    Customer ratings on tickets.
+                </p>
+            </field>
+        </record>
+
+        <record id="rating_rating_action_team_report" model="ir.actions.act_window">
+            <field name="name">Customer Ratings</field>
+            <field name="res_model">rating.rating</field>
+            <field name="view_mode">kanban,tree,pivot,graph,form</field>
+            <field name="domain">[('parent_res_model','=','support.team'), ('consumed', '=', True)]</field>
+            <field name="search_view_id" ref="rating_rating_view_search_helpdesk"/>
+            <field name="help" type="html">
+                <p>
+                    Customer ratings on Tickets.
+                </p>
+            </field>
+            <field name="context">{}</field>
+        </record>
+
+    </data>
+</odoo>

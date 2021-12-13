@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'OpenSea Employee Extend 1.0.6',
+    'version': '12.0.1.0.6',
+    'summary': """Extend Employee OpenSea""",
+    'description': 'Extend Employee OpenSea 1.0.6 | 07dec2020 by htkhoa.',
+    'category': 'Employee',
+    'author': 'SeaTek',
+    'company': 'SeaTek',
+    'website': "https://home.seatek.vn",
+    'depends': ['base', 'hr', 'sea_menu_base', 'report_xlsx'],
+    'data': [
+        'views/hr_employee_view.xml',
+        'views/sea_employee_level.xml',
+        'views/hr_employee_family_view.xml',
+        'views/hr_notification.xml',
+        'security/ir.model.access.csv',
+    ],
+    'demo': [],
+    'images': ['static/description/icon.png'],
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

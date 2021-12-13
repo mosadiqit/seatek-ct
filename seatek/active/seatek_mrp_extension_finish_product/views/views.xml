@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record id="seatek_mrp_production_form_view" model="ir.ui.view">
+            <field name="name">mrp.production.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='finished_move_line_ids']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_add_move_line','=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='finished_move_line_ids']" position="after">
+                    <field name="is_add_move_line" invisible="1"/>
+                    <field name="finished_move_line_ids" context="{'form_view_ref': 'mrp.view_finisehd_move_line'}"
+                           attrs="{'readonly': [('is_locked', '=', True)], 'invisible': ['|',('finished_move_line_ids', '=', []),('is_add_move_line','!=', True)]}">
+                        <tree default_order="done_move" editable="bottom" delete="0" create="1"
+                              decoration-muted="state in ('done', 'cancel')">
+                            <field name="product_id" attrs="{'readonly':[('state','!=', False)]}"/>
+                            <field name="lot_id" groups="stock.group_production_lot"
+                                   domain="[('product_id', '=', product_id)]"
+                                   context="{'default_product_id': product_id}"
+                                   attrs="{'invisible': [('lots_visible', '=', False)]}"/>
+                            <field name="product_uom_id" groups="uom.group_uom"/>
+                            <field name="qty_done"/>
+                            <field name="lots_visible" invisible="1"/>
+                            <field name="done_move" invisible="1"/>
+                            <field name="state" invisible="1"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

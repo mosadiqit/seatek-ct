@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_hello" model="ir.actions.act_window">
+        <field name="name">Hello Word</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">table.hello</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No data to show
+            </p>
+        </field>
+    </record>
+
+    #Form View
+    <record id="hello_form_views" model="ir.ui.view">
+        <field name="name">table.hello.form</field>
+        <field name="model">table.hello</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="img" widget="image" class="oe_avatar"/>
+                    <field name="name" placeholder="Enter name..."/>
+                    <group>
+                        <group>
+                            <field name="fields2"/>
+                            <field name="fields3"/>
+                        </group>
+                        <group>
+                            <field name="fields4"/>
+                            <field name="fields5"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    #Tree (List) View
+    <record id="hello_tree_views" model="ir.ui.view">
+        <field name="name">table.hello.tree</field>
+        <field name="model">table.hello</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="fields2"/>
+                <field name="fields3"/>
+                <field name="fields4"/>
+                <field name="fields5"/>
+            </tree>
+        </field>
+    </record>
+
+
+    #Kanban View
+    <record id="hello_kanban_views" model="ir.ui.view">
+        <field name="name">table.hello.kanban</field>
+        <field name="model">table.hello</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="img"/>
+                <field name="fields2"/>
+                <field name="fields4"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_table_hello_kanban">
+                            <t t-if="record.img.raw_value">
+                                <div class="o_kanban_image d-none d-md-block" t-attf-style="background-image:url('#{kanban_image('table.hello', 'img', record.id.raw_value)}'); background-repeat: no-repeat; width:50px; height: 50px; background-size: 50px 50px; margin: 15px;"/>
+                            </t>
+                            <t t-else="">
+                                <img class="o_kanban_image" alt="Image can't load" t-att-src="_s + '/base/static/img/country_flags/vn.png'"/>
+                            </t>
+                            <div class="oe_kanban_detail">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <div class="o_kanban_tags_section"/>
+                                <ul>
+                                    <li>Field2: <field name="fields2"/></li>
+                                    <li>Field4: <field name="fields2"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <menuitem id="hello_root" name="Hello" sequence="0" action="action_hello"/>
+</odoo>

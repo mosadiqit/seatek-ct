@@ -1,0 +1,13 @@
+<odoo>
+    <!-- Inherited Stove move line tree view -->
+    <record id="sea_account_invoice_tree_with_onboarding_inherit" model="ir.ui.view">
+        <field name="name">sea_account_invoice_tree_inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name='partner_id' position='after'>
+                <field name="commitment_date" widget="date"/>
+            </field>
+        </field>
+    </record>
+</odoo>

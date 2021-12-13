@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+    <t t-name="WebQuickExport">
+        <div t-attf-class="dropdown btn-group btn-group-sm" t-att-data-name="name">
+            <button aria-expanded="true" class="export_treeview_xls o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                Xuất
+            </button>
+
+            <div class="dropdown-menu o_dropdown_menu" role="menu" >
+                <div t-foreach="export_list" t-as="export" class="">
+                    <a role="menuitem" data-section="export_xls" class="tgl_quick_export_btn" t-att-data-id="export.id" style="    padding: 0.25rem 1.5rem; cursor: pointer;">
+                       <t t-esc="export.name"/>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </t>
+</templates>

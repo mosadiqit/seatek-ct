@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="acs_support_ticket_view_form" model="ir.ui.view">
+        <field name="name">acs.support.ticket.form.view</field>
+        <field name="model">acs.support.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="create_invoice" string="Create Invoice" type="object" attrs="{'invisible': ['|',('invoice_id', '!=', False),('invoice_type', '=', 'no')]}" class="oe_highlight" groups="acs_helpdesk.group_support_manager"/>
+                    <field name="stage_id" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_start" string="Start" type="object" attrs="{'invisible': [('start_stop', '=', True)]}" class="oe_stat_button" icon="fa-play"/>
+                        <button name="action_stop" string="Stop" type="object" attrs="{'invisible': [('start_stop', '=', False)]}" class="oe_stat_button" icon="fa-stop"/>
+                        <button name="%(rating_rating_action_ticket)d" type="action"
+                            attrs="{'invisible': [('rating_count', '=', 0)]}"
+                            class="oe_stat_button" icon="fa-smile-o">
+                            <field name="rating_count" string="Rating" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_right">
+                        <field name="kanban_state" class="oe_inline" widget="state_selection"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1 class="o_row">
+                            <field name="number" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" required='1'/>
+                            <field name="user_id"/>
+                            <field name="partner_id"/>
+                            <field name="date_deadline"/>
+                            <field name="schedule_date"/>
+                            <field name="close_date"/>
+                            <div attrs="{'invisible': [('start_stop', '=', False)]}" colspan="2">
+                                <button style="pointer-events: none;" class="oe_inline label label-default">
+                                    <field name="time_count" widget="web_time_counter" />
+                                </button>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                            <field name="team_id"/>
+                            <field name="category_id"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="running_work_description" attrs="{'invisible': [('start_stop', '=', False)]}" placeholder="Work Description"/>
+                            <field name="date_start" invisible="1"/>
+                            <field name="date_end" invisible="1"/>
+                            <field name="start_stop" invisible="1"/>
+                            <field name="project_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Timesheets">
+                            
+                            <field name="timesheet_ids" context="{'default_project_id': project_id}">
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="user_id" required="1" options="{&quot;no_open&quot;: True}"/>
+                                    <field name="name"/>
+                                    <field name="date_start"/>
+                                    <field name="date_stop"/>
+                                    <field name="unit_amount" string="Duration" sum="Total time" widget="float_time"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <group class="oe_subtotal_footer oe_right" name="project_hours">
+                                    <field name="total_hours_spent" widget="float_time"/>
+                                </group>
+                            </group>
+
+                        </page>
+                        <page string="Invoice Details" groups="acs_helpdesk.group_support_manager">
+                            <group>
+                                <group>
+                                    <field name="invoice_type"/>
+                                    <field name="support_price" attrs="{'invisible': [('invoice_type', '!=', 'fix')],'readonly': [('invoice_id', '!=', False)],'required': [('invoice_type', '=', 'fix')]}"/>
+                                    <field name="timesheet_invoice_product_id" attrs="{'invisible': [('invoice_type', '!=', 'timesheet')],'readonly': [('invoice_id', '!=', False)]}"/>
+                                    <field name="invoice_product_id" attrs="{'invisible': [('invoice_type', '!=', 'normal')],'readonly': [('invoice_id', '!=', False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="company_id"/>
+                                    <field name="invoice_id" readonly='1' attrs="{'invisible': [('invoice_type', '=', 'no')]}"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_acs_support_ticket_kanban">
+        <field name="name">acs.support.ticket.form.kanban</field>
+        <field name="model">acs.support.ticket</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_project_tasks">
+                <field name="color"/>
+                <field name="priority"/>
+                <field name="stage_id"/>
+                <field name="user_id"/>
+                <field name="description"/>
+                <field name="date_deadline"/>
+                <field name="message_needaction_counter"/>
+                <field name="start_stop"/>
+                <field name="kanban_state"/>
+                <field name="name"/>
+                <field name="rating_last_value"/>
+                <field name="rating_ids"/>
+                <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+                        <div class="o_dropdown_kanban dropdown">
+                            <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <span class="fa fa-bars fa-lg"/>
+                            </a>
+                            <div class="dropdown-menu" role="menu">
+                                <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit</a></t>
+                                <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
+                                <ul class="oe_kanban_colorpicker" data-field="color"/>
+                            </div>
+                        </div>
+                        <div class="oe_kanban_content">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title"><field name="number"/></strong><br/>
+                                    <small class="o_kanban_record_subtitle text-muted">
+                                        <field name="name"/>
+                                        <t t-if="record.date_deadline.raw_value and record.date_deadline.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
+                                        <span t-attf-class="#{red || ''}"><i><field name="date_deadline"/></i></span>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="priority" widget="priority"/>
+                                    <t t-if="record.message_needaction_counter.raw_value">
+                                        <span class='oe_kanban_mail_new' title='Unread Messages'><i class='fa fa-comments'/><t t-raw="record.message_needaction_counter.raw_value"/></span>
+                                    </t>
+                                    <div class="pull-right" groups="base.group_user" style="margin-left: 10px;">
+                                        <t attrs="{'invisible': [('start_stop', '=', True)]}">
+                                            <a type="object" name="action_start" style="color:green">
+                                                <span class="fa fa-play fa-lg"/>
+                                            </a>
+                                        </t>
+                                        <t attrs="{'invisible': [('start_stop', '=', False)]}">
+                                            <a type="object" name="action_stop"  style="color:red">
+                                                <span class="fa fa-stop fa-lg"/>
+                                            </a>
+                                        </t>
+                                    </div> 
+                                    <b t-if="record.rating_ids.raw_value.length">
+                                        <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_last_value.value == 10" title="Latest Rating: Satisfied"/>
+                                        <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-if="record.rating_last_value.value == 5" title="Latest Rating: Not Satisfied"/>
+                                        <span style="font-weight:bold;" class="fa fa-fw mt4 fa-frown-o text-danger" t-if="record.rating_last_value.value == 1" title="Latest Rating: Higly Dissatisfied"/>
+                                    </b>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="kanban_state" widget="state_selection"/>
+                                    <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" alt="" class="oe_kanban_avatar"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="oe_clear"></div>
+                    </div>
+                </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="acs_support_ticket_view_search" model="ir.ui.view">
+        <field name="name">acs.support.ticket.form.search</field>
+        <field name="model">acs.support.ticket</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="user_id"/>
+                <field name="stage_id"/>
+                <field name="team_id"/>
+                <separator/>
+                <filter string="To do" domain="['|',('stage_id','=',False),('stage_id.done', '=', False)]" name="todo"/>
+                <filter string="Blocked" name="kanban_state_block" domain="[('kanban_state', '=', 'blocked')]"/>
+                <filter string="In Progress" name="progress" domain="[('kanban_state', '=', 'normal')]"/>
+                <filter string="Done" name="done" domain="[('kanban_state', '=', 'done')]"/>
+                <filter string="Top Priorities" name="top_priority" domain="[('priority', '=', '3')]"/>
+                <separator/>
+                <filter string="Unscheduled Tickets" domain="[('schedule_date', '=', False)]" name="unscheduled"/>
+                <separator/>
+                <filter string="My Requests" name="my_requests" domain="[('user_id', '=', uid)]"/>
+                <filter string="To Invoice" name="to_invoice" domain="[('invoice_type', '!=', 'no'),('invoice_id', '=', False)]"/>
+                <separator/>
+                <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction','=',True)]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('archive','=',True)]"/>
+                <separator/>
+                <filter string="Rated Tickets" name="rated" domain="[('rating_last_value', '!=', 0.0)]" />
+                <group  expand='0' string='Group by...'>
+                    <filter string='Assigned' domain="[]" name="user_id_group" context="{'group_by': 'user_id'}"/>
+                    <filter string='Team' domain="[]" name="team_id_group" context="{'group_by': 'team_id'}"/>
+                    <filter string='Category' domain="[]" name="category_id_group" context="{'group_by' : 'category_id'}"/>
+                    <filter string='Stages' domain="[]" name="stage_id_group" context="{'group_by' : 'stage_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="acs_support_ticket_view_tree" model="ir.ui.view">
+        <field name="name">acs.support.ticket tree view</field>
+        <field name="model">acs.support.ticket</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="user_id" invisible="True"/>
+                <field name="color" invisible="True"/>
+                <field name="number"/>
+                <field name="team_id"/>
+                <field name="category_id"/>
+                <field name="stage_id"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_acs_support_ticket_calendar" model="ir.ui.view">
+        <field name="name">acs.support.ticket.calendar</field>
+        <field name="model">acs.support.ticket</field>
+        <field name="type">calendar</field>
+        <field name="arch" type="xml">
+            <calendar string="Tickets" color="team_id" date_start="date_deadline">
+                <field name="user_id"/>
+                <field name="partner_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_acs_support_ticket_pivot" model="ir.ui.view">
+        <field name="name">acs.support.ticket.pivot</field>
+        <field name="model">acs.support.ticket</field>
+        <field name="arch" type="xml">
+            <pivot string="Tickets">
+                <field name="create_date" type="row"/>
+                <field name="date_deadline" type="row"/>
+                <field name="partner_id" type="row"/>
+                <field name="user_id" type="row"/>
+                <field name="team_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="acs_support_ticket_action" model="ir.actions.act_window">
+        <field name="name">Support Tickets</field>
+        <field name="res_model">acs.support.ticket</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot</field>
+        <field name="context">{'default_create_user_id': uid}</field>
+        <field name="help" type="html">
+            <p>
+                No Support Tickets found.
+            </p>
+        </field>
+    </record>
+
+    <record id="acs_support_ticket_invoice_action" model="ir.actions.act_window">
+        <field name="name">Support Tickets</field>
+        <field name="res_model">acs.support.ticket</field>
+        <field name="view_mode">tree,form,kanban,calendar,pivot</field>
+        <field name="context">{'search_default_to_invoice': 1}</field>
+        <field name="help" type="html">
+            <p>
+                No Support Tickets found to invoice.
+            </p>
+        </field>
+    </record>
+    
+
+</odoo>

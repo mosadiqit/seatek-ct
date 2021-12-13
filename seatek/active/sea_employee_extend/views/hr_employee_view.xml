@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--
+      Copyright (C) 2020
+      Last modified 10Dec2020 by htkhoa
+    -->
+
+    <data>
+        <menuitem id="employee_report_menu" name="Reports" sequence="30"
+                  groups="hr.group_hr_manager,hr.group_hr_user"/>
+        <menuitem id="menu_hr_management" name="HR Management" parent="hr.menu_hr_root" sequence="5"
+                  groups="hr.group_hr_manager,hr.group_hr_user"/>
+        <record model="ir.ui.view" id="hr_employee_inherit_form_view">
+            <field name="name">hr.employee.form.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+
+                <field name="user_id" position="after">
+                    <field name="joining_date"/>
+                </field>
+                <field name="bank_account_id" position="after">
+                    <field name="ethnicity"/>
+                    <field name="religion"/>
+                </field>
+                <field name="identification_id" position="replace"/>
+                <field name="passport_id" position="replace"/>
+
+                <xpath expr="//page[@name='personal_information']/group/group[1]" position="after">
+                    <group name="personal_address" string="Personal Addr">
+                        <field name="sea_personal_email"/>
+                        <field name="sea_permanent_addr"/>
+                        <field name="sea_temp_addr"/>
+                    </group>
+
+
+                    <group name="identification_id" string="Identification ID">
+                        <field name="identification_id"/>
+                        <field name="sea_id_issue_date"  groups="hr.group_hr_user" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+                        <field name="sea_id_issue_place"  groups="hr.group_hr_user" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+                        <field name="id_expiry_date"  groups="hr.group_hr_user" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+                        <field name="id_attachment_id" groups="hr.group_hr_user" widget="many2many_binary" class="oe_inline" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+                    </group>
+                    <group name="passport_id" string="Passport ID">
+                        <field name="passport_id"/>
+                        <field name="sea_passport_issue_date" groups="hr.group_hr_user" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                        <field name="sea_passport_issue_place" groups="hr.group_hr_user" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                        <field name="passport_expiry_date" groups="hr.group_hr_user" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                        <field name="passport_attachment_id" groups="hr.group_hr_user" widget="many2many_binary" class="oe_inline" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_gamification.hr_hr_employee_view_form" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='public']" position="after">
+                    <page string="Received Badges" attrs="{'invisible': [('user_id', '=', False)]}">
+                        <div name="badges" groups="hr.group_hr_user">
+                            <field name="has_badges" invisible="1"/>
+                            <button string="Grant a Badge" type="action" name="%(hr_gamification.action_reward_wizard)d"/> to reward this employee for a good action
+                            <div class="oe_view_nocontent" attrs="{'invisible': [('has_badges', '=', True)]}">
+                                <p class="oe_view_nocontent_create">
+                                    Click to grant this employee his first badge
+                                </p><p class="oe_grey">
+                                    Badges are rewards of good work. Give them to people you believe deserve it.
+                                </p>
+                            </div>
+                        </div>
+                        <field name="badge_ids" widget="many2many_kanban" />
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="hr_employee_view_form" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit.opensea</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <!--xpath expr="//notebook" position="inside"-->
+                <xpath expr="//page[@name='personal_information']" position="after">
+                    <page name="sea_settings" string="SeaGroup" groups="hr.group_hr_user">
+                        <group colspan="2">
+                                <group string="Employee Status">
+                                    <field name="seagroup_join_date"/>
+                                    <field name="sea_company_ids"  string="Working Companies" widget="many2many_tags" options="{'no_create': True}"/>
+                                    <field name="official_contract"/>
+                                    <field name="sea_employee_level" options="{'no_create': True}"/>
+                                </group>
+                                <group string="Current Status">
+                                    <field name="employee_current_status"/>
+                                    <field name="reason_leaving"/>
+                                    <field name="resignation_date"/>
+                                </group>
+                                <group string="THUẾ TNCN">
+                                    <field name="tax_tncn_code"/>
+                                    <field name="number_of_dependents"/>
+                                    <field name="info_dependents"/>
+                                </group>
+
+                                <group string="BHXH">
+                                    <field name="social_insurance_number"/>
+                                    <field name="insurance_status"/>
+                                </group>
+
+                                <group string="Salary Info (Sum )">
+                                    <field name="sea_bank_account"/>
+                                    <field name="sea_net_salary" class="oe_inline"/>
+                                    <field name="sea_contract_salary" class="oe_inline" />
+                                    <field name="sea_extend_salary" class="oe_inline"  />
+                                </group>
+
+                                <group string="Family and Others" colspan="10">
+                                <field name="fam_ids" nolabel="1" >
+                                    <tree editable="bottom">
+                                        <field name="member_name"/>
+                                        <field name="relation"/>
+                                        <field name="emergency"/>
+                                        <field name="member_independent"/>
+                                        <field name="member_phone"/>
+                                        <field name="member_gender"/>
+                                        <field name="member_birthday"/>
+                                        <field name="member_address"/>
+                                        <field name="member_taxcode"/>
+                                        <field name="member_note"/>
+
+                                    </tree>
+                                </field>
+                                </group>
+
+                                <group string="Others">
+                                    <field name="extra_note" string="Sea Notes"/>
+                                </group>
+                        </group>
+                    </page>
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

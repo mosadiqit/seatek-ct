@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--
+      Copyright (C) 2018 Brainbean Apps (https://brainbeanapps.com)
+      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+    -->
+
+    <record id="hr_employee_view_form" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.opensea</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="OpenSea" groups="hr.group_hr_user">
+                        <group>
+                            <group string="Employee Status">
+                                <field name="seagroup_join_date"/>
+                                <field name="official_contract"/>
+                                <field name="employee_status"/>
+                                <field name="reason_leaving"/>
+                                <field name="resignation_date"/>
+                                <field name="extra_note"/>
+                            </group>
+                            <group string="THUẾ TNCN">
+                                <field name="tax_tncn_code"/>
+                                <field name="number_of_dependents"/>
+                                <field name="info_dependents"/>
+                            </group>
+                            <group string="BHXH">
+                                <field name="social_insurance_number"/>
+                                <field name="insurance_status"/>
+                                <field name="bank_account"/>
+                            </group>
+                        </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

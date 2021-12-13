@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_author,product.author,model_product_author,,1,1,1,1
+access_product_published,product.published,model_product_published,,1,1,1,1
+access_product_category1,product.category1,model_product_category1,,1,1,1,1
+access_product_language,product.language,model_product_language,,1,1,1,1

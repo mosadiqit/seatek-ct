@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="purchase_advance_payment_wizard" model="ir.ui.view">
+      <field name="name">purchase.advance.payment.wizard</field>
+      <field name="model">purchase.advance.payment</field>
+      <field name="arch" type="xml">
+        <form>
+          <group string="Payment Details" name="pur_advance_pay">
+            <group>
+            <field name="name"/>
+            <field name="advance_amount"/>
+            <field name="total_amount"/>
+          </group>
+          <group>
+            <field name="payment_method_id"/>
+            <field name="journal_id"/>
+            <field name="payment_date"/>
+
+          </group>
+         </group>
+          <group string="Currency" name="pur_currency_group">
+            <field name="currency_id"/>
+          </group>
+
+          <footer>
+            <button name="gen_purchase_advance_payment" type="object" string=" Advance Payment"
+               class="oe_highlight" icon="fa-money"/>
+            <button string="Cancel" class="btn-secondary" special="cancel" icon="fa-times"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- Purchase Advance Payment History -->
+    <record id="advance_payment_history_form_pur" model="ir.ui.view">
+      <field name="name">advance.payment.history.form</field>
+      <field name="model">purchase.payment.history</field>
+      <field name="arch" type="xml">
+        <form>
+          <group string="Payment Details">
+            <group>
+            <field name="name"/>
+            <field name="advance_amount"/>
+            <field name="total_amount"/>
+          </group>
+          <group>
+            <field name="payment_method_id"/>
+            <field name="journal_id"/>
+            <field name="payment_date"/>
+
+          </group>
+         </group>
+          <group string="Currency">
+            <field name="currency_id"/>
+          </group>
+
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>

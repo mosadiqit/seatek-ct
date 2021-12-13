@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sea_view_stock_product_report_tree" model="ir.ui.view">
+        <field name="name">Product report</field>
+        <field name="model">product.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="product_uom" string="Unit of Measure"
+                       groups="uom.group_uom"/>
+                <field name="location_id" groups="stock.group_stock_multi_locations"/>
+                <field name="company_id"/>
+                <field name="lot_id"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

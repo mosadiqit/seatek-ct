@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_80mm" model="report.paperformat">
+            <field name="name">Khổ 80mm</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">295</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">160</field>
+        </record>
+
+        <report 
+            id="action_report_pos_order_80mm"
+            string="Phiếu thu"
+            model="sale.order" 
+            report_type="qweb-pdf"
+            file="seacorp_sale_order_receipt.pos_order_80mm" 
+            name="seacorp_sale_order_receipt.pos_order_80mm"
+            print_report_name="object.name"
+            paperformat="seacorp_sale_order_receipt.paperformat_80mm"
+        />
+
+    </data>
+</odoo>

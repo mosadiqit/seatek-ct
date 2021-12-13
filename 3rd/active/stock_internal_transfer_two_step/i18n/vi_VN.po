@@ -1,0 +1,456 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_internal_transfer_two_step
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-24 04:07+0000\n"
+"PO-Revision-Date: 2019-12-24 04:07+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,help:stock_internal_transfer_two_step.field_stock_picking__state
+msgid ""
+" * Draft: The transfer is not confirmed yet. Reservation doesn't apply.\n"
+" * Waiting another operation: This transfer is waiting for another operation before being ready.\n"
+" * Waiting: The transfer is waiting for the availability of some products.\n"
+"(a) The shipping policy is \"As soon as possible\": no product could be reserved.\n"
+"(b) The shipping policy is \"When all products are ready\": not all the products could be reserved.\n"
+" * Ready: The transfer is ready to be processed.\n"
+"(a) The shipping policy is \"As soon as possible\": at least one product has been reserved.\n"
+"(b) The shipping policy is \"When all products are ready\": all product have been reserved.\n"
+" * Done: The transfer has been processed.\n"
+" * Cancelled: The transfer has been cancelled."
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.actions.report,print_report_name:stock_internal_transfer_two_step.action_report_internal
+msgid "'Internal Slip - %s' % (object.name)"
+msgstr "'Phiếu chuyển kho nội bộ - %s' % (object.name)"
+
+#. module: stock_internal_transfer_two_step
+#: code:addons/stock_internal_transfer_two_step/wizard/stock_move_location.py:0
+#, python-format
+msgid "<div>From <b>{}</b> to <b>{}</b></div>"
+msgstr "<div>Từ <b>{}</b> đến <b>{}</b></div>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>From</strong>"
+msgstr "<strong>Từ</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Initial demand</strong>"
+msgstr "<strong>Nhu cầu ban đầu</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Order:</strong>"
+msgstr "<strong>Tài liệu gốc:</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Product</strong>"
+msgstr "<strong>Sản phẩm</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Quantity</strong>"
+msgstr "<strong>Số lượng</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Receipted</strong>"
+msgstr "<strong>Đã nhận</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Sended</strong>"
+msgstr "<strong>Đã gửi</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>Shipping Date:</strong>"
+msgstr "<strong>Ngày giao hàng dự kiến:</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "<strong>To</strong>"
+msgstr "<strong>Đến</strong>"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid ""
+"All items couldn't be shipped, the remaining ones will be shipped as soon as"
+" they become available."
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_wiz_stock_move_location_form_stock_move_location
+msgid "Apply"
+msgstr "Xác nhận"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking__apply_two_step_auth
+msgid "Apply internal authencation with two step"
+msgstr "Xác thực 2 bước khi chuyển kho nội bộ"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_warehouse__enable_auto_split
+msgid "Auto split quantity when internal transfer"
+msgstr "Tự động phân chia số lượng khi chuyển nội bộ"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__internal_transfer_state__cancel
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_transfer_form
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_wiz_stock_move_location_form_stock_move_location
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__picking_id
+msgid "Connected Picking"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking_type__count_picking_partial_receipt
+msgid "Count Picking Partial Receipt"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking_type__count_picking_partial_send
+msgid "Count Picking Partial Send"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking_type__count_picking_sended
+msgid "Count Picking Sended"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__create_uid
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__create_uid
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__create_uid
+msgid "Created by"
+msgstr "Được tạo bởi"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__create_date
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__create_date
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__create_date
+msgid "Created on"
+msgstr "Được tạo vào"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__custom
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__custom
+msgid "Custom line"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__location_dest_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking__tgl_vitual_location_dest_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__destination_location_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__destination_location_id
+msgid "Destination Location"
+msgstr "Địa điểm đích"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__display_name
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__display_name
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__internal_transfer_state__done
+msgid "Done"
+msgstr "Hoàn thành"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__internal_transfer_state__draft
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.stock_picking_type_kanban
+msgid "Draft"
+msgstr "Nháp"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__max_quantity
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_transfer_form
+msgid "Initial demand"
+msgstr "Nhu cầu ban đầu"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.actions.report,name:stock_internal_transfer_two_step.action_report_internal
+msgid "Internal Slip"
+msgstr "Chuyển kho nội bộ"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking__internal_move_ids
+msgid "Internal moves"
+msgstr "Chi tiết chuyển kho nội bộ"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model,name:stock_internal_transfer_two_step.model_internal_stock_move
+msgid "Internal stock move"
+msgstr "Chi tiết chuyển kho nội bộ"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__picking_id
+msgid "Internal transfer"
+msgstr "Phiếu chuyển kho"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking__internal_transfer_state
+msgid "Internal transfer state"
+msgstr "Trạng thái chuyển kho nội bộ"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_warehouse__internal_transfer_location_id
+msgid "Internal transit location"
+msgstr "Địa điểm chuyển tiếp"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_transfer_form
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_wiz_stock_move_location_form_stock_move_location
+msgid "Inventory Details"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move____last_update
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location____last_update
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line____last_update
+msgid "Last Modified on"
+msgstr "Cập nhật gần đây vào"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__write_uid
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__write_uid
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật gần đây bởi"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__write_date
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__write_date
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__lot_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__lot_id
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "Lot/Serial Number"
+msgstr "Số Lô/sê-ri"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__max_quantity
+msgid "Maximum available quantity"
+msgstr "SL tồn tối đa"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__stock_move_location_line_ids
+msgid "Move Location lines"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.actions.act_window,name:stock_internal_transfer_two_step.wiz_stock_move_location_action
+msgid "Move detail"
+msgstr "Chi tiết điều chuyển"
+
+#. module: stock_internal_transfer_two_step
+#: code:addons/stock_internal_transfer_two_step/wizard/stock_move_location_line.py:0
+#, python-format
+msgid "Move quantity can not exceed max quantity!"
+msgstr "Số lượng không thể vượt quá tồn kho tối đa"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.report_internal_delivery
+msgid "Operation detail"
+msgstr "Hoạt động chi tiết"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__location_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__origin_location_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__origin_location_id
+msgid "Origin Location"
+msgstr "Địa điểm nguồn"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.stock_picking_type_kanban
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_picking_internal_search
+msgid "Partial Receipt"
+msgstr "Nhận một phần"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.stock_picking_type_kanban
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_picking_internal_search
+msgid "Partial Send"
+msgstr "Gửi một phần"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__internal_transfer_state__partial_receipt
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__state__partial_receipt
+msgid "Partial receipt"
+msgstr "Nhận một phần"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__internal_transfer_state__partial_send
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__state__partial_send
+msgid "Partial send"
+msgstr "Gửi một phần"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_warehouse__user_permis_ids
+msgid "Permission to Send and Receive Products"
+msgstr "Quyền gửi và nhận sản phẩm"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model,name:stock_internal_transfer_two_step.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Loại giao nhận"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__product_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__product_id
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__product_uom_id
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__product_uom_id
+msgid "Product Unit of Measure"
+msgstr "Đơn vị"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location__product_ids
+msgid "Products"
+msgstr "Các sản phẩm"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__move_quantity
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__move_quantity
+msgid "Quantity to move"
+msgstr "Số lượng"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_transfer_form
+msgid "Receipt"
+msgstr "Nhận"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__move_receipt_done
+msgid "Receipted"
+msgstr "Đã nhận"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__remain_quantity
+msgid "Remain quantity"
+msgstr "SL còn lại"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_transfer_form
+msgid "Send"
+msgstr "Gửi"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_internal_stock_move__move_send_done
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__internal_transfer_state__sended
+#: model:ir.model.fields.selection,name:stock_internal_transfer_two_step.selection__stock_picking__state__sended
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.stock_picking_type_kanban
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_picking_internal_search
+msgid "Sended"
+msgstr "Đã gửi"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking__tgl_vitual_location_id
+msgid "Source Location"
+msgstr "Địa điểm nguồn"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_stock_picking__state
+msgid "Status"
+msgstr "Trạng thái"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__wizart_id
+msgid "Stock line ids"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: code:addons/stock_internal_transfer_two_step/models/stock_picking.py:0
+#: code:addons/stock_internal_transfer_two_step/models/stock_picking.py:0
+#, python-format
+msgid "The quantity can't over the initial demand!"
+msgstr "Số lượng không thể vượt quá nhu cầu ban đầu!"
+
+#. module: stock_internal_transfer_two_step
+#: code:addons/stock_internal_transfer_two_step/models/stock_picking.py:0
+#, python-format
+msgid "The quantity can't over the quantity in transit location!"
+msgstr "Số lượng trong địa điểm trung chuyển không đủ!"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_picking_internal_search
+msgid "To Process"
+msgstr "Cần xử lý"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model.fields,field_description:stock_internal_transfer_two_step.field_wiz_stock_move_location_line__tracking
+msgid "Tracking"
+msgstr "Theo dõi"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model,name:stock_internal_transfer_two_step.model_stock_picking
+msgid "Transfer"
+msgstr "Điều chuyển"
+
+#. module: stock_internal_transfer_two_step
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_transfer_form
+#: model_terms:ir.ui.view,arch_db:stock_internal_transfer_two_step.view_wiz_stock_move_location_form_stock_move_location
+msgid "UoM"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.actions.server,name:stock_internal_transfer_two_step.action_update_transit_location
+msgid "Update transit location"
+msgstr "Cập nhật địa điểm trung chuyển"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model,name:stock_internal_transfer_two_step.model_stock_warehouse
+msgid "Warehouse"
+msgstr "Kho"
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model,name:stock_internal_transfer_two_step.model_wiz_stock_move_location
+msgid "Wizard move location"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: model:ir.model,name:stock_internal_transfer_two_step.model_wiz_stock_move_location_line
+msgid "Wizard move location line"
+msgstr ""
+
+#. module: stock_internal_transfer_two_step
+#: code:addons/stock_internal_transfer_two_step/models/stock_picking.py:0
+#: code:addons/stock_internal_transfer_two_step/models/stock_picking.py:0
+#, python-format
+msgid "You can not excute this action, please contact with administritor!"
+msgstr ""
+"Bạn không có quyền thực hiện hành động này, vui long liên hệ quản trị viên!"

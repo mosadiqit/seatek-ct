@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="sea_pegasus_purchase_order_report_xls"
+                model="purchase.order"
+                string="Pegasus Purchase Order - Excel"
+                report_type="xlsx"
+                name="sea_pegasus_purchase_order_report_xls.purchase_order_xls"
+                file="sea_pegasus_purchase_order_report_xls.purchase_order_xls"
+                attachment_use="False"
+                print_report_name="'Purchase Order - %s' % (object.name)"
+        />
+    </data>
+</odoo>

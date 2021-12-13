@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+    Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+    For Module Support : devintelle@gmail.com  or Skype : devintelle
+-->
+<odoo>
+    <record id="view_dev_product_template_stock_by_location_Form" model="ir.ui.view">
+        <field name="name">view.dev.product.template.stock.by.location.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='variants']" position="after">
+                <page string='Stock By Location' groups="stock.group_stock_user">
+                    <group>
+                        <group>
+                            <field name="stock_start_date"/>
+                            <field name="stock_end_date"/>
+                            <field name="stock_location_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <button name="load_stock_lines" type="object" string='Reload Lines' class="btn-primary" style="width:100px"/>
+                            <br/>
+                            <button name="print_stock_location" type="object" string='Print' class="btn-primary" style="width:100px"/>
+                        </group>
+                    </group>
+                    
+                    <field name="stock_by_location_lines" readonly="1">
+                        <tree>
+                            <field name="location_id"/>
+                            <field name="available_qty"/>
+                            <field name="forecasted_qty"/>
+                            <field name="incoming_qty"/>
+                            <field name="outgoing_qty"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    
+    <record id="view_dev_product_product_stock_by_location_Form" model="ir.ui.view">
+        <field name="name">view.dev.product.product.stock.by.location.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//notebook" position="inside">
+                <page string='Stock By Location' groups="stock.group_stock_user">
+                    <group>
+                        <group>
+                            <field name="stock_start_date"/>
+                            <field name="stock_end_date"/>
+                            <field name="stock_location_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <button name="load_stock_lines" type="object" string='Reloads Lines' class="btn-primary" style="width:100px"/>
+                            <br/>
+                            <button name="print_stock_location" type="object" string='Print' class="btn-primary" style="width:100px"/>
+                        </group>
+                    </group>
+                    
+                    <field name="pro_stock_by_location_lines" readonly="1">
+                        <tree>
+                            <field name="location_id"/>
+                            <field name="available_qty"/>
+                            <field name="forecasted_qty"/>
+                            <field name="incoming_qty"/>
+                            <field name="outgoing_qty"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>  

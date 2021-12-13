@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sea_stock_report_xls_wizard_form" model="ir.ui.view">
+            <field name="name">sea_report_xls_stock_report_wizard_form_view</field>
+            <field name="model">sea_report_xls.stock_report.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group string="Date Range">
+                            <group>
+                                <field name="date_from" widget="date" attrs="{'required': True}"/>
+                            </group>
+                            <group>
+                                <field name="date_to" widget="date" attrs="{'required': True}"/>
+                            </group>
+                        </group>
+                        <group string="Choose option">
+                            <group>
+                                <field name="location_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                                <field name="picking_type_ids" options="{'no_create': True}" widget="many2many_tags"/>
+
+                            </group>
+                            <group>
+                                <field name="product_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <!-- <button string='Send Mail' name="view_report" type="object" class="btn-primary"/> -->
+                            <button string='Export' name="view_report" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_sea_stock_report_xls_wizard_form" model="ir.actions.act_window">
+            <field name="name">StockMove by date</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sea_report_xls.stock_report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_stock_report"
+            name="Stock Move by Date"
+            action="action_sea_stock_report_xls_wizard_form"
+            sequence="5"
+            parent="sea_menu_base.menu_item_stock"
+            groups="stock.group_stock_user"/>
+        
+        <report id="stock_report_xls"
+            model="sea_report_xls.stock_report.wizard"
+            string="Stock Move by Date XLSX"
+            report_type="xlsx"
+            name="sea_report_xls.stock_report_xls"
+            file="Stock-Move-Report"
+            attachment_use="False"
+            menu="False"/>
+
+    </data>
+</odoo>

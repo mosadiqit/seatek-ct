@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_dannygreen_account_invoicing_selection_report" model="ir.ui.view">
+        <field name="name">DannyGreen Report</field>
+        <field name="model">dannygreen.account.report.selection</field>
+        <field name="arch" type="xml">
+            <form string="Choose your report">
+                <group>
+                    <group>
+                        <field name="selection_report" widget="radio"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

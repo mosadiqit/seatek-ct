@@ -1,0 +1,34 @@
+.pos .payment-screen .pos-sale-ticket {
+    font-family: roboto;
+    font-weight: 300;
+    width: 240px;
+    padding: 0;
+}
+.pos .pos-sale-ticket {
+    font-family: roboto;
+    font-weight: 300;
+    width: 240px;
+    padding: 0;
+}
+@media print {
+    .pos .pos-sale-ticket{
+        margin: 0;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        border: none !important;
+        font-size: 11px !important;
+        width: 225px !important;
+    }
+}
+
+/*
+.pos .payment-screen .pos-sale-ticket .receipt-header {
+    padding: 0  0;
+    font-size: 12px;
+    font-weight: 400;
+}
+.pos .payment-screen .pos-sale-ticket .receipt-footer {
+    padding: 0  0;
+    font-size: 12px;
+    font-weight: 400;
+}*/

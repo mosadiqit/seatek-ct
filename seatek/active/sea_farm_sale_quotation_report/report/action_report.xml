@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sea_farm_paper" model="report.paperformat">
+        <field name="name">SeaFarm Paper</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">16</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+     <data>
+        <report
+                id="sea_farm_sale_quotation_report_pdf"
+                string="SeaFarm Bảng báo giá"
+                model="sale.order"
+                report_type="qweb-pdf"
+                name="sea_farm_sale_quotation_report.sea_farm_sale_quotation_pdf"
+                print_report_name="'Bảng báo giá'"
+                paperformat="sea_farm_sale_quotation_report.sea_farm_paper"/>
+
+     </data>
+    <template id="sea_farm_sale_quotation_header_layout">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <div class="row">
+                <div class="col-4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width:100%"
+                         alt="Logo"/>
+                </div>
+                <div class="col-8 text-center" style="font-family: Times New Roman; padding: 0px;">
+                    <h5 style="margin-bottom:0px; text-align: left;">
+                        <b>
+                            <t t-esc="company.name"/>
+                        </b>
+                    </h5>
+                    <p style="margin: 0; text-align: left;">
+                        <t t-if="company.street">
+                            <span t-field="company.street"/>,
+                        </t>
+                        <t t-if="company.street2">
+                            <span t-field="company.street2"/>,
+                        </t>
+                        <t t-if="company.city">
+                            <span t-field="company.city"/>
+                        </t>
+                    </p>
+                    <p style="margin: 0; text-align: left;">
+                        MST:
+                        <span t-field="company.vat"/>
+                    </p>
+                </div>
+                <div style="clear:both"/>
+            </div>
+            <div style="background-color:black; border: groove 5px; height:1px; margin-bottom: 4px; margin-top: 4px"/>
+
+            <t t-raw="0"/>
+        </div>
+    </template>
+    <template id="sea_farm_sale_quotation_table_layout">
+        <t t-foreach="docs" t-as="o">
+            <div style="clear: both;"/>
+            <style>
+                .custom-table-line{
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid black;
+                }
+                .custom-table-line tr {
+                border-bottom: 1px solid black;
+                }
+                .custom-table-line td, .custom-table-line th {
+                border-right: 1px solid black;
+                padding: 2px;
+                vertical-align: middle;
+                text-align: center;
+                }
+            </style>
+            <table class="custom-table-line">
+                <thead>
+                    <tr style="border-bottom: 1px solid black;">
+                        <th class="text-center" style="width:45px">STT</th>
+                        <th>Tên hàng hóa</th>
+                        <th style="width: 60px">ĐVT</th>
+                        <th class="text-center" style="width: 80px">Số lượng</th>
+                        <th class="text-center" style="width: 120px">Đơn giá</th>
+                        <th class="text-center" style="width: 140px">Thành tiền</th>
+                        <th class="text-center" style="width: 150px">Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="move_no" t-value="0"/>
+                    <t t-set="total" t-value="0"/>
+                    <t t-foreach="o.order_line" t-as="line">
+                        <t t-set="move_no" t-value="move_no + 1"/>
+                        <tr style="text-align: right">
+                            <td class="text-center">
+                                <span t-esc="move_no"/>
+                            </td>
+                            <td class="text-left">
+                                <span t-field="line.product_id.name"/>
+                            </td>
+                            <td class="text-center">
+                                <t t-if="line.product_uom != 'm' and line.product_uom != 'kg' and line.product_uom != 'lít' ">
+                                    <t t-esc="'Unit(s)'"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="line.product_uom"/>
+                                </t>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="o.formatNum(line.product_uom_qty)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="o.formatNum(line.price_unit)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="o.formatNum(line.price_subtotal)"/>
+                            </td>
+                            <td class="text-left">
+                                <span t-esc="line.remarks"/>
+                            </td>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td colspan="5">Tổng cộng trước thuế</td>
+                        <td class="text-right"><strong><span t-field="o.amount_untaxed"/></strong></td>
+                        <td />
+                    </tr>
+                    <tr>
+                        <td colspan="5">Thuế VAT 10%</td>
+                        <td class="text-right"><strong><span t-field="o.amount_tax"/></strong></td>
+                        <td />
+                    </tr>
+                    <tr>
+                        <td colspan="5">Tổng cộng đã bao gồm VAT 10%</td>
+                        <td class="text-right"><strong><span t-field="o.amount_total"/></strong></td>
+                        <td />
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+</odoo>

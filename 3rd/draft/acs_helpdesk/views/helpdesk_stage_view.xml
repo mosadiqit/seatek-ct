@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Stage Views -->
+    <record id="helpdesk_stage_form_view" model="ir.ui.view">
+        <field name="name">Satge</field>
+        <field name="model">acs.support.stage</field>
+        <field name="arch" type="xml">
+            <form string="Stage">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="email_template_id"/>
+                            <field name="rating_template_id"/>
+                            <field name="team_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="fold"/>
+                            <field name="done"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="helpdesk_stage_tree_view" model="ir.ui.view">
+        <field name="name">acs.support.stage.tree</field>
+        <field name="model">acs.support.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Support Stage">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="support_stage_action" model="ir.actions.act_window">
+        <field name="name">Support Stage</field>
+        <field name="res_model">acs.support.stage</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

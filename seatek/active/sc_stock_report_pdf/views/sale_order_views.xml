@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <record id="sea_view_order_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_total']" position="after">
+                    <field name="total_amount_qty_delivery" sum="Total Deliveried Amount" widget="monetary"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sea_view_order_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position="after">
+                    <field name="sea_price_total_qty_delivered"/>
+                </xpath>
+                <!--<xpath expr="//page[@name='other_information']/field[@name='invoice_status']" position="after">
+                    <field name="total_amount_qty_delivery"/>
+                </xpath>-->
+                <field name="date_order" position="after">
+                    <field name="total_amount_qty_delivery"/>
+                </field>
+            </field>
+        </record>
+        <!-- explicit list view definition -->
+        <!--
+        <record model="ir.ui.view" id="sc_stock_report_pdf.list">
+          <field name="name">sc_stock_report_pdf list</field>
+          <field name="model">sc_stock_report_pdf.sc_stock_report_pdf</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </tree>
+          </field>
+        </record>
+        -->
+
+        <!-- actions opening views on models -->
+        <!--
+        <record model="ir.actions.act_window" id="sc_stock_report_pdf.action_window">
+          <field name="name">sc_stock_report_pdf window</field>
+          <field name="res_model">sc_stock_report_pdf.sc_stock_report_pdf</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        -->
+
+        <!-- server action to the one above -->
+        <!--
+        <record model="ir.actions.server" id="sc_stock_report_pdf.action_server">
+          <field name="name">sc_stock_report_pdf server</field>
+          <field name="model_id" ref="model_sc_stock_report_pdf_sc_stock_report_pdf"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": self._name,
+            }
+          </field>
+        </record>
+        -->
+
+        <!-- Top menu item -->
+        <!--
+        <menuitem name="sc_stock_report_pdf" id="sc_stock_report_pdf.menu_root"/>
+        -->
+        <!-- menu categories -->
+        <!--
+        <menuitem name="Menu 1" id="sc_stock_report_pdf.menu_1" parent="sc_stock_report_pdf.menu_root"/>
+        <menuitem name="Menu 2" id="sc_stock_report_pdf.menu_2" parent="sc_stock_report_pdf.menu_root"/>
+        -->
+        <!-- actions -->
+        <!--
+        <menuitem name="List" id="sc_stock_report_pdf.menu_1_list" parent="sc_stock_report_pdf.menu_1"
+                  action="sc_stock_report_pdf.action_window"/>
+        <menuitem name="Server to list" id="sc_stock_report_pdf" parent="sc_stock_report_pdf.menu_2"
+                  action="sc_stock_report_pdf.action_server"/>
+        -->
+    </data>
+</odoo>

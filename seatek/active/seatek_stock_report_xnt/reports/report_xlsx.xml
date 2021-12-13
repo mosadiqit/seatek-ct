@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <report
+        id="_report_excel"
+        model="seatek.inventory.report"
+        string="Xuất file Excel"
+        report_type="xlsx"
+        name="seatek_stock_report_xnt._report_excel"
+        file="Chi tiết xuất nhập tồn"
+        attachment_use="False"
+    />
+</odoo>

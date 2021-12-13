@@ -1,0 +1,478 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sea_report_xls
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-13 08:40+0000\n"
+"PO-Revision-Date: 2020-04-13 08:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:77
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:91
+#, python-format
+msgid "     Email: "
+msgstr "     Email: "
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/models/pos_session_wizard.py:53
+#, python-format
+msgid " \"%s\" Session is not available."
+msgstr "\"%s\" Ca không tồn tại."
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:110
+#, python-format
+msgid "%CK"
+msgstr "%CK"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:251
+#, python-format
+msgid "(Ký, ghi rõ họ tên)"
+msgstr "(Ký, ghi rõ họ tên)"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:41
+#, python-format
+msgid "BÁO CÁO CHI TIẾT BÁN HÀNG THEO NGÀY"
+msgstr "BÁO CÁO CHI TIẾT BÁN HÀNG THEO NGÀY"
+
+#. module: sea_report_xls
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_report_xls_sale_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_stock_report_xls_wizard_form
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: sea_report_xls
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_report_xls_sale_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_stock_report_xls_wizard_form
+msgid "Choose option"
+msgstr "Tùy chọn"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,type:0
+msgid "Commitment date"
+msgstr "Ngày cam kết"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,type:0
+msgid "Create date"
+msgstr "Ngày tạo"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__create_uid
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__create_uid
+msgid "Created by"
+msgstr "Được tạo bởi"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__create_date
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__create_date
+msgid "Created on"
+msgstr "Thời điểm tạo"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__date_from
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__date_from
+msgid "Date From"
+msgstr "Từ ngày"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/models/pos_session_wizard.py:44
+#: code:addons/sea_report_xls/models/sale_order_wizard.py:35
+#: code:addons/sea_report_xls/models/stock_report_wizard.py:30
+#, python-format
+msgid "Date From must be greater than date To!"
+msgstr "Ngày bắt đầu đang lớn hơn ngày kết thúc!"
+
+#. module: sea_report_xls
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_report_xls_sale_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_stock_report_xls_wizard_form
+msgid "Date Range"
+msgstr "Khoản thời gian"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__date_to
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__date_to
+msgid "Date To"
+msgstr "Đến ngày"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_report_sea_report_xls_sale_order_xls__display_name
+#: model:ir.model.fields,field_description:sea_report_xls.field_report_sea_report_xls_stock_report_xls__display_name
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__display_name
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,type:0
+msgid "Effective date"
+msgstr "Ngày giao hàng"
+
+#. module: sea_report_xls
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_report_xls_sale_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:sea_report_xls.sea_stock_report_xls_wizard_form
+msgid "Export"
+msgstr "Xuất"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,invoice_status:0
+msgid "Fully Invoiced"
+msgstr "Hóa đơn đầy đủ"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:104
+#, python-format
+msgid "Ghi chú"
+msgstr "Ghi chú"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:118
+#, python-format
+msgid "Giảm giá"
+msgstr "Giảm giá"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:142
+#, python-format
+msgid "Hao hụt"
+msgstr "Hao hụt"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_report_sea_report_xls_sale_order_xls__id
+#: model:ir.model.fields,field_description:sea_report_xls.field_report_sea_report_xls_stock_report_xls__id
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__id
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__id
+msgid "ID"
+msgstr "ID"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__invoice_status
+msgid "Invoice Status"
+msgstr "Tình trạng hóa đơn"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:114
+#, python-format
+msgid "Kho Nhap"
+msgstr "Kho Nhap"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:112
+#, python-format
+msgid "Kho Xuat"
+msgstr "Kho Xuat"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:96
+#, python-format
+msgid "Khách hàng"
+msgstr "Khách hàng"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_report_sea_report_xls_sale_order_xls____last_update
+#: model:ir.model.fields,field_description:sea_report_xls.field_report_sea_report_xls_stock_report_xls____last_update
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard____last_update
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard____last_update
+msgid "Last Modified on"
+msgstr "Sửa lần cuối vào"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__write_uid
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__write_date
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối vào"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__location_ids
+msgid "Location"
+msgstr "Địa điểm"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:116
+#, python-format
+msgid "Mã hàng"
+msgstr "Mã hàng"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:118
+#, python-format
+msgid "Mặt hàng"
+msgstr "Mặt hàng"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:98
+#, python-format
+msgid "Mặt hàng bán"
+msgstr "Mặt hàng bán"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:92
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:108
+#, python-format
+msgid "Ngày"
+msgstr "Ngày"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:250
+#, python-format
+msgid "Người lập"
+msgstr "Người lập"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,invoice_status:0
+msgid "Nothing to Invoice"
+msgstr "Chưa có hóa đơn"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,type:0
+msgid "Order date"
+msgstr "Ngày đặt hàng"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__picking_type_ids
+msgid "Picking Type"
+msgstr "Cách xuất"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/models/sale_order_wizard.py:86
+#: code:addons/sea_report_xls/models/stock_report_wizard.py:77
+#, python-format
+msgid "Please contact Administrator to configure your time zone!!!"
+msgstr "Hãy liên hệ Administrator để cấu hình múi giờ cho bạn!!!"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_stock_report_wizard__product_ids
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/models/pos_session_wizard.py:15
+#, python-format
+msgid "Report Session"
+msgstr "Báo cáo Ca"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:106
+#, python-format
+msgid "SL"
+msgstr "SL"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:106
+#, python-format
+msgid "STT"
+msgstr "STT"
+
+#. module: sea_report_xls
+#: model:ir.actions.act_window,name:sea_report_xls.action_sale_order_report_wizard_form
+#: model:ir.ui.menu,name:sea_report_xls.menu_sale_report
+msgid "Sale Order by Date"
+msgstr "Báo cáo Đơn hàng theo ngày"
+
+#. module: sea_report_xls
+#: model:ir.actions.report,name:sea_report_xls.sale_report_xls
+msgid "Sale Order by Date XLSX"
+msgstr "Đơn hàng theo ngày - XLSX"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__team_ids
+msgid "Sales Team"
+msgstr "Đội ngũ bán hàng"
+
+#. module: sea_report_xls
+#: model:ir.ui.menu,name:sea_report_xls.menu_stock_report
+msgid "Stock Move by Date"
+msgstr "Báo cáo xuất nhập theo ngày"
+
+#. module: sea_report_xls
+#: model:ir.actions.report,name:sea_report_xls.stock_report_xls
+msgid "Stock Move by Date XLSX"
+msgstr "Xuất nhập theo ngày - XLSX"
+
+#. module: sea_report_xls
+#: model:ir.actions.act_window,name:sea_report_xls.action_sea_stock_report_xls_wizard_form
+msgid "StockMove by date"
+msgstr "Báo cáo kho theo ngày"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:122
+#, python-format
+msgid "Số lượng"
+msgstr "Số lượng"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:94
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:110
+#, python-format
+msgid "Số phiếu"
+msgstr "Số phiếu"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/models/sale_order_wizard.py:78
+#: code:addons/sea_report_xls/models/stock_report_wizard.py:69
+#, python-format
+msgid "The period choose has no data to report! Please select a different time period."
+msgstr "Khung thời gian đã chọn không có dữ liệu để báo cáo! Hãy chọn một khung thời gian khác."
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:114
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:126
+#, python-format
+msgid "Thành tiền"
+msgstr "Thành tiền"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:100
+#, python-format
+msgid "Thực xuất"
+msgstr "Thực xuất"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:112
+#, python-format
+msgid "Tiền giảm"
+msgstr "Tiền giảm"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:116
+#, python-format
+msgid "Tiền hàng"
+msgstr "Tiền hàng"
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,invoice_status:0
+msgid "To Invoice"
+msgstr "Chờ hóa đơn"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:168
+#, python-format
+msgid "Trưởng phòng"
+msgstr "Trưởng phòng"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__type
+msgid "Type"
+msgstr "Loại"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:102
+#, python-format
+msgid "Tạm tính"
+msgstr "Tạm tính"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:245
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:162
+#, python-format
+msgid "TỔNG CỘNG"
+msgstr "TỔNG CỘNG"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:50
+#, python-format
+msgid "TỔNG HỢP MẶT HÀNG CHUYỂN KHO THEO NGÀY"
+msgstr "TỔNG HỢP MẶT HÀNG CHUYỂN KHO THEO NGÀY"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:120
+#, python-format
+msgid "Tổng cộng"
+msgstr "Tổng cộng"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:83
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:97
+#, python-format
+msgid "Từ ngày: "
+msgstr "Từ ngày: "
+
+#. module: sea_report_xls
+#: selection:sea_report_xls.sale_order.wizard,invoice_status:0
+msgid "Upselling Opportunity"
+msgstr "Chuẩn bị bán"
+
+#. module: sea_report_xls
+#: model:ir.model.fields,field_description:sea_report_xls.field_sea_report_xls_sale_order_wizard__warehouse_ids
+msgid "Warehouse"
+msgstr "Kho"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:249
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:166
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:167
+#, python-format
+msgid "____, ____/____/20___"
+msgstr ""
+
+#. module: sea_report_xls
+#: model:ir.model,name:sea_report_xls.model_report_sea_report_xls_sale_order_xls
+msgid "report.sea_report_xls.sale_order_xls"
+msgstr ""
+
+#. module: sea_report_xls
+#: model:ir.model,name:sea_report_xls.model_report_sea_report_xls_stock_report_xls
+msgid "report.sea_report_xls.stock_report_xls"
+msgstr ""
+
+#. module: sea_report_xls
+#: model:ir.model,name:sea_report_xls.model_sea_report_xls_sale_order_wizard
+msgid "sea_report_xls.sale_order.wizard"
+msgstr ""
+
+#. module: sea_report_xls
+#: model:ir.model,name:sea_report_xls.model_sea_report_xls_stock_report_wizard
+msgid "sea_report_xls.stock_report.wizard"
+msgstr ""
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:120
+#, python-format
+msgid "ĐVT"
+msgstr "ĐVT"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:77
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:91
+#, python-format
+msgid "Điện thoại: "
+msgstr "Điện thoại: "
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:108
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:124
+#, python-format
+msgid "Đơn giá"
+msgstr "Đơn giá"
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:86
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:100
+#, python-format
+msgid "Đến ngày: "
+msgstr "Đến ngày: "
+
+#. module: sea_report_xls
+#: code:addons/sea_report_xls/reports/sale_order/sale_report_xls.py:75
+#: code:addons/sea_report_xls/reports/stock_report/stock_report_xls.py:89
+#, python-format
+msgid "Địa chỉ: "
+msgstr "Địa chỉ: "
+

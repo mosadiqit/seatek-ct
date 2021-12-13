@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_sales_details_wizard" model="ir.ui.view">
+            <field name="name">view.pos.sales.details.wizard</field>
+            <field name="model">pos.sales.details.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Sales Details by Date">
+                    <group>
+                        <field name="start_date" widget="date" attrs="{'required': True}"/>
+                        <field name="end_date" widget="date" attrs="{'required': True}"/>
+                    </group>
+                    <group>
+                        <field name="pos_config_ids" mode="tree" colspan="4" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <!--<button name="button_export_pdf" string="Print PDF" type="object" class="btn-primary"/>-->
+                        <button name="button_export_xlsx" string="Details Of The Date (Excel)" type="object" class="btn-primary"/>
+                        <button name="button_export_xlsx_by_date" string="Details By Date (Excel)" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="sea_pos_sales_details_report" model="ir.actions.act_window">
+            <field name="name">Sales Details By Date</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.sales.details.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <report string="Sales Details XLSX"
+            id="action_sales_details_report_xlsx"
+            model="pos.sales.details.wizard"
+            name="sea_sales_details_report.sales_details_of_the_date"
+            file="sales Details Report"
+            report_type="xlsx"
+            attachment_use="False"/>
+
+        <report string="Sales Details XLSX By Date"
+            id="action_sales_details_by_date"
+            model="pos.sales.details.wizard"
+            name="sea_sales_details_report.sales_details_by_date"
+            file="sales Details Report By Date"
+            report_type="xlsx"
+            attachment_use="False"/>
+
+        <menuitem action="sea_pos_sales_details_report" id="menu_action_pos_sale_report"
+                  name="Sales Details By Date" parent="point_of_sale.menu_point_rep" sequence='21'/>
+
+        <report
+                id="action_report_pos_sale_detail_xls"
+                string="Session Details"
+                model="pos.session"
+                report_type="xlsx"
+                name="sea_sales_details_report.pos_session_details"
+                file="sea_sales_details_report.pos_session_details"
+                attachment_use="False"
+                print_report_name="'Sales Details - %s' % (object.name)"
+        />
+    </data>
+</odoo>

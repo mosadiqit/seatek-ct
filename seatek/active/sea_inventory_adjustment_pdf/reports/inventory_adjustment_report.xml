@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="sea_inventory_adjustment" model="report.paperformat">
+            <field name="name">DannyGreen inventory paper</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">14</field>
+            <field name="margin_bottom">14</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <!--<field name="report_ids"
+                   eval="[(4, ref('dannygreen_stock_report.dannygreen_stock_action_export_inventory_report'))]"/>-->
+        </record>
+
+        <report
+                id="inventory_adjustment_report_pdf"
+                string="Inventory Adjustment (PDF)"
+                model="stock.inventory"
+                report_type="qweb-pdf"
+                file="sea_inventory_adjustment_pdf.inventory_adjustment_report_pdf_parent"
+                name="sea_inventory_adjustment_pdf.inventory_adjustment_report_pdf_parent"
+                print_report_name="'Inventory Adjustment - %s' % (object.name)"
+                paperformat="sea_inventory_adjustment_pdf.sea_inventory_adjustment"
+        />
+
+    </data>
+
+    <template id="inventory_adjustment_report_pdf_parent">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                     t-att-data-oe-id="o and o.id"
+                     t-att-data-oe-lang="o and o.env.context.get('lang')">
+                    <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+                    <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+                    <t t-if="not o" t-set="o" t-value="doc"/>
+                    <t t-if="not company">
+                        <!-- Multicompany -->
+                        <t t-if="company_id">
+                            <t t-set="company" t-value="company_id"/>
+                        </t>
+                        <t t-elif="o and 'company_id' in o">
+                            <t t-set="company" t-value="o.company_id.sudo()"/>
+                        </t>
+                        <t t-else="else">
+                            <t t-set="company" t-value="res_company"/>
+                        </t>
+                    </t>
+                    <t t-call="sea_inventory_adjustment_pdf.inventory_adjustment_report_template" t-lang="doc.partner_id.lang"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

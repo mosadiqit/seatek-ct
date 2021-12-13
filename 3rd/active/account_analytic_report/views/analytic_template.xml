@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_analytic_account_data">
+    <!-- Get Children Groups -->
+    <t t-set="children_ids" t-value="request.env['account.analytic.group'].get_children(c['id'])"/>
+    <!-- Get Account Analytic Accounts -->
+    <t t-set="accounts" t-value="request.env['account.analytic.account'].sudo().get_analytic_account(c['id'], date_from, date_to, analytic_accounts, acc_company)"/>
+
+    <t t-set="all_accounts" t-value="request.env['account.analytic.account'].with_context(all_group=True).sudo().get_analytic_account(c['id'], date_from, date_to, analytic_accounts, acc_company)"/>
+    <!-- Get Account Analytic Total Balance -->
+    <t t-set="balance" t-value="request.env['account.analytic.account'].sudo().get_analytic_account_balance(all_accounts, acc_tags, date_from, date_to)"/>
+
+    <tr>
+        <t t-set="group_id" t-value="request.env['account.analytic.group'].sudo().browse(c['id'])"/>
+        <t t-if="group_id and group_id.parent_id and not group_id.children_ids">
+            <t t-set="margin" t-value="margin + 15"/>
+        </t>
+        <td><strong><span t-esc="c['name']" t-attf-style="margin-left: #{margin}px;"/></strong></td>
+        <td></td>
+        <td></td>
+        <td class="text-right"><strong><span t-esc="balance" t-options="{'widget': 'monetary', 'display_currency': user.company_id.currency_id}"/></strong></td>
+    </tr>
+
+    <t t-foreach="accounts" t-as="account">
+        <!-- Get Account Analytic Lines -->
+        <t t-set="lines" t-value="request.env['account.analytic.line']._get_analytic_lines(account, date_from, date_to, acc_company, acc_tags)"/>
+        <t t-set="account_balance" t-value="request.env['account.analytic.account'].sudo().get_analytic_account_balance(account, acc_tags, date_from, date_to)"/>
+        <!-- Set Analytic Account -->
+        <tr>
+            <td><span t-esc="account.name" t-attf-style="margin-left: #{margin}px;"/></td>
+            <td class="text-left"><span t-esc="account.code"/></td>
+            <td class="text-left"><span t-if="account.partner_id" t-esc="account.partner_id.name"/></td>
+            <td class="text-right"><span t-esc="account_balance" t-options='{"widget": "monetary", "display_currency": account.currency_id}'/></td>
+        </tr>
+    </t>
+
+    <t t-if="c['name']">
+        <t t-if="children_ids">
+            <t t-foreach="children_ids" t-as="c">
+                <t t-if="c.children_ids" t-set="margin" t-value="margin + 15"/>
+                <t t-call="account_analytic_report.report_analytic_account_data" />
+            </t>
+        </t>
+    </t>
+
+</template>
+
+<template id="report_analytic_account">
+    <t t-call="web.html_container">
+        <t t-call="web.internal_layout">
+            <div class="page">
+                <h2>Analytic Report</h2>
+                <div class="row mt32 mb32">
+                    <div class="col-auto" name="start_date">
+                        <strong>Start Date:</strong>
+                        <p t-esc="date_from"/>
+                    </div>
+                    <div class="col-auto" name="end_date">
+                        <strong>End Date:</strong>
+                        <p t-esc="date_to"/>
+                    </div>
+                    <div class="col-auto" t-if="acc_company" name="company">
+                        <t t-set="company_id" t-value="request.env['res.company'].sudo().browse(acc_company)"/>
+                        <strong>Companies:</strong>
+                        <p t-esc="company_id.name"/>
+                    </div>
+                    <div class="col-auto" name="account">
+                        <t t-set="analytic_value" t-value="'All'"/>
+                        <t t-set="accounts_names" t-value="request.env['account.analytic.account'].sudo().get_analytic_account_name(analytic_accounts)"/>
+                        <strong>Analytic Accounts:</strong>
+                        <t t-if="accounts_names">
+                            <t t-set="analytic_value" t-value="''"/>
+                            <p t-esc="','.join(accounts_names)"/>
+                        </t>
+                        <p t-esc="analytic_value"/>
+                    </div>
+                    <div class="col-auto" name="tags">
+                        <t t-set="analytic_tag_value" t-value="'All'"/>
+                        <t t-set="tags_names" t-value="request.env['account.analytic.account'].sudo().get_analytic_tags_name(acc_tags)"/>
+                        <strong>Analytic Tags:</strong>
+                        <t t-if="tags_names">
+                            <t t-set="analytic_tag_value" t-value="''"/>
+                            <p t-esc="','.join(tags_names)"/>
+                        </t>
+                        <p t-esc="analytic_tag_value"/>
+                    </div>
+                </div>
+                <!-- Table Style -->
+                <style type="text/css">
+                    table#table_analytic_acc {
+                        width: 100%;
+                    }
+                    table#table_analytic_acc > thead > tr {
+                        border-bottom: 1px solid #000;
+                    }
+                    table#table_analytic_acc > tbody > tr {
+                        border-bottom: 1px solid #bbb;
+                    }
+                </style>
+                <!-- Table -->
+                <table id="table_analytic_acc">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Reference</th>
+                            <th scope="col">Partner</th>
+                            <th scope="col">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="margin" t-value="0"/>
+                        <t t-foreach="data" t-as="c">
+                            <t t-call="account_analytic_report.report_analytic_account_data"/>
+                        </t>
+
+                        <t t-set="accounts_wo_groups" t-value="request.env['account.analytic.account'].sudo().get_analytic_account('', date_from, date_to, analytic_accounts, acc_company)"/>
+                        <!-- Get Accounts without groups -->
+                        <t t-set="acc_wo_grp_balance" t-value="request.env['account.analytic.account'].sudo().get_analytic_account_balance(accounts_wo_groups, acc_tags, date_from,date_to)"/>
+
+                        <t t-if='accounts_wo_groups'>
+                            <tr>
+                                <td><strong><span>Accounts without a group</span></strong></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right"><strong><span t-esc="acc_wo_grp_balance" t-options="{'widget': 'monetary', 'display_currency': user.company_id.currency_id}"/></strong></td>
+                            </tr>
+                            <t t-foreach="accounts_wo_groups" t-as="accounts_wo_group">
+                                <t t-set="analytic_lines" t-value="request.env['account.analytic.line']._get_analytic_lines(accounts_wo_group, date_from, date_to, acc_company, acc_tags)"/>
+                                <t t-set="accounts_wo_group_balance" t-value="request.env['account.analytic.account'].sudo().get_analytic_account_balance(accounts_wo_group, acc_tags, date_from, date_to)"/>
+                                <!-- Set Analytic Account -->
+                                <tr>
+                                    <td><span t-esc="accounts_wo_group.name"/></td>
+                                    <td class="text-left"><span t-esc="accounts_wo_group.code"/></td>
+                                    <td class="text-left"><span t-if="accounts_wo_group.partner_id" t-esc="accounts_wo_group.partner_id.name"/></td>
+                                    <td class="text-right"><span t-esc="accounts_wo_group_balance" t-options='{"widget": "monetary", "display_currency": accounts_wo_group.currency_id}'/></td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </t>
+
+</template>
+
+</odoo>

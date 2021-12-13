@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_acs_change_request_public_user,acs_change_request,model_acs_change_request,,1,0,0,0
+access_acs_change_request_user,acs_change_request,model_acs_change_request,acs_project_change_request.group_change_request_user,1,1,1,0
+access_acs_change_request_manager,acs_change_request_user,model_acs_change_request,acs_project_change_request.group_change_request_manager,1,1,1,1

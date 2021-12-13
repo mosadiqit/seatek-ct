@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_account_analytic_wizard" model="ir.ui.view">
+            <field name="name">account.analytic.wizard.form</field>
+            <field name="model">account.analytic.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Analytic Details">
+                    <group>
+                        <group>
+                            <field name="filter_date"/>
+                            <field name="date_from" attrs="{'invisible': [('filter_date', '!=', 'custom')]}"/>
+                            <field name="date_to" attrs="{'invisible': [('filter_date', '!=', 'custom')]}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="analytic_account_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="generate_pdf_report" string="Print PDF" type="object" class="btn-primary"/>
+                        <button name="generate_xml_report" string="Print XLS" type="object" class="btn-primary"/>
+                        <button name="get_acc_analytic_lines" string="View Analytic Lines" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_analytic_details" model="ir.actions.act_window">
+            <field name="name">Analytic Report</field>
+            <field name="res_model">account.analytic.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <report
+            id="report_analytic"
+            model="account.analytic.wizard"
+            string="Analytic Report"
+            report_type="qweb-pdf"
+            name="account_analytic_report.report_analytic_account"
+            file="account_analytic_report.report_analytic_account"
+        />
+
+        <menuitem id="menu_report_analytic_details" name="Analytic Report" action="action_report_analytic_details" parent="account.account_reports_management_menu" sequence="1" groups="account.group_account_user"/>
+
+</odoo>

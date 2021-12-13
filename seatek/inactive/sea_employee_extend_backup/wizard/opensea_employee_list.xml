@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="opensea_employee_list_wizard_form" model="ir.ui.view">
+        <field name="name">opensea.employee.list.wizard.form</field>
+        <field name="model">opensea.employee.list.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="criteria">
+                        <field name="company_ids" widget="many2many_tags"/>
+                    </group>
+                    <footer>
+                        <button name="export_employee_list" string="Export"
+                                type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="opensea_employee_list_action" model="ir.actions.act_window">
+        <field name="name">OpenSea Employee List</field>
+        <field name="res_model">opensea.employee.list.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="employee_list_report_menu"
+        name="OpenSea Employee List"
+        action="opensea_employee_list_action"
+        parent="sea_menu_base.menu_item_hr"
+    />
+
+    <report id="employee_list_report_xls"
+        model="opensea.employee.list.wizard"
+        string="List employee XLSX"
+        report_type="xlsx"
+        name="sea_employee_extend.employee_list_report_xls"
+        file="Employee List"
+        attachment_use="False"
+        menu="False"/>
+    </data>
+</odoo>

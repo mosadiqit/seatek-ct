@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for dev.inter.transfer -->
+        <record id="inter_transfer_sequence" model="ir.sequence">
+            <field name="name">Inter Transfer</field>
+            <field name="code">dev.inter.transfer</field>
+            <field name="prefix">INT/TRAN/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

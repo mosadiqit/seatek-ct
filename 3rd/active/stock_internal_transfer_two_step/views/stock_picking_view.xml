@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_transfer_form" model="ir.ui.view">
+        <field name="name">stock.picking.transfer.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="picking_type_code" position="after">
+                <field name="apply_two_step_auth" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('apply_two_step_auth', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('apply_two_step_auth', '=', True)]}</attribute>
+            </xpath>
+            <field name="backorder_id" position="before">
+                <field name="tgl_vitual_location_id" attrs="{'invisible': [('apply_two_step_auth', '=', False)], 'required': [('apply_two_step_auth', '=', True)]}" options="{'no_create': 1}"/>
+                <field name="tgl_vitual_location_dest_id" attrs="{'invisible': [('apply_two_step_auth', '=', False)], 'required': [('apply_two_step_auth', '=', True)]}" options="{'no_create': 1}"/>
+            </field>
+            <xpath expr="//field[@name='move_ids_without_package']/.." position="attributes">
+                <attribute name="attrs">{'invisible': [('apply_two_step_auth', '=', True)]}</attribute>
+            </xpath>
+            <field name="partner_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('apply_two_step_auth', '=', True)]}</attribute>
+            </field>
+            <header position="attributes">
+                <attribute name="attrs">{'invisible': [('apply_two_step_auth', '=', True)]}</attribute>
+            </header>
+            <header position="after">
+                <header attrs="{'invisible': [('apply_two_step_auth', '=', False)]}">
+                    <button name="tgl_send" type="object" attrs="{'invisible': [('internal_transfer_state', 'not in', ('draft', 'partial_send') )]}" context="{'is_receipt': False}" class="oe_highlight" string="Send"/>
+                    <button name="tgl_receipt" type="object" attrs="{'invisible': [('internal_transfer_state', 'not in', ('partial_send', 'sended', 'partial_receipt'))]}" context="{'is_receipt': True}" class="oe_highlight" string="Receipt"/>
+                    <button name="tgl_cancel" string="Cancel" type="object" attrs="{'invisible': [('internal_transfer_state', 'not in', ('draft'))]}"/>
+                    <field name="internal_transfer_state" widget="statusbar" statusbar_visible="draft,sended,done"/>
+                </header>
+            </header>
+
+<!--             <xpath expr="//field[@name='move_line_nosuggest_ids']/.." position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', ('show_operations', '=', False), ('show_reserved', '=', True), '&amp;', ('apply_two_step_auth', '=', True), ('state', '=', 'draft')]}</attribute>
+            </xpath> -->
+
+<!--             <xpath expr="//field[@name='move_line_ids_without_package']/.." position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', ('show_operations', '=', False), ('show_reserved', '=', True), '&amp;', ('apply_two_step_auth', '=', True), ('state', '=', 'draft')]}</attribute>
+            </xpath> -->
+
+ <!--            <xpath expr="//field[@name='move_line_nosuggest_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', '|', '|', ('apply_two_step_auth', '=', True), ('show_operations', '=', False), ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}</attribute>
+            </xpath> -->
+
+<!--             <xpath expr="//field[@name='move_line_ids_without_package']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', '|', '|', ('apply_two_step_auth', '=', True), ('show_operations', '=', False), ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}</attribute>
+            </xpath> -->
+
+ <!--            <xpath expr="//label[@for='partner_id'][1]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('picking_type_code', '!=', 'outgoing'), ('apply_two_step_auth', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='partner_id'][2]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('picking_type_code', '!=', 'incoming'), ('apply_two_step_auth', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='partner_id'][3]" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('picking_type_code', 'in', ['incoming', 'outgoing']), ('apply_two_step_auth', '=', True)]}</attribute>
+            </xpath> -->
+
+            <xpath expr="//field[@name='move_line_ids_without_package']/.." position="before">
+            <!-- <xpath expr="//field[@name='move_line_nosuggest_ids']/.." position="before"> -->
+                <page string="Initial demand" attrs="{'invisible': [('apply_two_step_auth', '=', False)]}">
+                    <field name="internal_move_ids" context="{'default_picking_id': id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}" attrs="{'readonly': [('internal_transfer_state','!=','draft')]}">
+                        <tree string="Inventory Details" editable="bottom">
+                              <field name="product_id" attrs="{'readonly': [('parent.internal_transfer_state','!=','draft')]}"/>
+                              <field name="product_uom_id" string="UoM" groups="uom.group_uom" attrs="{'readonly': [('parent.internal_transfer_state','!=','draft')]}"/>
+                              <field name="move_send_done"/>
+                              <field name="move_receipt_done"/>
+                              <field name="custom" invisible="1" />
+                              <field name="max_quantity" attrs="{'readonly': [('parent.internal_transfer_state','!=','draft')]}"/>
+                          </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_internal_search" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <filter name="available" position="after">
+                <filter name="partial_send" string="Partial Send" domain="[('state', '=', 'partial_send')]"/>
+                <filter name="sended" string="Sended" domain="[('state', '=', 'sended')]"/>
+                <filter name="partial_receipt" string="Partial Receipt" domain="[('state', '=', 'partial_receipt')]"/>
+            </filter>
+            <filter name="cancel" position="after">
+                <separator/>
+                <filter name="to_process" string="To Process" domain="[('state', 'in', ('assigned', 'partially_available', 'partial_send', 'sended', 'partial_receipt'))]"/>
+
+            </filter>
+        </field>
+    </record>
+
+    <record id="stock_picking_type_kanban" model="ir.ui.view">
+        <field name="name">stock.picking.type.kanban.inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.stock_picking_type_kanban"/>
+        <field name="arch" type="xml">
+            <templates position="before">
+                <field name="count_picking_partial_send"/>
+                <field name="count_picking_sended"/>
+                <field name="count_picking_partial_receipt"/>
+            </templates>
+                <!-- <div t-if="record.count_picking_backorders.raw_value &gt; 0" class="row"> -->
+            <xpath expr="//a[@name='get_action_picking_tree_waiting']/../.." position="before">
+                <t t-if="record.code.raw_value =='internal'">
+                    <div class="row" t-if="record.count_picking_draft.raw_value &gt; 0">
+                        <div class="col-9">
+                            <a class="oe_kanban_stock_picking_type_list" name="tgl_get_action_picking_tree_draft" type="object">
+                                Draft
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <field name="count_picking_draft"/>
+                        </div>
+                    </div>
+                    <div class="row" t-if="record.count_picking_partial_send.raw_value &gt; 0">
+                        <div class="col-9">
+                            <a class="oe_kanban_stock_picking_type_list" name="tgl_get_action_picking_tree_partial_send" type="object">
+                                Partial Send
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <field name="count_picking_partial_send"/>
+                        </div>
+                    </div>
+                    <div class="row" t-if="record.count_picking_sended.raw_value &gt; 0">
+                        <div class="col-9">
+                            <a class="oe_kanban_stock_picking_type_list" name="tgl_get_action_picking_tree_sended" type="object">
+                                Sended
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <field name="count_picking_sended"/>
+                        </div>
+                    </div>
+                    <div class="row" t-if="record.count_picking_partial_receipt.raw_value &gt; 0">
+                        <div class="col-9">
+                            <a class="oe_kanban_stock_picking_type_list" name="tgl_get_action_picking_tree_partial_receipt" type="object">
+                                Partial Receipt
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <field name="count_picking_partial_receipt"/>
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+        </field>
+    </record>
+    
+
+</odoo>

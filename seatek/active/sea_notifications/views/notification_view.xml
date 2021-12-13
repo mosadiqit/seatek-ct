@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sea_notifications_default_form" model="ir.ui.view">
+            <field name="name">Notification Sale Order Formview</field>
+            <field name="model">sea_notifications.sales_order</field>
+            <field name="arch" type="xml">
+                <form string="Notification Sale Order">
+                    <header>
+                    
+                    </header>
+                    <!-- <board style="2-1">
+                        <column>
+                        </column>
+                    </board> -->
+                </form>
+            </field>
+        </record>
+
+        <record id="sea_notifications_default_tree" model="ir.ui.view">
+            <field name="name">Notification Sale Order TreeView</field>
+            <field name="model">sea_notifications.sales_order</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Notification Sale Order">
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="sea_notifi_sale_order_action" model="ir.actions.act_window">
+            <field name="name">Notification Sale Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sea_notifications.sales_order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="sea_notifications_default_form"/>
+            <field name="context">{'create': 0, 'delete': 0, 'edit': 0}</field> -->
+            <field name="help" type="html">
+                <div style="opacity:0.20;z-index:1000;-webkit-transform:height:50%; top: 450px;">
+                    <img src="/web/binary/company_logo" style="vertical-align:bottom;height:500px"/>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="change_request_email" model="mail.template">
+            <field name="name">Change Request Created</field>
+            <field name="model_id" ref="acs_project_change_request.model_acs_change_request"/>
+            <field name="email_from">${ user.email|safe}</field>
+            <field name="email_to">${object.partner_id.email|safe}</field>
+            <field name="subject">${object.partner_id.name|safe} Please Check Change Requrest</field>
+            <field name="body_html"><![CDATA[
+<div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
+    <p>Hello ${object.partner_id.name},</p>
+    <p>Change request have been created with following details.</p>
+    <ul>
+        % if object.name:
+            <li>
+                <p>Subject: ${object.name}<br/>
+            </li>
+        % endif
+        % if object.number:
+            <li>
+                <p>Reference Number: ${object.number}<br/>
+            </li>
+        % endif
+        % if object.project_id:
+            <li>
+                <p>Project: ${object.project_id.name}<br/>
+            </li>
+        % endif
+        % if object.task_id:
+            <li>
+                <p>Task: ${object.task_id.name}<br/>
+            </li>
+        % endif
+        % if object.description:
+            <li>
+                <p>Description of Change: ${object.description}<br/>
+            </li>
+        % endif
+    </ul>
+    <p>Please <a href="${object.get_base_url()}/my/change_requests/${object.id}">click here</a> give your valuable Review.</p>
+
+    <p>Best regards.<br/>
+</div>]]></field>
+            <field name="user_signature" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

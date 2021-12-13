@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="sea_purchase_order_line" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                    <field name="sea_hscode" attrs="{'invisible': [('company_id','!=',11)]}"/>
+                    <!--field name="hs_code"/-->
+                </xpath>
+
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('company_id', '!=', 11)]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="sea_vessel_name" attrs="{'invisible': [('company_id','!=',11)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

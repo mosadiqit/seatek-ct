@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form" model="ir.ui.view">
+        <field name="name">res.users.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']" position="after">
+                <page string="Access User Menus">
+                    <group>
+                        <field name="menu_ids" invisible="1"/>
+                        <field name="sub_menu_id" options="{'no_create': 1}" domain="[('id', 'not in', menu_ids)]"/>
+                        <field name="menu_ids" options="{'no_create': 1}">
+                            <tree string="Menus">
+                                <field icon="icon" name="complete_name"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

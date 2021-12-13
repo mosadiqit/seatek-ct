@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_xls_pos_session_wizard_form" model="ir.ui.view">
+        <field name="name">report_xls_pos_session_wizard_form_view</field>
+        <field name="model">sea_report_xls.pos_session_wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="type" widget="radio"/>
+                        </group>
+                        <group attrs="{'invisible':[('type', '!=', 'current')]}">
+                            <field name="session_name" attrs="{'readonly': True}"/>
+                        </group>
+                        <group attrs="{'invisible':[('type', '!=', 'session')]}">
+                            <field name="session_id" widget="selection" attrs="{'required': [('type', '=', 'session')]}"/>
+                        </group>
+                        <group attrs="{'invisible':[('type', '!=', 'time')]}">
+                            <field name="date_from" attrs="{'required': [('type', '=', 'time')]}"/>
+                            <field name="date_to" attrs="{'required': [('type', '=', 'time')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="report_type" widget="radio"/>
+                    </group>
+                    <footer>
+                        <button string='Export' name="view_report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_report_xls_pos_session_wizard_form" model="ir.actions.act_window">
+        <field name="name">POS Report Session</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sea_report_xls.pos_session_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <report string="POS Session XLS" id="pos_session_xls" model="sea_report_xls.pos_session_wizard"
+        report_type="xlsx" name="sea_report_xls.pos_session_xls" file="POS-Session-XLSX" attachment_use="False" menu="False"/>
+    <report string="POS Session CSV" id="pos_session_csv" model="sea_report_xls.pos_session_wizard"
+        report_type="csv" name="sea_report_xls.pos_session_csv" file="POS-Session-CSV" attachment_use="False" menu="False"/>
+
+    <record id="report_xls_pos_session_kanban_inherit" model="ir.ui.view">
+        <field name="name">report_xls_pos_session_kanban_inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
+        <field name="priority" eval="10"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='open_session_cb']" position="after">
+                <button name="action_report_session" class="btn btn-primary"
+                    type="object">Report Session</button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

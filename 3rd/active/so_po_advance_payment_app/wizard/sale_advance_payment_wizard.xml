@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="sale_advance_payment_wizard" model="ir.ui.view">
+      <field name="name">sale.advance.payment.wizard</field>
+      <field name="model">sale.advance.payment</field>
+      <field name="arch" type="xml">
+        <form>
+          <group string="Payment Details" name="advance_pay">
+            <group>
+            <field name="name"/>
+            <field name="advance_amount"/>
+            <field name="total_amount"/>
+          </group>
+          <group>
+            <field name="payment_method_id"/>
+            <field name="journal_id"/>
+            <field name="payment_date"/>
+          </group>
+         </group>
+          <group string="Currency" name="currency_group">
+            <field name="currency_id"/>
+            <field name="currency_rate"/>
+          </group>
+
+          <footer>
+            <button name="gen_purchase_advance_payment" type="object" string=" Advance Payment"
+               class="oe_highlight" icon="fa-money"/>
+            <button string="Cancel" class="btn-secondary" special="cancel" icon="fa-times"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- Sale Advance Payment History -->
+    <record id="advance_payment_history_form" model="ir.ui.view">
+      <field name="name">advance.payment.history.form</field>
+      <field name="model">advance.payment.history</field>
+      <field name="arch" type="xml">
+        <form>
+          <group string="Payment Details">
+            <group>
+            <field name="name"/>
+            <field name="advance_amount"/>
+            <field name="total_amount"/>
+          </group>
+          <group>
+            <field name="payment_method_id"/>
+            <field name="journal_id"/>
+            <field name="payment_date"/>
+          </group>
+         </group>
+          <group string="Currency">
+            <field name="currency_id"/>
+            <field name="currency_rate"/>
+          </group>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>

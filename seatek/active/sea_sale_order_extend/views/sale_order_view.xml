@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="sc_sale_quotation_view_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr='//notebook' position="inside">
+                    <page string="Sea Extra Info">
+                        <group>
+                            <group string="Extra Information">
+                                <!--group string="Information" attrs="{'invisible': [('company_id', '!=', 11)]}" -->
+                                <field name="sea_ship_partner_id" domain="[('type','=','ship')]"  options='{"always_reload": True}'/>
+                                <field name="sea_temp_contact"/>
+                                <field name="sea_temp_delivery_address"/>
+                                <field name="sea_customer_inquiry_no"/>
+                                <field name="sea_customer_inquiry_date"/>
+                                <field name="sea_customer_po_no"/>
+                                <field name="sea_imo_no" attrs="{'invisible': [('company_id', '!=', 11)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

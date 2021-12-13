@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_warehouse" model="ir.ui.view">
+        <field name="name">stock.warehouse.form.inherit</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="user_permis_ids" widget="many2many_tags" options="{'no_create': 1}"/>
+                <field name="enable_auto_split" invisible="1"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="internal_transfer_location_id" context="{'default_usage': 'transit'}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="action_update_transit_location" model="ir.actions.server">
+        <field name="name">Update transit location</field>
+        <field name="model_id" ref="model_stock_warehouse"/>
+        <field name="binding_model_id" ref="model_stock_warehouse"/>
+        <field name="state">code</field>
+        <field name="code">records.tgl_create_transit_location()</field>
+    </record>
+
+
+</odoo>

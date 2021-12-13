@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="product_book_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">product.product.kanban.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="arch" type="xml">
+                <field name="lst_price" position="after">
+                    <field name="author"/>
+                </field>
+                <xpath expr="//div[@class='oe_kanban_details']" position="inside">
+                    <field name="is_book" invisible="1"/>
+                    <field name="author" attrs="{'invisible': [('is_book', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+    <record id="product_book" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <!--<field name="res_model">product.product</field>-->
+        <field name="arch" type="xml">
+            <!--<field name="is_credit" position="after">
+                <field name="is_book" />
+            </field>-->
+            <xpath expr="//field[@name='is_credit']" position="after">
+                <field name="is_book"/>
+            </xpath>
+        </field>
+    </record>
+
+    <data>
+        <record id="product_book_information" model="ir.ui.view">
+        <field name="name">view.product.product.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[1]" position="after">
+                <page string="Book Information" attrs="{'invisible': [('is_book', '=', False)]}">
+                    <group>
+                        <group>
+                            <field name="author"/>
+                            <field name="published" />
+                            <field name="language" />
+                        </group>
+                        <group>
+                            <field name="category"/>
+                            <field name="coverimage" />
+                            <field name="topic" />
+                        </group>
+                        <group>
+                            <field name="releasedate" />
+                            <field name="numberofpage" />
+                            <field name="shelves" />
+                            <field name="sea_product_variant_name" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="sea_pegasus_delivery_note_report_xls"
+            model="stock.picking"
+            string="Pegasus Delivery Note - Excel"
+            report_type="xlsx"
+            name="sea_pegasus_delivery_note_report_xls.delivery_note_xls"
+            file="sea_pegasus_delivery_note_report_xls.delivery_note_xls"
+            attachment_use="False"
+            print_report_name="'Delivery Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+    </data>
+</odoo>

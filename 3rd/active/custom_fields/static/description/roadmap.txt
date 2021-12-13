@@ -1,0 +1,4 @@
+Under consideration
+===================
+* Somehow make field default values (seems impossible and unreasonably costly)
+

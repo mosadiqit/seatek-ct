@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sea_invoices_80_doc">
+        <t t-call="web.html_container">
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="page" style="font-size:12px;">
+                    <t t-set="sale" t-value="doc.get_sale_order()"/>
+                    <div class="row">
+                        <div class="text-center col-12">
+                            <t t-if="sale">
+                                <t t-raw="sale.warehouse_id.so_receipt_header"/>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-center" style="font-weight:1000;font-size:22px; width:100%">
+                            <b>PHIẾU THU</b>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-7">
+                            Ngày đặt hàng:
+                            <t t-if="sale">
+                                <span t-esc="sale.confirmation_date.strftime('%d/%m/%y')"/>
+                            </t>
+                        </div>
+                        <div class="col-5">
+                            Số HĐ:
+                            <t t-if="sale">
+                                <span t-field="sale.name"/>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Ngày giao hàng:
+                                <t t-if="sale">
+                                    <t t-if="sale.commitment_date">
+                                        <span t-esc="sale.commitment_date.strftime('%d/%m/%y')"/>
+                                    </t>
+                                </t>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Ngày in:
+                                <span t-esc="datetime.datetime.now().strftime('%d/%m/%y')"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            Thu ngân:
+                            <span t-esc="doc.env.user.name"/>
+                        </div>
+                        <!--<div class="col-5">
+                            &lt;!&ndash;In lúc: <span t-esc="datetime.datetime.now().strftime('%H:%M')"/>&ndash;&gt;
+                            <p>Ngày giao hàng: <span t-esc="datetime.datetime.now()" t-options='{"widget": "datetime"}'/></p>
+                        </div>-->
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Khách hàng:
+                            <t t-if="sale">
+                                <span t-field="sale.partner_id"/>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <t t-if="sale">
+                                <span t-field="sale.partner_shipping_id"
+                                      t-options="{'widget': 'contact', 'fields': ['address', 'phone'], 'phone_icons': True}"/>
+                            </t>
+                        </div>
+                    </div>
+                    <style>
+                        .custom-table-line{
+                        width: 100%;
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                        }
+                        .custom-table-line tr {
+                        border-bottom: 1px solid black;
+                        }
+                        .custom-table-line td, .custom-table-line th {
+                        border-right: 1px solid black;
+                        padding: 1px;
+                        vertical-align: middle;
+                        text-align: center;
+                        }
+                    </style>
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="custom-table-line" style="width: 100%">
+                                <tr>
+                                    <th>
+                                        Mặt Hàng
+                                    </th>
+                                    <th class="text-center">
+                                        SL
+                                    </th>
+                                    <th class="text-center" groups="uom.group_uom">
+                                        ĐVT
+                                    </th>
+                                    <th class="text-center" groups="sale.group_discount_per_so_line">
+                                        CK
+                                    </th>
+                                    <th class="text-center">
+                                        Thành Tiền
+                                    </th>
+                                </tr>
+                                <div t-foreach="doc.invoice_line_ids" t-as="line">
+                                    <t t-if="line.quantity > 0">
+                                        <tr>
+                                            <td colspan="5">
+                                                <span t-field="line.product_id"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-center">
+                                                <span t-field="line.price_unit" t-options='{"widget": "integer"}'/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="doc.formatNum(line.quantity)"/>
+                                            </td>
+                                            <td class="text-center" groups="uom.group_uom">
+                                                <span t-field="line.uom_id"/>
+                                            </td>
+                                            <td class="text-center" groups="sale.group_discount_per_so_line">
+                                                <t t-if="line.discount > 0">
+                                                    <span t-field="line.discount"
+                                                          t-options='{"widget": "integer"}'/>
+                                                    %
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <!--&lt;!&ndash; Price Unit Line &ndash;&gt;
+                                                <t t-set="price_amount" t-value="line.price_unit * line.quantity"/>
+                                                <span t-esc="price_amount" t-options="{'widget': 'integer'}"/>-->
+
+                                                <span t-esc="line.price_total" t-options="{'widget': 'integer'}"/>
+
+                                                <!--                                                 t-options="{'widget': 'monetary', 'display_currency': doc.pricelist_id.currency_id}" -->
+                                                <!--                                                <span t-esc="sum(line.move_ids.mapped('price_total'))" groups="account.group_show_line_subtotals_tax_included" t-options="{'widget': 'integer'}"/>-->
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </div>
+                            </table>
+                        </div>
+                    </div>
+                    <t set="total_price_undiscount" t-value="0"/>
+                    <div class="row">
+                        <div class="col-6">
+                            Tổng SL:
+                        </div>
+                        <div class="col-6 text-right">
+                            <span t-esc="doc.formatNum((sum(l.quantity for l in doc.invoice_line_ids)))"/>
+                        </div>
+                    </div>
+                    <hr width="100%" align="center" style="margin: 0;"/>
+                    <div class="row">
+                        <div class="col-6 font-weight-bold">
+                            Tiền hàng:
+                        </div>
+                        <div class="col-6 text-right font-weight-bold">
+                            <!--&lt;!&ndash; Total Amount Undiscount&ndash;&gt;
+                            <t t-set="total_price_undisc" t-value="0"/>
+                            <div t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-set="total_price_undisc" t-value="total_price_undisc + line.price_unit * line.quantity"/>
+                            </div>
+                            <span t-esc="doc.formatNum(total_price_undisc)"/>-->
+
+                            <!--                             <span t-esc="total_price_undisc"/>-->
+                            <!--                             <span t-esc="sum(doc.order_line.mapped('move_ids.price_subtotal')) + sum(doc.order_line.mapped('move_ids.discount_value'))" t-options="{'widget': 'integer'}"/> -->
+                            <span t-esc="doc.formatNum(sum(l.price_total for l in doc.invoice_line_ids))"/>
+
+
+                        </div>
+                    </div>
+                    <hr width="100%" align="center" style="margin: 0;"/>
+                    <div class="row">
+                        <div class="col-6">
+                            Giảm giá:
+                        </div>
+                        <div class="col-6 text-right">
+                            <!--                            <span t-esc="doc.formatNum(sum(l.price_unit for l in doc.invoice_line_ids))"/>-->
+                            <!--                             <span t-esc="sum(doc.order_line.mapped('move_ids.discount_value'))" t-options="{'widget': 'integer'}"/>-->
+                            <span>0</span>
+                            <!--&lt;!&ndash; Add Discount &ndash;&gt;
+                            <t t-set="total_disc" t-value="0"/>
+                            <div t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-set="total_disc" t-value="total_disc + (line.quantity * line.price_unit * line.discount / 100)"/>
+                            </div>
+                            <span t-esc="doc.formatNum(total_disc)"/>-->
+                        </div>
+                    </div>
+
+                    <!--<t t-set="tax_value" t-value="doc.order_line.mapped('move_ids').get_taxes_value()"/>
+
+                    <t t-foreach="tax_value.keys()" t-as="tax_key">
+                        <hr width="100%" align="center" style="margin: 0;"/>
+                        <div class="row">
+                            <div class="col-8">
+                                <span t-esc="tax_key" />
+                            </div>
+                            <div class="col-4 text-right">
+                                <span t-esc="tax_value[tax_key]" t-options="{'widget': 'integer'}"/>
+                            </div>
+                        </div>
+                    </t>-->
+
+                    <hr width="100%" align="center" style="margin: 0;"/>
+                    <div class="row">
+                        <div class="col-6">
+                            Phí VC:
+                        </div>
+                        <div class="col-6 text-right">
+                            0
+                        </div>
+                    </div>
+                    <hr width="100%" align="center" style="margin: 0;"/>
+                    <div class="row">
+                        <div class="col-6">
+                            Đổi trả:
+                        </div>
+                        <div class="col-6 text-right">
+                            0
+                        </div>
+                    </div>
+                    <div width="100%" align="center" style="border-top: 1px solid black;"/>
+                    <div class="row">
+                        <div class="col-6 font-weight-bold">
+                            Tổng:
+                        </div>
+                        <div class="col-6 text-right font-weight-bold">
+                            <span t-esc="doc.formatNum(sum(l.price_total for l in doc.invoice_line_ids))"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 font-weight-bold">
+                            Trả trước:
+                        </div>
+                        <div class="col-6 text-right font-weight-bold">
+                            <t t-set="payments_vals" t-value="doc._get_payments_vals()"/>
+                            <t t-set="prepay" t-value="0"/>
+                            <t t-foreach="payments_vals" t-as="payment_vals">
+                                <t t-set="prepay" t-value="prepay + payment_vals['amount']"/>
+                                <!--                                <span t-esc="payment_vals['amount']" t-options="{'widget': 'integer'}"/>-->
+                            </t>
+                            <span t-esc="prepay" t-options="{'widget': 'integer'}"/>
+                            <!--                            <span>0</span>-->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <t t-set="payments_vals" t-value="doc._get_payments_vals()"/>
+                        <t t-set="prepay" t-value="0"/>
+                        <t t-foreach="payments_vals" t-as="payment_vals">
+                            <t t-set="prepay" t-value="prepay + payment_vals['amount']"/>
+                        </t>
+                        <div class="col-6 font-weight-bold">
+                            Phải thu:
+                        </div>
+                        <div class="col-6 text-right font-weight-bold">
+                            <t t-if="prepay > 0">
+                                <span t-field="doc.residual" t-options="{'widget': 'integer'}"/>
+                            </t>
+                            <t t-else="">
+                                <span t-field="doc.amount_total" t-options="{'widget': 'integer'}"/>
+                            </t>
+
+                            <!--                            <span t-esc="doc.formatNum(sum(l.price_total for l in doc.invoice_line_ids))"/>-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 font-weight-bold" style="padding-right: 0">
+                            Ghi chú:
+                        </div>
+                        <div class="col-9 text-center font-weight-normal" style="padding-left: 0">
+                            <span t-field="doc.name"/>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+                        <div class="col-12" style="text-align:left;">
+                            <t t-if="sale">
+&lt;!&ndash;                                <span t-field="sale.note"/>&ndash;&gt;
+                                <span><strong>Note: </strong><span t-field="doc.name"/></span>
+                            </t>
+                        </div>
+                    </div>-->
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <t t-if="sale">
+                                <t t-raw="sale.warehouse_id.so_receipt_footer"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="sea_invoices_80mm_templates">
+        <t t-call="web.html_container">
+            <t t-set="a" t-value="0"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="sea_sale_invoice_print.sea_invoices_80_doc"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

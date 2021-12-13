@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_acs_support_ticket" model="ir.sequence">
+            <field name="name">Support</field>
+            <field name="code">acs.support.ticket</field>
+            <field name="prefix">SUPP</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="acs_support" model="website.menu">
+            <field name="name">Support</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">10</field>
+            <field name="url">/support/help</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,159 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <!--
+        <record model="ir.ui.view" id="sc_purchase_payment_request.list">
+          <field name="name">sc_purchase_payment_request list</field>
+          <field name="model">sc_purchase_payment_request.sc_purchase_payment_request</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </tree>
+          </field>
+        </record>
+        -->
+
+        <!-- actions opening views on models -->
+        <!--
+        <record model="ir.actions.act_window" id="sc_purchase_payment_request.action_window">
+          <field name="name">sc_purchase_payment_request window</field>
+          <field name="res_model">sc_purchase_payment_request.sc_purchase_payment_request</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        -->
+
+        <!-- server action to the one above -->
+        <!--
+        <record model="ir.actions.server" id="sc_purchase_payment_request.action_server">
+          <field name="name">sc_purchase_payment_request server</field>
+          <field name="model_id" ref="model_sc_purchase_payment_request_sc_purchase_payment_request"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": self._name,
+            }
+          </field>
+        </record>
+        -->
+
+        <record id="sc_purchase_payment_request_paper" model="report.paperformat">
+            <field name="name">Purchase payment request paper</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">16</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <!--<field name="report_ids"
+                   eval="[(4, ref('dannygreen_stock_report.dannygreen_stock_action_export_inventory_report'))]"/>-->
+        </record>
+
+        <record id="purchase_payment_request_form" model="ir.ui.view">
+            <field name="name">purchase.payment.request.form.view</field>
+            <field name="model">purchase.payment.request</field>
+            <field name="arch" type="xml">
+                <form string="Yêu cầu thanh toán mua hàng">
+                    <sheet>
+                        <group>
+                            <field name="content" required="1"/>
+                            <field name="purchase_id" widget="many2one_tags" required="1"
+                                   options="{'no_create': True, 'no_create_edit':True}"/>
+                            <field name="time_for_Payment" required="1" widget="date"/>
+                            <field name="mode_of_payment" required="1" widget='radio' options="{'horizontal': true}"/>
+                        </group>
+                        <group string="Thông tin ngân hàng">
+                            <group>
+                                <field name="bank_ids" attrs="{'readonly': [('purchase_id', '=', False)]}" required="0"/>
+                                <field name="bank_acc_holder"/>
+                                <field name="bank_acc_holder_address" required="0" class="o_address_street"/>
+                            </group>
+                            <group>
+                                <field name="bank_acc_number" required="0"/>
+                                <field name="bank_name"/>
+                                <field name="bank_address" required="0" class="o_address_street"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Hóa đơn nhà cung cấp">
+                                <field name="invoice_ids" readonly="0">
+                                    <tree editable="top" delete="false" create="false">
+                                        <field name="vendor_display_name" string="Nhà cung cấp"
+                                               modifiers="{'readonly':true}"/>
+                                        <field name="number" modifiers="{'readonly':true}" string="Số"/>
+                                        <field name="amount_total_signed" string="Tổng cộng" sum="Tổng cộng"
+                                               modifiers="{'readonly':true}"/>
+                                        <field name="residual_signed" string="Phải trả" sum="Tổng cộng phải trả"/>
+                                        <field name="state" modifiers="{'readonly':true}" string="Trạng thái"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group>
+                            <field name="amount_total" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="count_invoice_ids" invisible="1"/>
+                            <field name="amount_total_to_pay" readonly="0" string="Tổng phải trả (Payment)"
+                                   attrs="{'invisible': [('count_invoice_ids', '=', 0)]}"/>
+                            <field name="amount_total_to_pay" readonly="0" string="Tổng phải trả (Advance)"
+                                   attrs="{'invisible': [('count_invoice_ids', '!=', 0)]}"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button type="object" id="main_print_button" name="print"
+                                string="In" class="oe_highlight"/>
+                        <button string="Hủy" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="purchase_payment_request_form_action" model="ir.actions.act_window">
+            <field name="name">Payment Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.payment.request</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="purchase_payment_request_form"/>
+        </record>
+
+        <report
+                id="report_payment_request_purchase_pdf"
+                string="Payment Request report"
+                model="purchase.payment.request"
+                report_type="qweb-pdf"
+                file="sc_purchase_payment_request.payment_request_templates"
+                name="sc_purchase_payment_request.payment_request_templates"
+                menu="False"
+                print_report_name="'Payment Request - %s' % (object.purchase_id.name)"
+                paperformat="sc_purchase_payment_request.sc_purchase_payment_request_paper"
+        />
+
+        <!-- Top menu item -->
+        <menuitem id="menu_sc_purchase" name="Seacorp Purchase" parent="purchase.menu_purchase_root"
+                  sequence="999"/>
+        <menuitem id="menu_purchase_payment_request" name="Print Payment Request" parent="menu_sc_purchase"
+                  action="purchase_payment_request_form_action"/>
+
+        <template id="payment_request_layout">
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+                <t t-set="doc" t-value="o.with_context(lang=user.lang)"/>
+                <t t-if="not o" t-set="o" t-value="doc"/>
+                <t t-raw="0"/>
+            </div>
+        </template>
+
+    </data>
+</odoo>

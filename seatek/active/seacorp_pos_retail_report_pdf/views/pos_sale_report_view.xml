@@ -1,0 +1,84 @@
+<odoo>
+    <data>
+
+        <record id="seacorp_pos_sale_report_form_view" model="ir.ui.view">
+            <field name="name">pos.sale.report.form.view.seacorp</field>
+            <field name="model">pos.sale.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="session_id" required="1"
+                               domain="[('state', 'in', ['closed'])]"/>
+                    </group>
+                    <group>
+                        <field name="report_type" required="1"/>
+                    </group>
+                    <footer>
+                        <button type="object" id="main_print_button" name="seacorp_print_receipt"
+                                string="Print" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <report
+                id="seacorp_report_pos_sales_pdf"
+                string="Seacorp Report"
+                model="pos.session"
+                report_type="qweb-pdf"
+                file="seacorp_pos_retail_report_pdf.seacorp_pos_sale_report_parent"
+                name="seacorp_pos_retail_report_pdf.seacorp_pos_sale_report_parent"
+                menu="False"
+        />
+
+        <record id="seacorp_paperformat_session_receipt_pdf" model="report.paperformat">
+            <field name="name">Session Receipt PDF</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids"
+                   eval="[(6, 0, [ref('seacorp_pos_retail_report_pdf.seacorp_report_pos_sales_pdf')])]"/>
+        </record>
+
+        <record id="seacorp_action_pos_sale_report" model="ir.actions.act_window">
+            <field name="name">Seacorp Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.sale.report</field>
+            <field name="view_id" ref="seacorp_pos_sale_report_form_view"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="seacorp_action_pos_sale_report" id="seacorp_menu_action_pos_sale_report"
+                  name="Seacorp Report" parent="point_of_sale.menu_point_rep"/>
+
+        <template id="seacorp_pos_sale_report_parent">
+            <t t-set="doc" t-value="docs.with_context(lang=user.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-call="seacorp_pos_retail_report_pdf.seacorp_pos_sale_report_template" t-lang="user.lang"/>
+    </template>
+    </data>
+</odoo>

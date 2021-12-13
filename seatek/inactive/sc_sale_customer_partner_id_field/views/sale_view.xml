@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="sc_sale_quotation_view_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="customer_partner_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="sea_temp_contact" attrs="{'invisible': [('company_id', '!=', 11)]}"/>
+                    <field name="sea_temp_delivery_address" attrs="{'invisible': [('company_id', '!=', 11)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

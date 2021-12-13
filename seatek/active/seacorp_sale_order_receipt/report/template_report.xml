@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="external_layout">
+        <t t-call="web.html_container">
+            <t t-set="company" t-value="doc.company_id"/>
+            <div class="header">
+                <div class="row">
+                    <div class="col-12 text-center">
+                    </div>
+                </div>
+            </div>
+
+            <div class="article">
+                <t t-raw="0" />
+                <p style="page-break-after: always;"></p>
+            </div>
+        </t>
+    </template>
+
+   <template id="wat_sale_order_80_doc">
+        <t t-call="seacorp_sale_order_receipt.external_layout">
+            <div class="page" style="font-size:12px;">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <t t-raw="doc.warehouse_id.so_receipt_header" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="text-align:center;font-weight:1000;font-size:22px;">
+                        <b>PHIẾU THU</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-7">
+                        Ngày đặt hàng:
+                        <t t-if="doc.confirmation_date" >
+                            <span t-esc="doc.confirmation_date.strftime('%d/%m/%y')"/>
+                        </t>
+                    </div>
+                    <div class="col-5">
+                        Số HĐ: <span t-field="doc.name"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>Ngày giao hàng:
+                            <t t-if="doc.commitment_date" >
+                                    <span t-esc="doc.commitment_date.strftime('%d/%m/%y')"/>
+                            </t>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>Ngày in: <span t-esc="datetime.datetime.now().strftime('%d/%m/%y')"/></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-7">
+                        Thu ngân: <span t-esc="doc.env.user.name"/>
+                    </div>
+                    <!--<div class="col-5">
+                        &lt;!&ndash;In lúc: <span t-esc="datetime.datetime.now().strftime('%H:%M')"/>&ndash;&gt;
+                        <p>Ngày giao hàng: <span t-esc="datetime.datetime.now()" t-options='{"widget": "datetime"}'/></p>
+                    </div>-->
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        Khách hàng: <span t-field="doc.partner_id"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span t-field="doc.partner_shipping_id" t-options="{'widget': 'contact', 'fields': ['address', 'phone'], 'phone_icons': True}"/>
+                    </div>
+                </div>
+                <style>
+                     .custom-table-line{
+                            width: 100%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            }
+                            .custom-table-line tr {
+                            border-bottom: 1px solid black;
+                            }
+                            .custom-table-line td, .custom-table-line th {
+                            border-right: 1px solid black;
+                            padding: 1px;
+                            vertical-align: middle;
+                            text-align: center;
+                            }
+                </style>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="custom-table-line" style="width: 100%">
+                            <tr>
+                                <th>
+                                    Mặt Hàng
+                                </th>
+                                <th class="text-center">
+                                    SL
+                                </th>
+                                <th class="text-center" groups="uom.group_uom">
+                                    ĐVT
+                                </th>
+                                <th class="text-center" groups="sale.group_discount_per_so_line">
+                                    CK
+                                </th>
+                                <th class="text-center">
+                                    Thành Tiền
+                                </th>
+                            </tr>
+                            <div t-foreach="doc.order_line" t-as="orderline">
+                                <t t-if="sum(orderline.move_ids.mapped('quantity_done')) > 0">
+                                    <tr>
+                                        <td colspan="5">
+                                            <span t-field="orderline.product_id"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-field="orderline.price_unit" t-options='{"widget": "integer"}'/>
+                                        </td>
+                                        <td class="text-center" >
+                                           <span t-esc="'{0:,.4g}'.format(sum(orderline.move_ids.mapped('quantity_done')))"/>
+                                        </td>
+                                        <td class="text-center" groups="uom.group_uom">
+                                           <span t-field="orderline.product_uom"/>
+                                        </td>
+                                        <td class="text-center" groups="sale.group_discount_per_so_line">
+                                            <t t-if="orderline.discount > 0">
+                                                <span t-field="orderline.discount" t-options='{"widget": "integer"}'/> %
+                                            </t>
+                                        </td>
+                                        <td class="text-right">
+                                            <!-- t-options="{'widget': 'monetary', 'display_currency': doc.pricelist_id.currency_id}" -->
+                                            <span t-esc="sum(orderline.move_ids.mapped('price_subtotal'))" groups="account.group_show_line_subtotals_tax_excluded" t-options="{'widget': 'integer'}"/>
+                                            <span t-esc="sum(orderline.move_ids.mapped('price_total'))" groups="account.group_show_line_subtotals_tax_included" t-options="{'widget': 'integer'}"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </div>
+                        </table>                                        
+                    </div>            
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        Tổng SL:
+                    </div>
+                    <div class="col-6 text-right">
+                        <span t-esc="'{0:,.4g}'.format(sum(doc.order_line.mapped('move_ids.quantity_done')))"/>
+                    </div>
+                </div>
+                <hr width="100%" align="center" style="margin: 0;"/>
+                <div class="row">
+                    <div class="col-6 font-weight-bold">
+                        Tiền hàng:
+                    </div>
+                    <div class="col-6 text-right font-weight-bold">
+                        <!-- <span t-esc="sum(doc.order_line.mapped('move_ids.price_subtotal')) + sum(doc.order_line.mapped('move_ids.discount_value'))" t-options="{'widget': 'integer'}"/> -->
+                        <span t-esc="sum(doc.order_line.mapped('move_ids.price_subtotal'))" t-options="{'widget': 'integer'}"/>
+                    </div>
+                </div>
+                <hr width="100%" align="center" style="margin: 0;"/>
+                <div class="row">
+                    <div class="col-6">
+                        Giảm giá:
+                    </div>
+                    <div class="col-6 text-right">
+                        <!-- <span t-esc="sum(doc.order_line.mapped('move_ids.discount_value'))" t-options="{'widget': 'integer'}"/> -->
+                        <span>0</span>
+                    </div>
+                </div>
+
+                <t t-set="tax_value" t-value="doc.order_line.mapped('move_ids').get_taxes_value()"/>
+
+                <t t-foreach="tax_value.keys()" t-as="tax_key">
+                    <hr width="100%" align="center" style="margin: 0;"/>
+                    <div class="row">
+                        <div class="col-8">
+                            <span t-esc="tax_key" />
+                        </div>
+                        <div class="col-4 text-right">
+                            <span t-esc="tax_value[tax_key]" t-options="{'widget': 'integer'}"/>
+                        </div>
+                    </div>
+                </t>
+
+                <hr width="100%" align="center" style="margin: 0;"/>
+                <div class="row">
+                    <div class="col-6">
+                        Phí VC:
+                    </div>
+                    <div class="col-6 text-right">
+                        0
+                    </div>
+                </div>
+                <hr width="100%" align="center" style="margin: 0;"/>
+                <div class="row">
+                    <div class="col-6">
+                        Đổi trả:
+                    </div>
+                    <div class="col-6 text-right">
+                        0
+                    </div>
+                </div>
+                <div width="100%" align="center" style="border-top: 1px solid black;"/>
+                <div class="row">
+                    <div class="col-6 font-weight-bold">
+                        Tổng:
+                    </div>
+                    <div class="col-6 text-right font-weight-bold">
+                        <span t-esc="sum(doc.order_line.mapped('move_ids.price_total'))" t-options="{'widget': 'integer'}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 font-weight-bold">
+                        Trả trước:
+                    </div>
+                    <div class="col-6 text-right font-weight-bold">
+                        <span>0</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 font-weight-bold">
+                        Phải thu:
+                    </div>
+                    <div class="col-6 text-right font-weight-bold">
+                        <span t-esc="sum(doc.order_line.mapped('move_ids.price_total'))" t-options="{'widget': 'integer'}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="text-align:center;">
+                        <span t-field="doc.note"/>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <t t-raw="doc.warehouse_id.so_receipt_footer" />
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="pos_order_80mm">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="seacorp_sale_order_receipt.wat_sale_order_80_doc"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>
